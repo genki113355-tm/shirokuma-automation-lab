@@ -11,17 +11,18 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
     <header className="h-14 border-b border-cyan-500/20 bg-navy-800/90 backdrop-blur-md sticky top-0 z-50 flex items-center justify-between px-4 lg:px-6">
       
       {/* Left Nav Pills (Breadcrumbs) */}
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar min-w-0 flex-1 py-1">
         <button 
-          className="lg:hidden p-1.5 mr-1 text-slate-300 hover:text-white hover:bg-navy-700 rounded-md transition-colors"
+          className="lg:hidden p-1.5 mr-1 text-slate-300 hover:text-white hover:bg-navy-700 rounded-md transition-colors shrink-0"
           onClick={toggleMobileMenu}
+          aria-label="メニューを開く"
         >
           <Menu size={20} />
         </button>
         
         <Link 
           to="/" 
-          className={`font-bold text-xs px-4 py-1.5 rounded-full flex items-center gap-2 whitespace-nowrap transition-colors ${
+          className={`font-bold text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap transition-colors shrink-0 ${
             isTop ? 'bg-cyan-500 text-navy-900 shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 'bg-navy-700 text-slate-300 hover:text-white hover:bg-navy-600'
           }`}
         >
@@ -29,7 +30,7 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
           <span>TOP</span>
         </Link>
         
-        <div className="flex items-center gap-2 ml-2 text-xs font-medium text-slate-400">
+        <div className="flex items-center gap-1.5 ml-1 text-xs font-medium text-slate-400 shrink-0">
           <span className="flex items-center gap-1 text-slate-500"><ChevronRight size={14} /> 章一覧</span>
           {['1', '2', '3', '4'].map(chap => {
             const isActive = currentChapter === chap;
@@ -37,7 +38,7 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
               <Link 
                 key={chap} 
                 to={`/chapter/${chap}`} 
-                className={`px-3 py-1 rounded-full transition-colors ${
+                className={`px-2.5 py-0.5 rounded-full transition-colors ${
                   isActive 
                     ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                     : 'border border-transparent hover:border-slate-600 hover:text-slate-200'
@@ -51,12 +52,12 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-3">
-        <button className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors">
+      <div className="flex items-center gap-2 shrink-0">
+        <button className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs font-bold px-3 py-1.5 rounded-full items-center gap-1.5 transition-colors hidden md:flex shrink-0">
           <Play size={14} fill="currentColor" />
           <span>コード実行ラボ</span>
         </button>
-        <button className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors hidden sm:flex">
+        <button className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-full items-center gap-1.5 transition-colors hidden lg:flex shrink-0">
           <Download size={14} />
           <span>環境構築スクリプト</span>
         </button>
