@@ -13,7 +13,7 @@ export default function Sidebar() {
           🐻‍❄️
         </div>
         <div>
-          <h1 className="text-white font-bold text-lg leading-tight">シロクマC++ラボ</h1>
+          <h1 className="text-white font-bold text-lg leading-tight">�V���N�}<br/>C++�J�����������{</h1>
           <p className="text-[10px] text-cyan-400">〜数理アルゴリズム自動評価〜</p>
         </div>
       </Link>

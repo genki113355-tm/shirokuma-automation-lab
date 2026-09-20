@@ -17,7 +17,7 @@ export default function TopPage() {
               <span>C++開発者のための実務効率化・自動化ガイド</span>
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
-              <span className="block text-cyan-400 text-2xl md:text-3xl lg:text-4xl mb-4 tracking-widest font-bold">SHIROKUMA Auto C++</span>
+              <span className="block text-cyan-400 text-2xl md:text-3xl lg:text-4xl mb-4 tracking-widest font-bold">�V���N�} C++�J�����������{</span>
               C++開発の泥臭い作業、<br className="hidden md:block"/>全部「自動化」しませんか？
             </h1>
           </div>
@@ -112,7 +112,7 @@ export default function TopPage() {
             <div className="bg-cyan-900/30 p-6 rounded-xl border border-cyan-500/50 relative">
               <div className="absolute -top-3 -right-3 bg-cyan-500 text-navy-900 text-xs font-black px-3 py-1 rounded-full shadow-lg">現在地</div>
               <div className="text-cyan-400 text-sm font-bold mb-2">STEP 2: 実務で使いこなす</div>
-              <h3 className="text-xl font-bold text-white mb-2">Shirokuma Auto C++</h3>
+              <h3 className="text-xl font-bold text-white mb-2">�V���N�} C++�J�����������{</h3>
               <p className="text-cyan-100/70 text-sm leading-relaxed">
                 覚えたC++を現場でどう使うか？面倒な作業をどう自動化するか？開発者のための実践的なエコシステムを構築します。
               </p>
