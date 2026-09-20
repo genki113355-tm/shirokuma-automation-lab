@@ -1,129 +1,146 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Target, Trophy, CheckCircle, Terminal } from 'lucide-react';
+import { ArrowRight, Terminal, BookOpen, Bug, TestTube, Box, GitBranch, Workflow, Rocket } from 'lucide-react';
 
 export default function TopPage() {
   return (
-    <div className="p-8 md:p-12 max-w-[1600px] mx-auto space-y-16 pb-32">
+    <div className="p-8 md:p-12 max-w-[1600px] mx-auto space-y-20 pb-32">
       
       {/* Hero Section */}
-      <div className="flex flex-col xl:flex-row items-center justify-between bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-10 lg:p-14 rounded-2xl border border-cyan-500/20 shadow-2xl gap-12 relative overflow-hidden">
+      <div className="flex flex-col xl:flex-row items-center justify-between bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-10 lg:p-16 rounded-3xl border border-cyan-500/20 shadow-2xl gap-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none"></div>
         
-        {/* テキストエリアをさらに広く取る */}
-        <div className="xl:w-2/3 space-y-8 relative z-10">
+        <div className="xl:w-3/4 space-y-8 relative z-10">
           
-          {/* サイト名 (H1: 大文字でバーンと見せる) */}
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1.5 rounded-full text-cyan-400 text-sm font-bold">
-              <span>🚀</span> <span>インフラ・Python連携で手作業から脱却</span>
+            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-4 py-2 rounded-full text-cyan-400 text-sm font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <Rocket size={16} />
+              <span>C++開発者のための実務効率化・自動化ガイド</span>
             </div>
-            <h1 className="text-6xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-none tracking-tighter drop-shadow-2xl">
-              <span className="block text-cyan-400 text-2xl md:text-3xl lg:text-4xl mb-3 tracking-widest font-bold">SHIROKUMA</span>
-              C++自動化ラボ
+            <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
+              <span className="block text-cyan-400 text-2xl md:text-3xl lg:text-4xl mb-4 tracking-widest font-bold">SHIROKUMA Auto C++</span>
+              C++開発の泥臭い作業、<br className="hidden md:block"/>全部「自動化」しませんか？
             </h1>
           </div>
 
-          {/* 副題 (H2: キャッチコピー) */}
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-200 tracking-tight pb-6 border-b border-white/10">
-            <span className="inline-block">C++の数理ロジックを、</span>
-            <span className="text-yellow-400 inline-block">全自動で評価しよう。</span>
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-200 tracking-tight pb-6 border-b border-white/10">
+            Python, Docker, CI/CDを活用して、<span className="text-yellow-400">現場のC++開発をモダンにアップデート。</span>
           </h2>
 
-          {/* 概要説明 */}
-          <p className="text-slate-300 text-base md:text-lg lg:text-xl leading-relaxed">
-            防衛、宇宙、信号処理……ミッションクリティカルな実務において、C++の高度な数理ロジックの「正しさ」をどう保証していますか？<br />
-            Linuxインフラ、Docker、pybind11、CI/CDを駆使して、泥臭い手作業から脱却する最新のエコシステムを構築しましょう。
+          <p className="text-slate-300 text-base md:text-lg lg:text-xl leading-relaxed max-w-4xl">
+            「ビルド環境を作るだけで一苦労」「テストデータの手打ちが面倒」「バグの検知が遅れる」……<br />
+            そんなC++特有の課題を、他言語や最新ツールと組み合わせて解決します。<br />
+            文法を覚えたその先にある、<strong>「問題を解決するためのC++の実践的エコシステム」</strong>を構築しましょう。
           </p>
 
-          <div className="pt-4">
-            <Link to="/chapter/1" className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-10 py-5 rounded-lg text-lg transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-              第1章から学習をスタート <ArrowRight size={20} />
+          <div className="pt-4 flex flex-wrap gap-6">
+            <Link to="/chapter/1" className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-10 py-5 rounded-xl text-lg transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+              自動化チュートリアルを始める <ArrowRight size={20} />
             </Link>
           </div>
         </div>
-        
-        {/* 画像エリアの比率を調整 */}
-        <div className="xl:w-1/3 flex justify-center relative z-10 shrink-0">
-          <img src="/images/cpp-automation-hero.jpg" alt="C++ Automation Overview" className="w-full max-w-md xl:max-w-full rounded-xl border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.2)] object-cover" />
+      </div>
+
+      {/* What we automate Section */}
+      <div className="space-y-10 relative z-10">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">このサイトで実現できる「自動化」</h2>
+          <p className="text-slate-400 text-lg">C++の面倒な作業を、様々なツールを組み合わせて効率化します。</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <AutomationCard 
+            icon={<Box size={32} />}
+            title="環境構築の自動化"
+            tech="Docker / C++"
+            description="「私のPCでは動くのに」を撲滅。コンテナ技術を用いて、チーム全員が1秒で同じC++ビルド環境を立ち上げられるようにします。"
+          />
+          <AutomationCard 
+            icon={<TestTube size={32} />}
+            title="テストの自動化"
+            tech="Python / pybind11"
+            description="C++でテスト用のドライバを書くのは大変です。PythonからC++を直接呼び出し、スクリプト言語の身軽さでテストを自動化します。"
+          />
+          <AutomationCard 
+            icon={<GitBranch size={32} />}
+            title="ビルド＆検査の自動化"
+            tech="GitHub Actions"
+            description="コードをPushするだけで、クラウド上で全自動でビルドとテストを実行。バグが混入した瞬間に検知できるCI/CDパイプラインを構築します。"
+          />
+          <AutomationCard 
+            icon={<Bug size={32} />}
+            title="メモリ漏れ検知の自動化"
+            tech="AddressSanitizer"
+            description="C++最大の敵であるメモリリークや不正アクセス。コンパイラの機能を使って、実行時に自動でバグをあぶり出します。"
+          />
+          <AutomationCard 
+            icon={<Terminal size={32} />}
+            title="ローカル作業の自動化"
+            tech="Bash スクリプト"
+            description="長くて複雑なビルドコマンドや、テストの繰り返し実行。堅牢なシェルスクリプトを書いて、コマンド一発で作業を終わらせます。"
+          />
+          <AutomationCard 
+            icon={<Workflow size={32} />}
+            title="実機テストの自動化"
+            tech="UDP / HILシミュレーション"
+            description="ハードウェアが手元になくても大丈夫。ネットワーク通信を模倣し、PC上だけで組み込み処理やソナーロジックを検証します。"
+          />
         </div>
       </div>
 
-      {/* About This Site (対象者 & ゴール) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        {/* Target Audience */}
-        <div className="bg-navy-800/80 border border-slate-700 rounded-2xl p-8 hover:border-cyan-500/30 transition-colors shadow-lg">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-cyan-500/10 rounded-lg text-cyan-400">
-              <Target size={24} />
-            </div>
-            <h2 className="text-2xl font-bold text-white">対象となるエンジニア</h2>
-          </div>
-          <ul className="space-y-5">
-            {[
-              "テスト結果をCSVに出力し、毎回Excelでグラフを作って目視確認している方",
-              "「私のPCではビルドできるのに…」という環境依存に悩むC++開発者",
-              "防衛、宇宙、プラント制御、音響信号処理などのドメインに関わる方",
-              "C++の計算速度と、Pythonの柔軟な分析エコシステムを両立させたい方"
-            ].map((text, i) => (
-              <li key={i} className="flex items-start gap-3 text-slate-300">
-                <CheckCircle size={18} className="text-cyan-500 shrink-0 mt-1" />
-                <span className="text-sm leading-relaxed">{text}</span>
-              </li>
-            ))}
-          </ul>
+      {/* Sister Sites Navigation */}
+      <div className="bg-navy-800/50 rounded-2xl p-8 md:p-12 border border-slate-700/50 relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-8 opacity-5">
+          <BookOpen size={200} />
         </div>
-
-        {/* Goals / Achievements */}
-        <div className="bg-navy-800/80 border border-slate-700 rounded-2xl p-8 hover:border-yellow-500/30 transition-colors shadow-lg">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 bg-yellow-500/10 rounded-lg text-yellow-400">
-              <Trophy size={24} />
-            </div>
-            <h2 className="text-2xl font-bold text-white">このラボで得られるスキル</h2>
-          </div>
-          <ul className="space-y-5">
-            {[
-              "OSに依存しない再現性100%の「Docker + CMake」ビルド環境構築",
-              "C++の高速コア処理をPythonから一瞬で呼び出す「pybind11」の実装力",
-              "Python（Matplotlib等）を用いた、数理アルゴリズムの自動誤差評価（RMSE等）",
-              "数百パターンのテストとグラフ生成をコマンド一発で終わらせるパイプライン"
-            ].map((text, i) => (
-              <li key={i} className="flex items-start gap-3 text-slate-300">
-                <Terminal size={18} className="text-yellow-500 shrink-0 mt-1" />
-                <span className="text-sm leading-relaxed">{text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-      </div>
-
-      {/* Character Section */}
-      <div>
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-bold text-cyan-400 tracking-wider">CHARACTER</h2>
-          <p className="text-slate-400 text-sm mt-1">ラボの登場人物</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-navy-800/50 border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center relative overflow-hidden group hover:border-cyan-500/30 transition-colors">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"></div>
-            <img src="/images/polar-bear-guide-pointing.png" alt="シロクマ先生" className="w-32 h-32 rounded-full border-4 border-cyan-500 bg-navy-900 mb-6 object-cover shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-transform group-hover:scale-105" />
-            <h3 className="text-xl font-bold text-cyan-400 mb-2">シロクマ先生 (Sensei)</h3>
-            <p className="text-sm text-cyan-100 italic mb-4">「自動化への投資は、君自身の時間をハックすることなんだよ」</p>
-            <p className="text-slate-400 text-sm leading-relaxed">2頭身の愛らしいシロクマ。見た目とは裏腹に、低レイヤ技術、数理アルゴリズム、Linuxインフラ、C++の堅牢な設計に深い造詣を持つ超専門家。</p>
+        <div className="relative z-10 space-y-8">
+          <div className="space-y-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-white">あなたの目的に合わせた学習ルート</h2>
+            <p className="text-slate-400">シロクマ先生のサイト群は、目的に応じて使い分けることができます。</p>
           </div>
           
-          <div className="bg-navy-800/50 border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center relative overflow-hidden group hover:border-slate-400/30 transition-colors">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-slate-400 to-transparent opacity-30"></div>
-            <img src="/images/penguin-guide-simple.jpg" alt="ペンギンくん" className="w-32 h-32 rounded-full border-4 border-slate-500 bg-navy-900 mb-6 object-cover shadow-lg transition-transform group-hover:scale-105" />
-            <h3 className="text-xl font-bold text-slate-100 mb-2">ペンギンくん (Penguin)</h3>
-            <p className="text-sm text-slate-200 italic mb-4">「今日も手作業で定時が過ぎたっス！もっと楽してぇ〜！」</p>
-            <p className="text-slate-400 text-sm leading-relaxed">実務でC++コードの手動ビルドや目視評価に日々追われている若手エンジニア。過酷な現場で苦しむ読者の代弁者。</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <a href="https://shirokuma-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
+              <div className="bg-slate-800/80 p-6 rounded-xl border border-slate-700 transition-all group-hover:border-blue-500/50 group-hover:bg-slate-800">
+                <div className="text-blue-400 text-sm font-bold mb-2">STEP 1: 基礎を学ぶ</div>
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Shirokuma C++</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  C++の文法や基礎知識をゼロから学ぶための教科書サイト。まずはここでC++そのものの書き方を習得します。
+                </p>
+              </div>
+            </a>
+
+            <div className="bg-cyan-900/30 p-6 rounded-xl border border-cyan-500/50 relative">
+              <div className="absolute -top-3 -right-3 bg-cyan-500 text-navy-900 text-xs font-black px-3 py-1 rounded-full shadow-lg">現在地</div>
+              <div className="text-cyan-400 text-sm font-bold mb-2">STEP 2: 実務で使いこなす</div>
+              <h3 className="text-xl font-bold text-white mb-2">Shirokuma Auto C++</h3>
+              <p className="text-cyan-100/70 text-sm leading-relaxed">
+                覚えたC++を現場でどう使うか？面倒な作業をどう自動化するか？開発者のための実践的なエコシステムを構築します。
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
+    </div>
+  );
+}
+
+// カードコンポーネント
+function AutomationCard({ icon, title, tech, description }: { icon: React.ReactNode, title: string, tech: string, description: string }) {
+  return (
+    <div className="bg-navy-800/40 p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-navy-800/60 group">
+      <div className="flex items-center gap-4 mb-4">
+        <div className="p-3 bg-slate-800 rounded-lg text-cyan-400 group-hover:text-white group-hover:bg-cyan-500 transition-colors">
+          {icon}
+        </div>
+        <div>
+          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <span className="text-xs font-bold text-cyan-500/80 bg-cyan-500/10 px-2 py-1 rounded">{tech}</span>
+        </div>
+      </div>
+      <p className="text-slate-400 text-sm leading-relaxed">
+        {description}
+      </p>
     </div>
   );
 }
