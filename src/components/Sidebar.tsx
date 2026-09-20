@@ -1,13 +1,32 @@
-import { ChevronDown, Beaker, Play, ExternalLink } from 'lucide-react';
+import { ChevronDown, Beaker, Play, ExternalLink, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIsOpen?: (v: boolean) => void }) {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="w-72 h-screen bg-navy-800 border-r border-cyan-500/20 flex flex-col flex-shrink-0 z-20">
-      {/* Brand */}
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-navy-900/80 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar Container */}
+      <div className={`fixed lg:static top-0 left-0 h-screen w-72 bg-navy-800 border-r border-cyan-500/20 flex flex-col flex-shrink-0 z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        
+        {/* Mobile Close Button */}
+        <button 
+          className="lg:hidden absolute top-3 right-3 p-2 text-slate-400 hover:text-white bg-navy-900/50 rounded-full"
+          onClick={() => setIsOpen && setIsOpen(false)}
+        >
+          <X size={20} />
+        </button>
+
+        {/* Brand */}
       <Link to="/" className="p-4 border-b border-cyan-500/20 flex items-center gap-3 hover:bg-navy-700/50 transition-colors">
         <div className="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-lg flex items-center justify-center text-2xl shadow-[0_0_10px_rgba(6,182,212,0.2)]">
           🐻‍❄️
@@ -225,5 +244,6 @@ export default function Sidebar() {
         </div>
       </div>
     </div>
+    </>
   );
 }

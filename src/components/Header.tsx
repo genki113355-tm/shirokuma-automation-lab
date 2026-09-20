@@ -1,17 +1,24 @@
-import { Play, Download, ChevronRight, Home } from 'lucide-react';
+import { Play, Download, ChevronRight, Home, Menu } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
-export default function Header() {
+export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => void }) {
   const location = useLocation();
   const isTop = location.pathname === '/';
   const chapterMatch = location.pathname.match(/\/chapter\/(\d+)/);
   const currentChapter = chapterMatch ? chapterMatch[1] : null;
 
   return (
-    <header className="h-14 border-b border-cyan-500/20 bg-navy-800/90 backdrop-blur-md sticky top-0 z-50 flex items-center justify-between px-6">
+    <header className="h-14 border-b border-cyan-500/20 bg-navy-800/90 backdrop-blur-md sticky top-0 z-50 flex items-center justify-between px-4 lg:px-6">
       
       {/* Left Nav Pills (Breadcrumbs) */}
       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+        <button 
+          className="lg:hidden p-1.5 mr-1 text-slate-300 hover:text-white hover:bg-navy-700 rounded-md transition-colors"
+          onClick={toggleMobileMenu}
+        >
+          <Menu size={20} />
+        </button>
+        
         <Link 
           to="/" 
           className={`font-bold text-xs px-4 py-1.5 rounded-full flex items-center gap-2 whitespace-nowrap transition-colors ${

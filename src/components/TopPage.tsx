@@ -3,21 +3,21 @@ import { ArrowRight, Terminal, BookOpen, Bug, TestTube, Box, GitBranch, Workflow
 
 export default function TopPage() {
   return (
-    <div className="p-8 md:p-12 max-w-[1600px] mx-auto space-y-20 pb-32">
+    <div className="p-4 md:p-8 lg:p-12 max-w-[1600px] mx-auto space-y-12 md:space-y-20 pb-32">
       
       {/* Hero Section */}
-      <div className="flex flex-col xl:flex-row items-center justify-between bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-10 lg:p-16 rounded-3xl border border-cyan-500/20 shadow-2xl gap-12 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+      <div className="flex flex-col xl:flex-row items-center justify-between bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-6 md:p-10 lg:p-16 rounded-2xl md:rounded-3xl border border-cyan-500/20 shadow-2xl gap-8 md:gap-12 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-cyan-500/10 blur-[80px] md:blur-[100px] rounded-full pointer-events-none"></div>
         
-        <div className="xl:w-3/4 space-y-8 relative z-10">
+        <div className="xl:w-3/4 space-y-6 md:space-y-8 relative z-10">
           
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-4 py-2 rounded-full text-cyan-400 text-sm font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-cyan-400 text-xs md:text-sm font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)]">
               <Rocket size={16} />
               <span>C++開発者のための実務効率化・自動化ガイド</span>
             </div>
-            <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
-              <span className="block text-cyan-400 text-2xl md:text-3xl lg:text-4xl mb-4 tracking-widest font-bold">シロクマ C++開発自動化ラボ</span>
+            <h1 className="text-4xl md:text-6xl lg:text-[4.5rem] font-black text-white leading-[1.1] md:leading-[1.1] tracking-tighter drop-shadow-2xl">
+              <span className="block text-cyan-400 text-xl md:text-3xl lg:text-4xl mb-2 md:mb-4 tracking-widest font-bold">シロクマ C++開発自動化ラボ</span>
               C++開発の泥臭い作業、<br className="hidden md:block"/>全部「自動化」しませんか？
             </h1>
           </div>
