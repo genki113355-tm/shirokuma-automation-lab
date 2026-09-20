@@ -1,0 +1,90 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 5,
+  category: "自動評価編",
+  title: "PythonからC++を直接叩く（pybind11の活用）",
+  description: "C++の激速ロジックをPythonから呼び出す魔法「pybind11」。面倒なラッパーコードやJNIの地獄から解放される現代のベストプラクティスを学びます。",
+  responsibility: "pybind11導入・C++バインディング実装",
+  evolution: "C++単体では難しかった「複雑なデータの前処理」や「結果のグラフ化」をPythonエコシステムに丸投げできるようになる！",
+  tags: ["#pybind11", "#Python連携", "#C++"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんのトラウマ">
+  「シロクマ先生、C++のコードをPythonから呼び出すって、昔先輩が『SWIGとかJNIとか使ってラッパー書くのは地獄だぞ』って脅してきたんスけど……俺、死ぬんスか？」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の救済">
+  「安心していいよ。現代のC++には **pybind11** という救世主がいる。これはC++11以降の機能を使ったヘッダオンリーライブラリで、驚くほど直感的にC++のクラスや関数をPythonにバインド（紐付け）できるんだ。まるで魔法みたいだよ。」
+</Dialogue>
+
+## 1. 昔のC++と今のC++の違い
+
+かつて、C++で作られた高速なライブラリを他の言語から呼び出すのは至難の業でした。しかし、機械学習（AI）ブームにより「フロントエンドはPython、バックエンドの重い計算処理はC++」というアーキテクチャが主流になったことで、**pybind11** というツールが一気に普及しました（PyTorchなどの有名ライブラリも内部で使用しています）。
+
+## 2. 実践：pybind11によるラッパーコードの記述
+
+例えば、前章までで作った `SonarFilter` クラスをPythonから使えるようにするには、C++側で以下のような数行のラッパーコードを書くだけです。
+
+```cpp
+// bindings.cpp
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h> // NumPy配列との連携用（次章で使用）
+#include "sonar_filter.hpp"
+
+namespace py = pybind11;
+
+// Pythonモジュール名「sonar_dsp」を定義
+PYBIND11_MODULE(sonar_dsp, m) {
+    m.doc() = "Sonar Digital Signal Processing plugin (C++ Backend)";
+
+    // SonarFilterクラスのバインド
+    py::class_<SonarFilter>(m, "SonarFilter")
+        // コンストラクタ（引数: カットオフ周波数）の紐付け
+        .def(py::init<double>())
+        // Process関数の紐付け
+        .def("process", &SonarFilter::Process, "入力信号に対してフィルタ処理を実行する");
+}
+```
+
+## 3. CMakeでのモジュールビルド
+
+これをビルドするには、第3章で学んだCMakeを使います。pybind11はCMakeとの親和性が非常に高く、専用の関数 `pybind11_add_module` が用意されています。
+
+```cmake
+# CMakeLists.txt の追記部分
+
+# pybind11パッケージを検索
+find_package(pybind11 REQUIRED)
+
+# Pythonモジュール（共有ライブラリ: .so または .pyd）の作成
+pybind11_add_module(sonar_dsp 
+    bindings.cpp 
+    src/sonar_filter.cpp
+)
+```
+
+## 4. Pythonからの呼び出し確認
+
+ビルドを実行すると、Linux環境（Dockerコンテナ内）では `sonar_dsp.cpython-310-x86_64-linux-gnu.so` のようなファイルが生成されます。
+これがそのまま**Pythonモジュール**として機能します。同じディレクトリでPythonを立ち上げてみましょう。
+
+```python
+import sonar_dsp
+
+# C++のクラスをインスタンス化！
+filter = sonar_dsp.SonarFilter(60.0)
+
+# C++の関数を呼び出し！
+result = filter.process(100.0)
+print(f"Filtered Result: {result}")
+```
+
+<Dialogue character="penguin" title="ペンギンくんの歓喜">
+  「うおおお！マジで数行書いただけで、PythonからC++のクラスがそのまま呼べてる！C++のくせにオシャレすぎるっス！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の予告">
+  「ふふふ、感動するのはまだ早い。次章では、この連携を使って**数万件のテストデータ**をNumPyで作ってC++に投げ込む『ゼロコピー連携』を体験してもらうよ。」
+</Dialogue>

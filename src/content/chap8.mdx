@@ -1,0 +1,66 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 8,
+  category: "CI/CD・インフラ編",
+  title: "シェルスクリプトによる複数シナリオの一括実行",
+  description: "Bashループを活用し、数千パターンのパラメータ組み合わせテストを夜間に一括実行する自動化スクリプトを構築します。",
+  responsibility: "Bashスクリプト・パラメータ自動スイープ",
+  evolution: "人間が手作業でパラメータを変えて実行する手間が消滅し、寝ている間に全網羅テストが完了する！",
+  tags: ["#Bash", "#自動化", "#Linux"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの新たな悩み">
+  「シロクマ先生！Pythonを使った評価システムは完璧っス！でも、テストしたいパラメータの組み合わせ（周波数、ゲイン、ノイズレベルなど）が100パターンくらいあるんスよ。これを毎回手でコマンド叩いて実行するのは面倒っス……」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の指南">
+  「せっかくLinux環境（Docker）にいるんだから、Linuxの強力なツールである**シェルスクリプト（Bash）**を活用しよう。Pythonのテストコードに引数を渡すように改造し、Bashのループで一気に回すんだ。」
+</Dialogue>
+
+## 1. 複数シナリオを回す Bash スクリプト
+
+例えば、様々なカットオフ周波数やノイズレベルに対してテストを連続実行する `run_all_tests.sh` を作成します。
+
+```bash
+#!/bin/bash
+
+# エラーが発生したら即座にスクリプトを停止するおまじない
+set -e
+
+echo "=== ソナー自動テストシステム一括実行 ==="
+
+# テストしたいカットオフ周波数とノイズの配列
+FREQUENCIES=(10.0 50.0 100.0)
+NOISE_LEVELS=(0.1 0.5 1.0)
+
+# 二重ループで総当たり（網羅）テストを実行
+for freq in "${FREQUENCIES[@]}"; do
+    for noise in "${NOISE_LEVELS[@]}"; do
+        echo "実行中: 周波数=${freq}Hz, ノイズ=${noise}"
+        
+        # pytest にパラメータを引数として渡して実行
+        # --junitxml でCI連携用のXMLレポートも出力
+        pytest tests/test_sonar.py \
+               --cutoff_freq=${freq} \
+               --noise_level=${noise} \
+               --junitxml=reports/result_${freq}_${noise}.xml
+    done
+done
+
+echo "=== 全てのシナリオが正常に完了しました！ ==="
+```
+
+## 2. コマンド一発で全パターンを網羅
+
+このスクリプトに実行権限を与え（`chmod +x run_all_tests.sh`）、ターミナルから叩くだけです。
+
+<BeforeAfter 
+  beforeText="テスト仕様書を見ながら、手動でパラメータを書き換え、100回のテストを丸一日かけて実行。途中でどこまでやったか分からなくなる。"
+  afterText="夜帰る前に `./run_all_tests.sh` を叩くだけ。翌朝出社すると、100パターンの評価が完了し、エラーのあった条件だけがレポートされている。"
+/>
+
+<Dialogue character="shirokuma" title="シロクマ先生のポイント">
+  「これこそがコンピュータの正しい使い方だ。シェルスクリプトは泥臭いように見えて、C++やPythonのツールチェーンを糊（グルー）のようにつなぎ合わせる最強の自動化ツールなんだよ。」
+</Dialogue>

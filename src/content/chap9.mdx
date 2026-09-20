@@ -1,0 +1,51 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 9,
+  category: "CI/CD・インフラ編",
+  title: "Sanitizerによるメモリリーク・クラッシュ解析の自動化",
+  description: "C++最大の罠である「メモリエラー」を自動検知し、テストを確実に失敗させるAddressSanitizer (ASan) の導入方法を学びます。",
+  responsibility: "メモリ安全性の担保・セグフォ解析",
+  evolution: "原因不明のクラッシュで徹夜することがなくなり、メモリエラーの発生箇所が『何行目か』まで一瞬で特定できる！",
+  tags: ["#C++", "#ASan", "#デバッグ"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの絶望">
+  「数理評価はパスしたんスけど、たまーに実行中に『Segmentation fault（セグフォ）』って出て落ちるコードがあるんスよ……。再現性も低くて、どこで落ちてるか探すのに何日も徹夜してます……」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の解答">
+  「C++の最も恐ろしい罠、メモリエラーだね。テスト自動化の文脈で重要なのは、『テストを実行した時に、メモリリークや不正アクセスがあったら**自動的にテストを失敗（エラー終了）させる**』ことなんだ。」
+</Dialogue>
+
+## 1. AddressSanitizer (ASan) の導入
+
+現代のC++開発において、メモリエラーの検出にはGCC/Clangに標準搭載されている **AddressSanitizer (ASan)** を使うのが定石です。CMakeの設定に以下の数行を足すだけで、魔法のようにメモリエラーを検知してくれます。
+
+```cmake
+# CMakeLists.txt に追記（デバッグビルド時のみ有効化）
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # コンパイルオプション
+    target_compile_options(sonar_core PUBLIC -fsanitize=address -g)
+    # リンクオプション
+    target_link_options(sonar_core PUBLIC -fsanitize=address)
+endif()
+```
+
+## 2. 劇的なデバッグ体験の変化
+
+この状態でビルドして pytest を実行すると、もしC++側で「配列の範囲外アクセス」や「解放済みメモリの使用（Use-after-free）」が発生した場合、ただ「セグフォ」と出るだけでなく、**ソースコードの何行目で発生したかという詳細なスタックトレース**を出力した上で、即座にエラーコードを返して終了します。
+
+<BeforeAfter 
+  beforeText="『Segmentation fault』という素っ気ないエラーだけ。ソースコードに printf を大量に仕込んで、徹夜でクラッシュ箇所を探し回る。"
+  afterText="ASanが『src/sonar_filter.cppの42行目で、確保した配列サイズを超えて書き込みが発生しました』と具体的に教えてくれる。3分で修正完了。"
+/>
+
+> [!WARNING]
+> **Valgrind との使い分け**
+> AddressSanitizerはコンパイル時にコードを埋め込むため非常に高速ですが、再ビルドが必要です。一方、レガシーな巨大プロジェクトなどで再ビルドが難しい場合は、バイナリをそのまま解析できる `valgrind --leak-check=full ./sonar_test` を使用する手もあります。現代的な開発ではASanが主流です。
+
+<Dialogue character="penguin" title="ペンギンくんの歓喜">
+  「うおおお！エラーの場所がドンピシャで分かる！これで『メモリ破壊の恐怖』から解放されるっスね！」
+</Dialogue>

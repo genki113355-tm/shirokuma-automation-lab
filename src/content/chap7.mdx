@@ -1,0 +1,79 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 7,
+  category: "自動評価編",
+  title: "Pythonによる「誤差評価・グラフ化」の全自動化",
+  description: "C++の出力結果と理論値を比較し、RMSE（二乗平均平方根誤差）の算出からエラー時のMatplotlibグラフ保存までを自動化する仕組みを構築します。",
+  responsibility: "pytest導入・RMSE評価・Matplotlibグラフ自動生成",
+  evolution: "Excelでの手動グラフ作成・目視確認が完全に消滅。エラー起因が一瞬でわかるプロ品質の自動化パイプラインが完成！",
+  tags: ["#pytest", "#Matplotlib", "#自動テスト"]
+};
+
+<Dialogue character="shirokuma" title="シロクマ先生の宣言">
+  「ここからが、ペンギンくんが毎日手作業でやっていた『CSV出力 → Excelでグラフ化 → 目視確認』を完全に駆逐する、テスト自動化のクライマックスだ。Python上で数理的な誤差評価とエラー時のグラフ自動生成を行うよ。」
+</Dialogue>
+
+## 1. 期待値（正解データ）の用意
+
+テストを自動化するには「正解」が必要です。今回はC++で実装したフィルタロジックの正解として、Pythonの科学計算ライブラリ `SciPy` のフィルタ関数が出力する結果を「理論値」として扱います。
+
+## 2. pytestとMatplotlibによる全自動評価システム
+
+Pythonのテストフレームワークである **pytest** を用いて、C++モジュールの出力を検証するテストコード（`test_sonar.py`）を記述します。
+
+```python
+# test_sonar.py
+import numpy as np
+import pytest
+import matplotlib.pyplot as plt
+from scipy.signal import butter, lfilter
+
+# pybind11でビルドした自作C++モジュールを読み込み
+import build.sonar_dsp as dsp  
+
+def test_sonar_lowpass_filter():
+    # 1. テストデータの生成（前章の関数を使用）
+    t, input_data = generate_test_signal()
+
+    # 2. C++（被試験対象）による高速な計算
+    cpp_filter = dsp.SonarFilter(60.0)
+    cpp_output = cpp_filter.process_array(input_data) # NumPy配列をゼロコピーで渡す
+
+    # 3. Python(SciPy)による理論値の計算（正解データ）
+    b, a = butter(4, 60.0 / (1000.0 / 2), btype='low')
+    expected_output = lfilter(b, a, input_data)
+
+    # 4. RMSE（二乗平均平方根誤差）の算出
+    rmse = np.sqrt(np.mean((cpp_output - expected_output)**2))
+
+    # 5. 許容誤差の判定と、失敗時のグラフ自動保存
+    tolerance = 1e-3
+    if rmse >= tolerance:
+        # 誤差が大きい場合のみグラフを可視化して保存（デバッグ用）
+        plt.figure(figsize=(10, 5))
+        plt.plot(t, expected_output, label='Expected (SciPy)', linestyle='--')
+        plt.plot(t, cpp_output, label='Actual (C++)', alpha=0.7)
+        plt.title(f"Test Failed - RMSE: {rmse:.5f}")
+        plt.legend()
+        plt.savefig("error_report.png")
+        plt.close()
+        
+        # テストを失敗させる
+        pytest.fail(f"数理評価エラー: RMSE {rmse:.5f} が閾値 {tolerance} を超えました")
+```
+
+> [!IMPORTANT]
+> **エラー時のみ画像を生成する（CIを意識した設計）**
+> 毎回グラフを生成すると処理時間が延び、CIサーバーのストレージを圧迫します。上記のように「テストが失敗（許容誤差を超過）したときだけ画像を保存してレポートする」仕組みにしておくと、実務で非常に使い勝手の良い堅牢なシステムになります。
+
+## 3. 自動評価パイプラインの完成
+
+<Dialogue character="penguin" title="ペンギンくんの号泣">
+  「うわぁ……！俺がExcelでポチポチやってた作業が、たった数行のPythonコードになった……！しかもテストが落ちたときだけ勝手にグラフ画像が保存されるから、朝出社したら『どこがおかしいか』一目でわかるんスね！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の総括">
+  「そういうことだ。これで『目視確認による見落とし』はゼロになり、アルゴリズムをリファクタリングしても、一瞬でデグレ（先祖返り）を検知できるようになったね。次章からは、この仕組みをさらに強力にする『シェルスクリプトによる一括実行』と『CI/CD連携』というインフラ技術に踏み込んでいくよ。」
+</Dialogue>

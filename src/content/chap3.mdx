@@ -1,0 +1,71 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 3,
+  category: "環境構築・インフラ編",
+  title: "CMakeを使ったターゲットビルドとテスト（CTest）の統合",
+  description: "生の手書きMakefileと格闘するのはやめましょう。CMakeを使って、プロダクトコードとテストコードを綺麗に分離してビルドし、CTestで一括実行するモダンな設計を学びます。",
+  responsibility: "CMakeビルドスクリプト構築・CTest統合",
+  evolution: "手書きMakefileの依存関係地獄から解放され、コマンド一発で全テストバイナリを一括実行可能に！",
+  tags: ["#CMake", "#CTest", "#ビルド自動化"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの憂鬱">
+  「先生、環境は揃ったんで、とりあえずMakefile書きますね。えーっと、タブとスペース間違えるとエラーになるから慎重に……あぁっ、依存関係書くのめんどくせぇ！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の指導">
+  「ストップだよ、ペンギンくん。現代のC++開発で生の手書きMakefileと格闘するのは時間の無駄だ。今は **CMake** を使って、プロダクトコードとテストコードを綺麗に分離してビルドするのが常識だよ」
+</Dialogue>
+
+## 1. 「ライブラリ」と「テスト」を分離する
+
+テストしやすい設計の第一歩は、`main()` 関数を持つ実行ファイルにすべての処理を書かないことです。
+コアとなる数理ロジックは**ライブラリ（.a や .so）**としてビルドし、テスト用の実行ファイルからそれをリンク（結合）して呼び出します。
+
+## 2. 実務で使える CMakeLists.txt
+
+プロジェクトのルートに配置する `CMakeLists.txt` のテンプレートを見てみましょう。
+
+```cmake
+cmake_minimum_required(VERSION 3.14)
+project(SonarAutomationLab CXX)
+
+# C++17規格を要求
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# ---------------------------------------------------
+# 1. プロダクトコード（コアロジック）のビルド
+# ---------------------------------------------------
+# 信号処理ロジックなどを静的ライブラリとしてまとめる
+add_library(sonar_core
+    src/sonar_filter.cpp
+    src/math_utils.cpp
+)
+target_include_directories(sonar_core PUBLIC include)
+
+# ---------------------------------------------------
+# 2. テストの有効化とビルド
+# ---------------------------------------------------
+enable_testing() # CTestの有効化
+
+# テスト用実行ファイルの定義
+add_executable(sonar_test
+    tests/test_sonar_filter.cpp
+)
+
+# コアライブラリとGoogleTestをリンク
+target_link_libraries(sonar_test
+    PRIVATE sonar_core
+    PRIVATE gtest gtest_main pthread
+)
+
+# CTestにテストを登録
+add_test(NAME UnitTests COMMAND sonar_test)
+```
+
+> [!IMPORTANT]
+> **CTestの威力**
+> `enable_testing()` と `add_test()` を記述することで、ビルド後にコマンドラインから `ctest` と打つだけで、登録したすべてのテストバイナリを一括実行し、成功・失敗のサマリーを出力してくれます。これは後のCI連携（第10章）で非常に強力な武器になります。

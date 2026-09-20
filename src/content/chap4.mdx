@@ -1,0 +1,78 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 4,
+  category: "自動評価編",
+  title: "GoogleTest（gtest）によるC++ロジックの網羅テスト",
+  description: "GoogleTestを用いて、信号処理などの数理ロジックをテストします。浮動小数点の丸め誤差を考慮したEXPECT_NEARの使い方と、テストしやすい疎結合な設計の重要性を解説します。",
+  responsibility: "GoogleTest導入・単体テスト実装・浮動小数点比較",
+  evolution: "波形のズレをExcelで目視チェックする代わりに、コード上で『理論値との差が閾値以内か』を自動判定できるように進化！",
+  tags: ["#GoogleTest", "#単体テスト", "#浮動小数点"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの疑問">
+  「よし、CMakeでテスト用のバイナリ `sonar_test` が作れるようになったっス。でも、肝心のC++のテストコードってどう書けばいいんスか？」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の解答">
+  「Googleが開発したC++用テストフレームワーク、**GoogleTest (gtest)** を使うよ。特に、我々のような信号処理や数値計算を扱うエンジニアにとって、gtestの『浮動小数点比較』の機能は必須なんだ」
+</Dialogue>
+
+## 1. テストの基本構造
+
+まずは、単純なテストを書いてみましょう。`TEST(テストグループ名, テストケース名)` というマクロを使います。
+
+```cpp
+#include <gtest/gtest.h>
+#include "sonar_filter.hpp"
+
+// 基本的なテストの例
+TEST(SonarFilterTest, Initialization) {
+    SonarFilter filter(60.0); // カットオフ周波数 60Hzで初期化
+    EXPECT_EQ(filter.GetCutoffFrequency(), 60.0);
+}
+```
+
+## 2. 数理ロジックのテスト（浮動小数点の比較）
+
+数値計算のテストにおいて、`EXPECT_EQ`（完全一致）で `double` や `float` の計算結果を比較してはいけません。丸め誤差によってテストが落ちるからです。
+代わりに **`EXPECT_NEAR`** または **`EXPECT_DOUBLE_EQ`** を使用します。
+
+```cpp
+TEST(SonarFilterTest, SignalAttenuation) {
+    SonarFilter filter(60.0);
+    
+    // 入力信号
+    double input_signal = 100.0;
+    
+    // フィルタ処理実行
+    double output_signal = filter.Process(input_signal);
+    
+    // 期待値（理論計算による減衰後の値）
+    double expected_output = 45.23;
+    
+    // 誤差 0.01 以内であれば合格とする
+    EXPECT_NEAR(output_signal, expected_output, 0.01);
+}
+```
+
+> [!WARNING]
+> **テストしにくいコードに注意**
+> もしあなたのC++コードが、「ファイルから直接データを読み込み、内部で計算し、直接ファイルに書き出す」ような設計（密結合）になっていると、単体テストが非常に困難です。計算ロジック（`Process`関数など）は、メモリ上の配列や値を受け取って返すだけの「純粋な関数・クラス」に分離（疎結合化）するよう心がけましょう。
+
+<Dialogue character="penguin" title="ペンギンくんの気づき">
+  「なるほど！ `EXPECT_NEAR` を使えば、Excelで波形のズレを目視チェックする代わりに、コード上で自動判定できるんスね！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の課題提示">
+  「その通り。でも、これだけだとまだ不十分だ。1万点の波形配列データをC++上でどうやって作る？C++で正弦波やノイズを合成するコードをいちいち書くのは面倒だよね？」
+</Dialogue>
+
+<Dialogue character="penguin" title="ペンギンくんの絶望">
+  「うっ……確かに。テストデータを作るだけで日が暮れそうっス……」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の導き">
+  「そこで登場するのが、次章の **pybind11（Python連携）** だ。テストデータの生成や高度な誤差評価は、すべてPythonの豊富なライブラリ（NumPyなど）に任せてしまうんだよ！」
+</Dialogue>

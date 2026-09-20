@@ -1,0 +1,63 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 6,
+  category: "自動評価編",
+  title: "Python（NumPy）による大量テストデータの生成",
+  description: "C++で面倒なテストデータの生成（正弦波やノイズ合成）を、Pythonのデータサイエンスエコシステムを使って数行で済ませる方法を学びます。",
+  responsibility: "テスト波形生成・ゼロコピー連携",
+  evolution: "C++で苦労して書いていたファイルI/O処理やダミーデータ生成が不要になり、本質的なロジックの実装に集中できる！",
+  tags: ["#NumPy", "#信号処理", "#Python連携"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの悩み">
+  「おぉー！本当にPythonから `SonarFilter` が呼び出せる！……でも先生、そもそもC++の関数に渡す『テスト用の波形データ』はどうやって用意するんスか？またC++で巨大なCSV読み込み処理を書くのは嫌っスよ！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の解答">
+  「もうC++で面倒なファイル入出力（I/O）処理を書く必要はないよ。テストデータの生成は、データサイエンスの王様である **NumPy** を使って、Pythonのメモリ上で一瞬で作ってしまうんだ。」
+</Dialogue>
+
+## 1. テスト波形をPythonで合成する
+
+ソナーや信号処理のテストでは、「特定の周波数の正弦波」に「ホワイトノイズ」を混ぜた擬似データがよく使われます。C++でこれをゼロから実装すると数十行かかり、バグの温床になりますが、Python（NumPy）なら数行で記述できます。
+
+```python
+# generate_data.py
+import numpy as np
+
+def generate_test_signal(duration=1.0, sampling_rate=1000):
+    # 時間軸の生成（0秒〜1秒、1000サンプル）
+    t = np.linspace(0, duration, int(duration * sampling_rate), endpoint=False)
+    
+    # 目的の信号（例: 50Hzの純粋なサイン波）
+    target_signal = np.sin(2 * np.pi * 50 * t)
+    
+    # 海洋の環境ノイズ（ランダムなガウシアンノイズ）を生成
+    noise = np.random.normal(0, 0.5, t.shape)
+    
+    # 信号にノイズを加算してテストデータ完成
+    test_data = target_signal + noise
+    
+    return t, test_data
+```
+
+## 2. NumPy配列をそのままC++に流し込む（ゼロコピー）
+
+先ほどの章でpybind11を導入した際、実は `#include <pybind11/numpy.h>` をインクルードしていました。
+これにより、Python側の `numpy.ndarray`（配列）を、C++側でメモリのコピーを発生させずに直接ポインタとして受け取ることが可能です。
+
+これを**ゼロコピー（Zero-copy）**と呼びます。
+
+> [!TIP]
+> **数GBのデータでも一瞬**
+> 数万〜数億サンプルの音響データやレーダーデータであっても、ゼロコピーならメモリの転送オーバーヘッドがゼロです。Pythonの柔軟性とC++の暴力的な計算スピードを、一切のロスなく直結できるのがこのアーキテクチャの真骨頂です。
+
+<Dialogue character="penguin" title="ペンギンくんの閃き">
+  「なるほど！テストデータはPythonのNumPyでサクッと作って、それをそのままC++モジュールに叩き込むんスね！これならCSVファイルなんて一切いらないっス！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の予告">
+  「その通り。これで『データの準備』と『C++の実行』がPython上で完結した。残る最後のステップは『結果の検証と可視化』だ。次章で、Matplotlibを使った全自動評価システムを完成させよう。」
+</Dialogue>

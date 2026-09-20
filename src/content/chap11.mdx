@@ -1,0 +1,58 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 11,
+  category: "アドバンスド編",
+  title: "HIL（Hardware-in-the-Loop）シミュレーションへの応用",
+  description: "完成した自動化パイプラインを、最終的な実機ハードウェア（マイコン/DSP）のテストへと拡張する先進的なアーキテクチャを学びます。",
+  responsibility: "UDP通信・実機連携シミュレーション",
+  evolution: "ソフトウェア単体のテストから、ハードウェアを含めた実環境に近い結合テストまで、同一のエコシステムでカバーできる！",
+  tags: ["#HIL", "#通信", "#システムテスト"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの達成感">
+  「CIまで出来たら完璧じゃないスか！これでソナープロジェクトの開発は完了っスね！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生のさらなる高み">
+  「数理ロジックとしてはね。でも、実際の現場では最終的に『マイコン』や『DSP（デジタルシグナルプロセッサ）』といった実機ハードウェア上でコードが動く。ハードウェアと連携したテスト、つまり**HIL（Hardware-in-the-Loop）**を見据える必要があるんだ。」
+</Dialogue>
+
+## 1. HIL（Hardware-in-the-Loop）とは？
+
+ソフトウェアが正しく動いても、それが最終的に搭載されるハードウェア上で正しく動くとは限りません。HILは、実際のハードウェア（またはその一部）をテストループに組み込み、シミュレータから疑似的なセンサーデータを流し込んで動作を確認する手法です。
+
+## 2. Pythonを「疑似センサー」として使う
+
+Pythonのネットワーク機能（`socket` など）を活用し、Pythonスクリプトを「センサーハードウェア」に見立てて、UDP通信などでC++アプリケーションに波形データを送りつけるアーキテクチャを構築します。
+
+```python
+# pseudo_sensor.py (疑似センサー)
+import socket
+import time
+from generate_data import generate_test_signal
+
+UDP_IP = "127.0.0.1"
+UDP_PORT = 5005
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+_, signal = generate_test_signal()
+
+print("UDP送信開始...")
+for data_point in signal:
+    # データをバイナリ化して送信
+    sock.sendto(data_point.tobytes(), (UDP_IP, UDP_PORT))
+    time.sleep(0.001) # 1kHzのサンプリングレートを疑似再現
+```
+
+C++側では、UDPパケットを受信してリアルタイムにフィルタ処理を行うコードを実装します。
+
+## 3. 無限の応用力
+
+<BeforeAfter 
+  beforeText="実機が完成するまでテストができず、プロジェクト終盤に実機テストで大量のバグが発覚して炎上する。"
+  afterText="Pythonで作った疑似センサーを使い、開発初期から実機を想定したリアルタイム通信テストを自動化環境で行える。"
+/>
+
+このように、これまで学んできた「PythonとC++の連携」は、単なる単体テストにとどまらず、システム全体を俯瞰した高度なシミュレーション環境（HIL等）の構築へとシームレスに発展させることができます。

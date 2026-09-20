@@ -1,0 +1,77 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 10,
+  category: "CI/CD・インフラ編",
+  title: "GitHub ActionsによるCI/CD（継続的インテグレーション）",
+  description: "ローカルで構築した自動化環境をクラウドに乗せ、コードをPushした瞬間に全自動でテストが走るCIパイプラインを構築します。",
+  responsibility: "GitHub Actions導入・クラウドテスト自動化",
+  evolution: "「自分のPCでは動いた」という言い訳が通用しなくなり、常に品質が担保されたコードだけがメインブランチに取り込まれる！",
+  tags: ["#CI/CD", "#GitHub Actions", "#Docker"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの慢心">
+  「先生、これでローカルのDocker上で『ビルド ➡️ gtest ➡️ 数理評価 ➡️ メモリチェック』が全部自動で動くようになったっス！もう十分楽になったっスよ！」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の厳しい現実">
+  「いや、まだ甘い。人間は必ず『テストを実行し忘れてコードをPushする』生き物だ。真の自動化とは、**人間が何もしなくても、コードをサーバーにPushした瞬間に全テストが勝手に走る状態**を指すんだよ。これがCI（継続的インテグレーション）だ。」
+</Dialogue>
+
+## 1. CI（継続的インテグレーション）とは？
+
+CI環境を構築すると、誰かがGitHubにコードをPushしたり、Pull Requestを作成したりするたびに、クラウド上のサーバーが自動でDockerコンテナを立ち上げ、これまで作ってきた `run_all_tests.sh` などを実行してくれます。
+
+## 2. GitHub Actions のワークフロー記述
+
+`.github/workflows/test.yml` というファイルを作成するだけで、GitHubが自動でテストを代行してくれます。第2章で作ったDockerイメージをそのまま使えるのが強みです。
+
+```yaml
+name: Sonar DSP CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    container:
+      # 第2章で作ったDockerイメージをDockerHubやGHCRに上げておく
+      image: myrepo/cpp-test-env:latest 
+
+    steps:
+      - name: コードのチェックアウト
+        uses: actions/checkout@v3
+
+      - name: CMakeビルド (ASan有効化)
+        run: |
+          mkdir build && cd build
+          cmake -DCMAKE_BUILD_TYPE=Debug ..
+          make -j4
+
+      - name: C++ 単体テストの実行 (gtest)
+        run: cd build && ctest --output-on-failure
+
+      - name: Python 数理評価テストの実行 (pytest)
+        run: pytest tests/
+
+      - name: 失敗時のグラフ画像を保存 (Artifact)
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: error-plots
+          path: error_report.png
+```
+
+## 3. もう「壊れたコード」はマージできない
+
+この設定により、誰かがテストを通っていない壊れたコードをPushすると、GitHub上で「バツ印（❌）」が付きます。さらに、第7章で作った**エラー時のグラフ画像**がGitHub上から直接ダウンロードできるようになります。
+
+<BeforeAfter 
+  beforeText="誰かがバグを含んだコードをPushしてしまい、他のメンバーがそれをPullした結果、チーム全員の開発環境が破壊され作業がストップする。"
+  afterText="壊れたコードはGitHub上で即座に検知・ブロックされ、メインブランチ（master/main）は常に『ビルド可能かつテストが通る状態』に保たれる。"
+/>
+
+<Dialogue character="penguin" title="ペンギンくんの感動">
+  「自動テストの真骨頂はここにあったんスね……！チーム開発がめちゃくちゃ平和になりそうっス！」
+</Dialogue>

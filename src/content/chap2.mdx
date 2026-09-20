@@ -1,0 +1,118 @@
+import Dialogue from '../components/mdx/Dialogue';
+import BeforeAfter from '../components/mdx/BeforeAfter';
+
+export const meta = {
+  chapterId: 2,
+  category: "環境構築・インフラ編",
+  title: "Dockerによる再現性のあるビルド基盤の構築",
+  description: "「私のPCでは動くのに...」というC++最大の環境依存問題を、Dockerコンテナ技術を用いて根本から解決する実践的なハンズオン。",
+  responsibility: "Dockerfile作成・ボリュームマウント・コンテナ起動",
+  evolution: "環境依存によるビルド失敗が消滅し、チーム全員が1秒で同じ開発環境を構築できるようになる！",
+  tags: ["#Docker", "#環境構築", "#インフラ自動化"]
+};
+
+## 1. 「私の環境では動いたのに」の恐怖
+
+<Dialogue character="penguin" title="ペンギンくんの悲鳴">
+  「先輩！先輩が作ったコード、僕のWindows環境だとビルドエラーで動かないっス！使ってるライブラリのバージョンが違うみたいで……」
+</Dialogue>
+
+C++開発において最も時間を浪費するのが**「環境構築」**です。
+Linux、Windows、macOS……チームメンバーそれぞれのOSが違う上に、インストールされているGCC/Clangのバージョンや標準ライブラリ（libstdc++）のバージョンもバラバラ。これでは「誰かの環境では動くが、他の環境ではセグフォ（Segmentation Fault）で落ちる」という悪夢が発生します。
+
+<BeforeAfter 
+  beforeText="新しいメンバーが入るたびに、READMEの長い手順書を見ながらライブラリを手動でインストール。バージョンが一つ違うだけで原因不明のビルドエラーに苦しむ。"
+  afterText="リポジトリをCloneし、`docker compose up -d` を叩くだけ。OSやローカル環境に一切依存せず、全員が完全に同じ環境でC++コードをビルド・実行できる。"
+/>
+
+## 2. Dockerとは？なぜC++で必要なのか？
+
+Dockerは、アプリケーションの実行に必要なOS環境（ライブラリ、コンパイラ、ツール群）を丸ごとパッケージ化する技術です。C++の場合、PythonやJavaScriptなどのスクリプト言語と異なり、**OSのシステムライブラリ（libc等）に極めて強く依存**します。
+
+そのため、ソースコードだけをGitで共有しても「コンパイルできる保証」がどこにもありません。**「コンパイラとOS環境ごとGitで共有する」**のが、現代のC++開発のベストプラクティスです。
+
+## 3. 実践：C++テスト自動化用 Dockerfile の記述
+
+それでは、Ubuntu 22.04をベースに、C++のコンパイル（GCC, CMake）、テスト（GoogleTest）、そして後ほど使用するPython（pybind11, NumPy）をすべて詰め込んだクリーンルームを作ってみましょう。
+
+プロジェクトのルートディレクトリに `Dockerfile` という名前のファイルを作成し、以下を記述します。
+
+```dockerfile
+# ベースイメージとして軽量かつ安定したUbuntu 22.04を使用
+FROM ubuntu:22.04
+
+# 対話的なプロンプトを無効化（tzdataなどのインストールで止まらないようにするため）
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 1. 必要なパッケージを一括インストール
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    libgtest-dev \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. GoogleTestのソースをビルドしてシステムにインストール
+# （libgtest-devはソースコードのみを提供するため、コンテナ内でビルドが必要）
+RUN cd /usr/src/gtest && \
+    cmake CMakeLists.txt && \
+    make && \
+    cp lib/*.a /usr/lib/
+
+# 3. Pythonのテスト用ライブラリをインストール
+RUN pip3 install pytest numpy matplotlib pybind11
+
+# 作業ディレクトリの設定
+WORKDIR /workspace
+```
+
+<Dialogue character="shirokuma" title="シロクマ先生の現場ノウハウ">
+  「GoogleTest（libgtest-dev）は、OSによってコンパイラバージョンが違うため、あえて『ソースコード』の状態で配布されているんだ。だから、Dockerfileの中で一度 `cmake` と `make` を実行してバイナリ化（`.a` ファイル）してあげる必要がある。初心者がよく躓く罠だから覚えておこう。」
+</Dialogue>
+
+## 4. docker-compose.yml で起動を簡略化
+
+毎回長い `docker run` コマンドを打つのは大変です。手元のパソコンのフォルダ（カレントディレクトリ）を、コンテナ内の `/workspace` に**同期（ボリュームマウント）**させる設定を `docker-compose.yml` に記述しましょう。
+
+```yaml
+version: '3.8'
+services:
+  cpp-lab:
+    build: .
+    container_name: shirokuma_cpp_lab
+    # ホストのカレントディレクトリをコンテナの/workspaceにマウント
+    volumes:
+      - .:/workspace
+    # コンテナがすぐ終了しないようにプロセスを維持
+    tty: true
+```
+
+これにより、ローカルのVSCodeでコードを編集すると、コンテナ内のコードも即座に更新されます。**「コードの編集は使い慣れたローカルPCで、コンパイルとテストはクリーンなコンテナ内で」**という、プロが使う最強の開発環境が完成します。
+
+## 5. コンテナの起動と確認
+
+ターミナルを開き、以下のコマンドを実行します。
+
+```bash
+# コンテナのビルドとバックグラウンド起動
+$ docker compose up -d
+
+# コンテナ内部のbashシェルに侵入
+$ docker exec -it shirokuma_cpp_lab bash
+```
+
+プロンプトが `root@xxxxxx:/workspace#` に変われば成功です！
+試しにコンパイラのバージョンを確認してみましょう。
+
+```bash
+root@xxxxxx:/workspace# g++ --version
+g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+```
+
+<Dialogue character="penguin" title="ペンギンくんの歓喜">
+  「おおーっ！WindowsPCの中なのに、UbuntuとGCC 11の環境が一瞬で手に入ったっス！これで先輩に『俺の環境だと動かない』って言われなくて済むっスね！」
+</Dialogue>
+
+環境依存の呪縛から解放されました。次章からは、このクリーンな環境の上で、**CMake**を用いたモダンなビルドシステムの構築に進みます。
