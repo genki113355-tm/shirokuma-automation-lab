@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name shirokuma-automation-lab --commit-dirty=true && git push origin master"
   },
   "dependencies": {
     "@mdx-js/react": "^3.1.1",
