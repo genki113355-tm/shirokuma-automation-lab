@@ -52,12 +52,15 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
       </div>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-2 shrink-0">
-        <button className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs font-bold px-3 py-1.5 rounded-full items-center gap-1.5 transition-colors hidden md:flex shrink-0">
+      <div className="flex items-center gap-3">
+        <Link 
+          to="/lab"
+          className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors"
+        >
           <Play size={14} fill="currentColor" />
           <span>コード実行ラボ</span>
-        </button>
-        <button className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-full items-center gap-1.5 transition-colors hidden lg:flex shrink-0">
+        </Link>
+        <button className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors hidden sm:flex">
           <Download size={14} />
           <span>環境構築スクリプト</span>
         </button>
