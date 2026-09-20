@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChevronDown, Beaker, Play, ExternalLink } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 

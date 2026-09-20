@@ -1,4 +1,3 @@
-import React from 'react';
 import { AlertTriangle, Lightbulb } from 'lucide-react';
 
 interface BeforeAfterProps {
