@@ -17,7 +17,7 @@ export default function TopPage() {
               <span>C++開発者のための実務効率化・自動化ガイド</span>
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-black text-white leading-[1.1] tracking-tighter drop-shadow-2xl">
-              <span className="block text-cyan-400 text-2xl md:text-3xl lg:text-4xl mb-4 tracking-widest font-bold">�V���N�} C++�J�����������{</span>
+              <span className="block text-cyan-400 text-2xl md:text-3xl lg:text-4xl mb-4 tracking-widest font-bold">シロクマ C++開発自動化ラボ</span>
               C++開発の泥臭い作業、<br className="hidden md:block"/>全部「自動化」しませんか？
             </h1>
           </div>
@@ -98,25 +98,65 @@ export default function TopPage() {
             <p className="text-slate-400">シロクマ先生のサイト群は、目的に応じて使い分けることができます。</p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <a href="https://shirokuma-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
-              <div className="bg-slate-800/80 p-6 rounded-xl border border-slate-700 transition-all group-hover:border-blue-500/50 group-hover:bg-slate-800">
-                <div className="text-blue-400 text-sm font-bold mb-2">STEP 1: 基礎を学ぶ</div>
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Shirokuma C++</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  C++の文法や基礎知識をゼロから学ぶための教科書サイト。まずはここでC++そのものの書き方を習得します。
-                </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="https://www.shirokuma-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
+              <div className="bg-slate-800/80 p-6 rounded-xl border border-slate-700 transition-all group-hover:border-cyan-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+                <div>
+                  <div className="text-cyan-400 text-sm font-bold mb-2">STEP 1: 設計・コア技術を学ぶ</div>
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">シロクマC++ラボ</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    インベーダーゲーム開発を通じて、オブジェクト指向・モダンC++の設計力とアルゴリズム実装基盤を体系的に習得。
+                  </p>
+                </div>
+                <div className="mt-4 text-xs font-mono text-cyan-400 font-bold flex items-center gap-1">
+                  <span>サイトを見る</span> <span>↗</span>
+                </div>
               </div>
             </a>
 
-            <div className="bg-cyan-900/30 p-6 rounded-xl border border-cyan-500/50 relative">
+            <div className="bg-cyan-900/30 p-6 rounded-xl border border-cyan-500/50 relative h-full flex flex-col justify-between">
               <div className="absolute -top-3 -right-3 bg-cyan-500 text-navy-900 text-xs font-black px-3 py-1 rounded-full shadow-lg">現在地</div>
-              <div className="text-cyan-400 text-sm font-bold mb-2">STEP 2: 実務で使いこなす</div>
-              <h3 className="text-xl font-bold text-white mb-2">�V���N�} C++�J�����������{</h3>
-              <p className="text-cyan-100/70 text-sm leading-relaxed">
-                覚えたC++を現場でどう使うか？面倒な作業をどう自動化するか？開発者のための実践的なエコシステムを構築します。
-              </p>
+              <div>
+                <div className="text-cyan-400 text-sm font-bold mb-2">STEP 2: 実務・自動化で使いこなす</div>
+                <h3 className="text-xl font-bold text-white mb-2">シロクマC++自動化ラボ</h3>
+                <p className="text-cyan-100/70 text-sm leading-relaxed">
+                  Python/Docker/CMake/CIを活用し、泥臭い手動ビルド・テストを完全自動化。開発者のための効率化エコシステムを構築します。
+                </p>
+              </div>
+              <div className="mt-4 text-xs font-mono text-cyan-300/60 font-bold">
+                <span>当メディアで学習中</span>
+              </div>
             </div>
+
+            <a href="https://shirokuma-qt-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
+              <div className="bg-slate-800/80 p-6 rounded-xl border border-slate-700 transition-all group-hover:border-emerald-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+                <div>
+                  <div className="text-emerald-400 text-sm font-bold mb-2">STEP 3: Linux GUI・リアルタイム計器</div>
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">シロクマQt×C++ラボ</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Qtフレームワークを活用し、Linux環境で動くプロ仕様のHMIやリアルタイム計器GUIダッシュボードを創り出します。
+                  </p>
+                </div>
+                <div className="mt-4 text-xs font-mono text-emerald-400 font-bold flex items-center gap-1">
+                  <span>サイトを見る</span> <span>↗</span>
+                </div>
+              </div>
+            </a>
+
+            <a href="https://sonar-guide.jp" target="_blank" rel="noopener noreferrer" className="block group">
+              <div className="bg-slate-800/80 p-6 rounded-xl border border-slate-700 transition-all group-hover:border-blue-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+                <div>
+                  <div className="text-blue-400 text-sm font-bold mb-2">STEP 4: ドメイン応用・音響信号処理</div>
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">水中音響・ソナー技術入門</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    波の物理、FFT、LOFAR・DEMON信号処理など、C++の高速計算力を活かす水中音響工学の世界を探求。
+                  </p>
+                </div>
+                <div className="mt-4 text-xs font-mono text-blue-400 font-bold flex items-center gap-1">
+                  <span>サイトを見る</span> <span>↗</span>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </div>
