@@ -1,11 +1,38 @@
 import { useState, useRef, useEffect } from 'react';
-import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive } from 'lucide-react';
+import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Target, CheckCircle2 } from 'lucide-react';
 
 type LogEntry = {
   id: number;
   type: 'input' | 'output' | 'error' | 'system';
   content: React.ReactNode;
 };
+
+const MISSIONS = [
+  {
+    id: 1,
+    title: '手動テスト地獄からの解放',
+    problem: 'コードを変更するたびに、手作業で100個のケースをテストしていて日が暮れそうです。',
+    goal: 'Pythonのテストフレームワークを使って、C++のロジックを一括テストしましょう。',
+    command: 'pytest',
+    hint: 'pytest と入力してEnter'
+  },
+  {
+    id: 2,
+    title: '見えないメモリリークを暴け',
+    problem: '長時間稼働させるとサーバーがクラッシュします。メモリリークが疑われますが、目視では見つかりません。',
+    goal: '動的解析ツールを使って、メモリリークの箇所を特定しましょう。',
+    command: 'valgrind ./app',
+    hint: 'valgrind ./app と入力してEnter'
+  },
+  {
+    id: 3,
+    title: '「私のPCでは動いた」撲滅',
+    problem: '新入社員のPCでビルドが通りません。環境構築手順書（Excel）も古くて役に立ちません。',
+    goal: 'Dockerを使って、誰でも一瞬で同じビルド環境を作れるようにしましょう。',
+    command: 'docker build .',
+    hint: 'docker build . と入力してEnter'
+  }
+];
 
 const FILE_TREE = [
   { name: 'src', type: 'folder', children: [
@@ -22,6 +49,10 @@ const FILE_TREE = [
 ];
 
 export default function CodeLab() {
+  const [activeMissionId, setActiveMissionId] = useState(1);
+  const [completedMissions, setCompletedMissions] = useState<number[]>([]);
+  const activeMission = MISSIONS.find(m => m.id === activeMissionId);
+
   const [history, setHistory] = useState<LogEntry[]>([
     { id: 1, type: 'system', content: 'Welcome to Shirokuma Auto C++ Execution Lab.' },
     { id: 2, type: 'system', content: 'Type "help" to see available commands.' }
@@ -159,6 +190,19 @@ export default function CodeLab() {
         addLog('error', `bash: ${baseCmd}: command not found`);
     }
 
+    // Check if mission completed
+    if (activeMission && trimmed === activeMission.command) {
+      if (!completedMissions.includes(activeMission.id)) {
+        setCompletedMissions(prev => [...prev, activeMission.id]);
+        addLog('system', (
+          <div className="mt-4 p-3 bg-emerald-900/30 border border-emerald-500/50 rounded-lg text-emerald-400 font-bold flex items-center gap-2">
+            <CheckCircle2 size={18} />
+            ミッション「{activeMission.title}」を達成しました！
+          </div>
+        ));
+      }
+    }
+
     setIsProcessing(false);
   };
 
@@ -182,45 +226,87 @@ export default function CodeLab() {
 
       <div className="flex-1 flex flex-col md:flex-row gap-6 min-h-0">
         
-        {/* Explorer Sidebar */}
-        <div className="hidden md:flex w-64 bg-navy-800/80 border border-slate-700 rounded-xl flex-col overflow-hidden shadow-xl">
-          <div className="bg-navy-900/80 p-3 border-b border-slate-700 text-xs font-bold text-slate-400 tracking-wider">
-            EXPLORER
-          </div>
-          <div className="p-4 overflow-y-auto font-mono text-sm">
-            <div className="text-white font-bold mb-2 flex items-center gap-2">
-              <Folder size={16} className="text-cyan-400" />
-              shirokuma-lab/
+        {/* Left Sidebar: Missions & Explorer */}
+        <div className="hidden md:flex w-72 flex-col gap-4 overflow-hidden">
+          
+          {/* Missions Panel */}
+          <div className="bg-navy-800/80 border border-slate-700 rounded-xl flex flex-col flex-1 shadow-xl overflow-hidden">
+            <div className="bg-navy-900/80 p-3 border-b border-slate-700 text-xs font-bold text-cyan-400 tracking-wider flex items-center gap-2">
+              <Target size={14} /> MISSIONS
             </div>
-            <div className="pl-4 space-y-2">
-              {FILE_TREE.map((item, idx) => (
-                <div key={idx}>
-                  {item.type === 'folder' ? (
-                    <div>
-                      <div className="flex items-center gap-2 text-slate-300">
-                        <Folder size={14} className="text-blue-400" /> {item.name}
+            <div className="p-4 overflow-y-auto space-y-4">
+              {MISSIONS.map(mission => {
+                const isCompleted = completedMissions.includes(mission.id);
+                const isActive = activeMissionId === mission.id;
+                return (
+                  <div 
+                    key={mission.id}
+                    onClick={() => setActiveMissionId(mission.id)}
+                    className={`p-3 rounded-lg border cursor-pointer transition-colors ${isActive ? 'bg-cyan-900/30 border-cyan-500/50' : 'bg-navy-900/50 border-slate-700 hover:border-cyan-500/30'} ${isCompleted ? 'opacity-70' : ''}`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className={`text-sm font-bold ${isActive ? 'text-cyan-400' : 'text-slate-300'}`}>
+                        {mission.title}
                       </div>
-                      <div className="pl-4 mt-1 space-y-1">
-                        {item.children?.map((child, cIdx) => (
-                          <div key={cIdx} className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 cursor-default transition-colors">
-                            {child.type === 'cpp' && <FileCode size={14} className="text-indigo-400" />}
-                            {child.type === 'header' && <FileCode size={14} className="text-purple-400" />}
-                            {child.type === 'python' && <FileCode size={14} className="text-yellow-400" />}
-                            {child.name}
+                      {isCompleted && <CheckCircle2 size={16} className="text-emerald-400" />}
+                    </div>
+                    {isActive && (
+                      <div className="text-xs text-slate-400 space-y-2 mt-2">
+                        <p><strong className="text-slate-300">問題:</strong> {mission.problem}</p>
+                        <p><strong className="text-slate-300">目標:</strong> {mission.goal}</p>
+                        {!isCompleted && (
+                          <div className="bg-navy-900 p-2 rounded border border-slate-700 text-cyan-200 mt-2">
+                            💡 ヒント: <code className="bg-black/50 px-1 py-0.5 rounded">{mission.hint}</code>
                           </div>
-                        ))}
+                        )}
                       </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 cursor-default transition-colors">
-                      {item.type === 'docker' && <HardDrive size={14} className="text-blue-500" />}
-                      {item.type === 'txt' && <FileText size={14} className="text-slate-300" />}
-                      {item.type === 'sh' && <TerminalIcon size={14} className="text-green-500" />}
-                      {item.name}
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Explorer Sidebar */}
+          <div className="bg-navy-800/80 border border-slate-700 rounded-xl flex flex-col h-1/3 shadow-xl overflow-hidden shrink-0">
+            <div className="bg-navy-900/80 p-3 border-b border-slate-700 text-xs font-bold text-slate-400 tracking-wider">
+              EXPLORER
+            </div>
+            <div className="p-4 overflow-y-auto font-mono text-xs">
+              <div className="text-white font-bold mb-2 flex items-center gap-2">
+                <Folder size={14} className="text-cyan-400" />
+                shirokuma-lab/
+              </div>
+              <div className="pl-4 space-y-1.5">
+                {FILE_TREE.map((item, idx) => (
+                  <div key={idx}>
+                    {item.type === 'folder' ? (
+                      <div>
+                        <div className="flex items-center gap-2 text-slate-300">
+                          <Folder size={12} className="text-blue-400" /> {item.name}
+                        </div>
+                        <div className="pl-4 mt-1 space-y-1">
+                          {item.children?.map((child, cIdx) => (
+                            <div key={cIdx} className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 cursor-default transition-colors">
+                              {child.type === 'cpp' && <FileCode size={12} className="text-indigo-400" />}
+                              {child.type === 'header' && <FileCode size={12} className="text-purple-400" />}
+                              {child.type === 'python' && <FileCode size={12} className="text-yellow-400" />}
+                              {child.name}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 cursor-default transition-colors">
+                        {item.type === 'docker' && <HardDrive size={12} className="text-blue-500" />}
+                        {item.type === 'txt' && <FileText size={12} className="text-slate-300" />}
+                        {item.type === 'sh' && <TerminalIcon size={12} className="text-green-500" />}
+                        {item.name}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
