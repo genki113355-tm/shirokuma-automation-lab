@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, Terminal, BookOpen, Bug, TestTube, Box, GitBranch, Workflow, Rocket } from 'lucide-react';
+﻿import { Link } from 'react-router-dom';
+import { ArrowRight, Terminal, BookOpen, Bug, TestTube, Box, GitBranch, Workflow, Rocket, CheckCircle2 } from 'lucide-react';
 
 export default function TopPage() {
   return (
@@ -9,32 +9,71 @@ export default function TopPage() {
       <div className="flex flex-col xl:flex-row items-center justify-between bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-5 sm:p-8 md:p-10 lg:p-16 rounded-2xl md:rounded-3xl border border-cyan-500/20 shadow-2xl gap-8 md:gap-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-cyan-500/10 blur-[80px] md:blur-[100px] rounded-full pointer-events-none"></div>
         
-        <div className="xl:w-3/4 space-y-6 md:space-y-8 relative z-10 w-full min-w-0">
-          
+        {/* 左側: タイトルとストーリー */}
+        <div className="xl:w-1/2 space-y-6 md:space-y-8 relative z-10 w-full min-w-0">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-cyan-400 text-xs md:text-sm font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)] max-w-full">
               <Rocket size={16} className="shrink-0" />
               <span className="truncate">C++開発者のための実務効率化・自動化ガイド</span>
             </div>
             <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[4.5rem] font-black text-white leading-[1.15] md:leading-[1.1] tracking-tighter drop-shadow-2xl">
-              <span className="block text-cyan-400 text-base sm:text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-4 tracking-widest font-bold">シロクマ C++開発自動化ラボ</span>
-              C++開発の泥臭い作業、<br className="hidden sm:block"/>全部「自動化」しませんか？
+              <span className="block text-cyan-400 text-base sm:text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-4 tracking-widest font-bold">シロクマC++開発自動化ラボ</span>
+              C++開発の泥臭い作業、<br className="hidden sm:block"/>全部「全自動化」しませんか？
             </h1>
           </div>
 
-          <h2 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-slate-200 tracking-tight pb-4 sm:pb-6 border-b border-white/10">
+          <h2 className="text-base sm:text-xl md:text-2xl font-bold text-slate-200 tracking-tight pb-4 sm:pb-6 border-b border-white/10">
             Python, Docker, CI/CDを活用して、<span className="text-yellow-400">現場のC++開発をモダンにアップデート。</span>
           </h2>
 
-          <p className="text-slate-300 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed max-w-4xl">
-            「ビルド環境を作るだけで一苦労」「テストデータの手打ちが面倒」「バグの検知が遅れる」……<br />
-            そんなC++特有の課題を、他言語や最新ツールと組み合わせて解決します。<br />
-            文法を覚えたその先にある、<strong>「問題を解決するためのC++の実践的エコシステム」</strong>を構築しましょう。
+          <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-4xl">
+            「ビルド環境を作るだけで一苦労」「テストを手動で実行するのが面倒」「バグの検知が遅れる」……<br />
+            C++開発者が実際に直面する課題を解決するために、開発プロセスを進化させましょう。<br/>
+            <strong>手動ビルド ➔ CMake ➔ 自動テスト ➔ ASan ➔ Docker ➔ GitHub Actions</strong> という完全自動CI/CDのワークフローを実践します。
           </p>
+        </div>
 
-          <div className="pt-2 sm:pt-4 flex flex-wrap gap-4 sm:gap-6">
-            <Link to="/chapter/1" className="inline-flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-6 sm:px-10 py-3.5 sm:py-5 rounded-xl text-base sm:text-lg transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)] w-full sm:w-auto">
-              自動化チュートリアルを始める <ArrowRight size={20} />
+        {/* 右側: ターミナル体験とMISSION */}
+        <div className="xl:w-1/2 w-full relative z-10 flex flex-col gap-6">
+          <div className="bg-slate-900/90 border border-slate-700/60 p-5 rounded-2xl shadow-xl relative backdrop-blur-sm">
+            <div className="absolute -top-3 left-6 bg-amber-500 text-slate-950 text-[11px] font-black px-3 py-0.5 rounded-sm shadow-sm tracking-widest">MISSION</div>
+            <p className="text-sm sm:text-base text-slate-100 font-bold mb-2">Q. このプロジェクトのテストを毎回「手動」で実行するのをやめたい。</p>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              コードをプッシュした瞬間に、クリーンな環境(Docker)でビルドされ、自動テストとメモリ漏れ検査(ASan)が走り、安全が証明される完全なCI/CDパイプラインを構築せよ。
+            </p>
+          </div>
+
+          {/* ターミナルモックアップ */}
+          <div className="w-full rounded-xl bg-[#0d1117] border border-slate-700/50 shadow-2xl overflow-hidden font-mono text-xs sm:text-sm">
+            <div className="flex items-center px-4 py-2 bg-[#161b22] border-b border-slate-700/50 gap-2">
+              <div className="w-3 h-3 rounded-full bg-rose-500"></div>
+              <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+              <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+              <span className="ml-2 text-slate-400 font-bold text-[10px]">CI/CD Pipeline Execution</span>
+            </div>
+            <div className="p-4 space-y-2 text-slate-300">
+              <div className="flex gap-2">
+                <span className="text-emerald-400">➜</span>
+                <span className="text-cyan-400">~/project</span>
+                <span>git push origin main</span>
+              </div>
+              <div className="text-slate-500">Enumerating objects: 5, done.</div>
+              <div className="text-slate-500">Writing objects: 100% (3/3), 312 bytes, done.</div>
+              <div className="text-blue-400 animate-pulse mt-2">● Triggering GitHub Actions Workflow...</div>
+              
+              <div className="pt-2 border-l-2 border-slate-700 pl-3 ml-1 space-y-1">
+                <div className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={14} className="text-emerald-500" /> [BUILD] Compiling with CMake (Docker)</div>
+                <div className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={14} className="text-emerald-500" /> [TEST] 23 tests passed successfully</div>
+                <div className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={14} className="text-emerald-500" /> [ASAN] No memory errors detected</div>
+              </div>
+              
+              <div className="text-emerald-400 font-bold mt-2 pt-2 border-t border-slate-800">✓ All checks have passed. Ready for deployment.</div>
+            </div>
+          </div>
+
+          <div className="flex justify-center sm:justify-start">
+            <Link to="/chapter/1" className="inline-flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-8 py-4 rounded-xl text-base transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)] w-full sm:w-auto">
+              自動化チュートリアルを始める<ArrowRight size={20} />
             </Link>
           </div>
         </div>
@@ -50,19 +89,19 @@ export default function TopPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <AutomationCard 
             icon={<Box size={28} />}
-            title="環境構築の自動化"
-            tech="Docker / C++"
-            description="「私のPCでは動くのに」を撲滅。コンテナ技術を用いて、チーム全員が1秒で同じC++ビルド環境を立ち上げられるようにします。"
+            title="ビルド環境の自動化"
+            tech="Docker / CMake"
+            description="「私のPCでは動くのに...」をなくすため、Dockerでコンパイル環境をパッケージ化。全員が同じ環境で一瞬でビルドできるようにします。"
           />
           <AutomationCard 
             icon={<TestTube size={28} />}
-            title="テストの自動化"
-            tech="Python / pybind11"
-            description="C++でテスト用のドライバを書くのは大変です。PythonからC++を直接呼び出し、スクリプト言語の身軽さでテストを自動化します。"
+            title="単体テストの自動化"
+            tech="Google Test / CTest"
+            description="手動でポチポチ確認する時代は終わり。テストコードを書き、CMakeと連携してコマンド一発で全機能を検証する基盤を作ります。"
           />
           <AutomationCard 
             icon={<GitBranch size={28} />}
-            title="ビルド＆検査の自動化"
+            title="ビルド・検査の自動化"
             tech="GitHub Actions"
             description="コードをPushするだけで、クラウド上で全自動でビルドとテストを実行。バグが混入した瞬間に検知できるCI/CDパイプラインを構築します。"
           />
@@ -76,7 +115,7 @@ export default function TopPage() {
             icon={<Terminal size={28} />}
             title="ローカル作業の自動化"
             tech="Bash スクリプト"
-            description="長くて複雑なビルドコマンドや、テストの繰り返し実行。堅牢なシェルスクリプトを書いて、コマンド一発で作業を終わらせます。"
+            description="長くて複雑なビルドコマンドや、テストの繰り返し実行。強力なシェルスクリプトを書き、コマンド一発で作業を終わらせます。"
           />
           <AutomationCard 
             icon={<Workflow size={28} />}
@@ -102,14 +141,14 @@ export default function TopPage() {
             <a href="https://www.shirokuma-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
               <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-700 transition-all group-hover:border-cyan-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
                 <div>
-                  <div className="text-cyan-400 text-xs sm:text-sm font-bold mb-2">STEP 1: 設計・コア技術を学ぶ</div>
+                  <div className="text-cyan-400 text-xs sm:text-sm font-bold mb-2">STEP 1: 設計のコア技術を学ぶ</div>
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">シロクマC++ラボ</h3>
                   <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
-                    インベーダーゲーム開発を通じて、オブジェクト指向・モダンC++の設計力とアルゴリズム実装基盤を体系的に習得。
+                    インベーダーゲーム開発を通じて、オブジェクト指向やモダンC++の設計力とアルゴリズム実装基盤を体系的に習得。
                   </p>
                 </div>
                 <div className="mt-4 text-xs font-mono text-cyan-400 font-bold flex items-center gap-1">
-                  <span>サイトを見る</span> <span>↗</span>
+                  <span>サイトを見る</span> <span>➔</span>
                 </div>
               </div>
             </a>
@@ -118,9 +157,9 @@ export default function TopPage() {
               <div className="absolute -top-3 -right-2 sm:-right-3 bg-cyan-500 text-navy-900 text-[10px] sm:text-xs font-black px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">現在地</div>
               <div>
                 <div className="text-cyan-400 text-xs sm:text-sm font-bold mb-2">STEP 2: 実務・自動化で使いこなす</div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">シロクマC++自動化ラボ</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">シロクマC++開発自動化ラボ</h3>
                 <p className="text-cyan-100/70 text-xs sm:text-sm leading-relaxed">
-                  Python/Docker/CMake/CIを活用し、泥臭い手動ビルド・テストを完全自動化。開発者のための効率化エコシステムを構築します。
+                  Python/Docker/CMake/CIを活用し、泥臭い手動ビルドやテストを完全自動化。開発者のための効率化エコシステムを構築します。
                 </p>
               </div>
               <div className="mt-4 text-xs font-mono text-cyan-300/60 font-bold">
@@ -138,7 +177,7 @@ export default function TopPage() {
                   </p>
                 </div>
                 <div className="mt-4 text-xs font-mono text-emerald-400 font-bold flex items-center gap-1">
-                  <span>サイトを見る</span> <span>↗</span>
+                  <span>サイトを見る</span> <span>➔</span>
                 </div>
               </div>
             </a>
@@ -153,7 +192,7 @@ export default function TopPage() {
                   </p>
                 </div>
                 <div className="mt-4 text-xs font-mono text-blue-400 font-bold flex items-center gap-1">
-                  <span>サイトを見る</span> <span>↗</span>
+                  <span>サイトを見る</span> <span>➔</span>
                 </div>
               </div>
             </a>
@@ -165,7 +204,6 @@ export default function TopPage() {
   );
 }
 
-// カードコンポーネント
 function AutomationCard({ icon, title, tech, description }: { icon: React.ReactNode, title: string, tech: string, description: string }) {
   return (
     <div className="bg-navy-800/40 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-navy-800/60 group">
