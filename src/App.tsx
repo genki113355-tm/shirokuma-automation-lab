@@ -9,9 +9,11 @@ import Footer from './components/Footer';
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isSubdirectory = window.location.pathname.startsWith('/auto');
+  const basename = isSubdirectory ? '/auto' : '/';
 
   return (
-    <Router>
+    <Router basename={basename}>
       <div className="flex h-screen overflow-hidden bg-navy-900 text-slate-100 font-sans">
         <Sidebar isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />
         <div className="flex-1 flex flex-col h-screen overflow-hidden relative min-w-0">
