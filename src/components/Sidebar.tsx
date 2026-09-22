@@ -1,4 +1,4 @@
-﻿import { ChevronDown, Beaker, Play, ExternalLink, X } from 'lucide-react';
+﻿import { ChevronDown, Beaker, Play, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIsOpen?: (v: boolean) => void }) {
@@ -196,36 +196,6 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
                 <p className={`text-sm font-medium ${isActive('/chapter/12') ? 'text-white' : 'text-slate-300'}`}>自動テストシステム構築の実践</p>
               </li>
             </Link>
-          </ul>
-        </div>
-
-        {/* --- 姉妹サイト --- */}
-        <div>
-          <div className="flex items-center justify-between text-slate-300 text-xs font-bold mb-3 mt-6">
-            <div className="flex items-center gap-2">
-              <ExternalLink size={14} className="text-cyan-400" />
-              <span>姉妹サイト (関連学習)</span>
-            </div>
-          </div>
-          <ul className="space-y-2 pb-4">
-            <a href="https://www.shirokuma-cpp.jp/" target="_blank" rel="nofollow noopener noreferrer" className="block">
-              <li className="border border-slate-700/50 rounded-md p-3 bg-navy-800/30 hover:bg-navy-700/80 hover:border-cyan-500/30 transition-colors cursor-pointer group">
-                <p className="text-xs font-bold text-slate-300 group-hover:text-cyan-400 mb-1 transition-colors">シロクマC++ラボ</p>
-                <p className="text-[10px] text-slate-400">C++コア設計・オブジェクト指向実践</p>
-              </li>
-            </a>
-            <a href="https://shirokuma-qt-cpp.jp/" target="_blank" rel="nofollow noopener noreferrer" className="block">
-              <li className="border border-slate-700/50 rounded-md p-3 bg-navy-800/30 hover:bg-navy-700/80 hover:border-emerald-500/30 transition-colors cursor-pointer group">
-                <p className="text-xs font-bold text-slate-300 group-hover:text-emerald-400 mb-1 transition-colors">シロクマQt×C++ラボ</p>
-                <p className="text-[10px] text-slate-400">Linux / Qt / リアルタイム計器HMI</p>
-              </li>
-            </a>
-            <a href="https://sonar-guide.jp/" target="_blank" rel="nofollow noopener noreferrer" className="block">
-              <li className="border border-slate-700/50 rounded-md p-3 bg-navy-800/30 hover:bg-navy-700/80 hover:border-blue-500/30 transition-colors cursor-pointer group">
-                <p className="text-xs font-bold text-slate-300 group-hover:text-blue-400 mb-1 transition-colors">水中音響・ソナー技術入門</p>
-                <p className="text-[10px] text-slate-400">音波と信号処理のドメイン知識を学ぶ</p>
-              </li>
-            </a>
           </ul>
         </div>
 

@@ -5,6 +5,7 @@ import Header from './components/Header';
 import ChapterContent from './components/ChapterContent';
 import TopPage from './components/TopPage';
 import CodeLab from './components/CodeLab';
+import Footer from './components/Footer';
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -25,6 +26,7 @@ function App() {
               <Route path="/chapter/:id" element={<ChapterContent />} />
               <Route path="/lab" element={<CodeLab />} />
             </Routes>
+            <Footer />
           </main>
         </div>
       </div>
