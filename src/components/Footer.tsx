@@ -7,23 +7,26 @@ export default function Footer() {
         
         {/* Brand & Ecosystem */}
         <div className="space-y-4">
-          <h3 className="text-white font-bold text-lg mb-2">🐻‍❄️ シロクマ技術学習エコシステム</h3>
+          <h3 className="text-white font-bold text-lg mb-2 flex items-center gap-2">
+            <img src="/images/characters/shirokuma_sensei.png" alt="シロクマ先生" className="w-6 h-6 rounded-full object-cover border border-cyan-400/50 inline-block" />
+            <span>シロクマ技術学習エコシステム</span>
+          </h3>
           <p className="text-sm leading-relaxed">
             C++開発者のための、基礎から応用・自動化までを網羅する実践的な学習プラットフォーム群です。
           </p>
           <ul className="space-y-2 mt-4 text-sm">
             <li>
-              <a href="https://www.shirokuma-cpp.jp/" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors flex items-center gap-2">
+              <a href="https://shirokuma-tech.jp/cpp/" className="hover:text-cyan-400 transition-colors flex items-center gap-2">
                 <ExternalLink size={14} /> シロクマC++ラボ (コア設計)
               </a>
             </li>
             <li>
-              <a href="https://shirokuma-qt-cpp.jp/" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors flex items-center gap-2">
+              <a href="https://shirokuma-tech.jp/qt/" className="hover:text-emerald-400 transition-colors flex items-center gap-2">
                 <ExternalLink size={14} /> シロクマQt×C++ラボ (GUI開発)
               </a>
             </li>
             <li>
-              <a href="https://sonar-guide.jp/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors flex items-center gap-2">
+              <a href="https://shirokuma-tech.jp/sonar/" className="hover:text-blue-400 transition-colors flex items-center gap-2">
                 <ExternalLink size={14} /> 水中音響・ソナー技術入門 (ドメイン応用)
               </a>
             </li>

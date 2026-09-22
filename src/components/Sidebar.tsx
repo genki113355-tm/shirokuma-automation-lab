@@ -1,4 +1,4 @@
-﻿import { ChevronDown, Beaker, Play, X } from 'lucide-react';
+import { ChevronDown, Beaker, Play, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIsOpen?: (v: boolean) => void }) {
@@ -32,9 +32,11 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
 
         {/* Brand */}
       <Link to="/" onClick={closeDrawer} className="p-4 border-b border-cyan-500/20 flex items-center gap-3 hover:bg-navy-700/50 transition-colors">
-        <div className="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-lg flex items-center justify-center text-2xl shadow-[0_0_10px_rgba(6,182,212,0.2)]">
-          🐻‍❄️
-        </div>
+        <img
+          src="/images/characters/shirokuma_sensei.png"
+          alt="シロクマ先生"
+          className="w-10 h-10 rounded-xl object-cover border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]"
+        />
         <div>
           <h1 className="text-white font-bold text-lg leading-tight">シロクマ<br/>C++開発自動化ラボ</h1>
           <p className="text-[10px] text-cyan-400">〜実務の手作業を駆逐する〜</p>
@@ -199,19 +201,118 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
           </ul>
         </div>
 
+        {/* 相互リンク（技術学習エコシステム） */}
+        <div className="border-t border-cyan-500/20 pt-4 mt-6 bg-navy-900/40 rounded-xl p-3 space-y-2">
+          <div className="text-[10px] font-mono text-cyan-400 font-bold mb-1.5 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <span>🔗</span>
+              <span>技術学習エコシステム</span>
+            </span>
+            <span className="text-[9px] text-slate-400 font-mono px-1.5 py-0.5 rounded bg-navy-800 border border-slate-700/60">
+              相互リンク
+            </span>
+          </div>
+
+          <div className="space-y-1.5">
+            {/* 0. 総合トップ */}
+            <a
+              href="/"
+              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-cyan-500/20 hover:border-cyan-400/50 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🏛️</span>
+                  <div className="text-xs font-bold text-cyan-300 group-hover:text-white truncate">
+                    総合ポータル
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                  全4ラボの学習記録・修了証を集約
+                </div>
+              </div>
+              <span className="text-xs text-cyan-400 group-hover:text-white font-mono flex-shrink-0">
+                ➔
+              </span>
+            </a>
+
+            {/* 1. シロクマC++ラボ */}
+            <a
+              href="/cpp/"
+              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-700 hover:border-cyan-500/40 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">👾</span>
+                  <div className="text-xs font-bold text-slate-200 group-hover:text-cyan-300 truncate">
+                    シロクマC++ラボ
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                  ゲーム開発で学ぶC++設計
+                </div>
+              </div>
+              <span className="text-xs text-slate-500 group-hover:text-cyan-400 font-mono flex-shrink-0">
+                ↗
+              </span>
+            </a>
+
+            {/* 2. シロクマQt×C++ラボ */}
+            <a
+              href="/qt/"
+              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-700 hover:border-cyan-500/40 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🖥️</span>
+                  <div className="text-xs font-bold text-slate-200 group-hover:text-cyan-300 truncate">
+                    シロクマQt×C++ラボ
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                  QML / 60fps波形描画 / 実務GUI
+                </div>
+              </div>
+              <span className="text-xs text-slate-500 group-hover:text-cyan-400 font-mono flex-shrink-0">
+                ↗
+              </span>
+            </a>
+
+            {/* 3. 水中音響・ソナー技術入門 */}
+            <a
+              href="/sonar/"
+              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-700 hover:border-blue-500/40 transition shadow-sm"
+            >
+              <div className="min-w-0 pr-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🌊</span>
+                  <div className="text-xs font-bold text-slate-200 group-hover:text-blue-300 truncate">
+                    水中音響・ソナー入門
+                  </div>
+                </div>
+                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                  波の物理 / FFT / 音響解析
+                </div>
+              </div>
+              <span className="text-xs text-slate-500 group-hover:text-blue-400 font-mono flex-shrink-0">
+                ↗
+              </span>
+            </a>
+          </div>
+        </div>
+
         {/* Characters */}
         <div className="border-t border-cyan-500/20 pt-4 bg-navy-900/30 rounded-lg p-3 space-y-3">
           <div className="flex items-center gap-3">
-            <img src="/images/polar-bear-guide-pointing.png" alt="シロクマ" className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-navy-800" />
+            <img src="/images/characters/shirokuma_sensei.png" alt="シロクマ先生" className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-navy-800 shadow-[0_0_10px_rgba(6,182,212,0.3)]" />
             <div>
               <p className="text-sm font-bold text-white leading-none mb-1">シロクマ先生 (Sensei)</p>
               <p className="text-[10px] text-slate-400">低レイヤ・数理アルゴリズム専門家</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <img src="/images/penguin-guide-simple.jpg" alt="ペンギンくん" className="w-10 h-10 rounded-full border-2 border-slate-500 object-cover bg-navy-800" />
+            <img src="/images/characters/penguin_student.jpg" alt="ペンギン生徒" className="w-10 h-10 rounded-full border-2 border-slate-500 object-cover bg-navy-800 shadow" />
             <div>
-              <p className="text-sm font-bold text-white leading-none mb-1">ペンギンくん (Penguin)</p>
+              <p className="text-sm font-bold text-white leading-none mb-1">ペンギン生徒 (Student)</p>
               <p className="text-[10px] text-slate-400">手動評価に苦しむ若手エンジニア</p>
             </div>
           </div>
