@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 
-const baseUrl = 'https://shirokuma-auto-cpp.jp';
+const baseUrl = 'https://shirokuma-tech.jp/auto';
 const siteTitle = 'シロクマ C++開発自動化ラボ';
 const siteDesc = 'Python、Docker、CI/CDを活用してC++開発の泥臭い手作業を全自動化。開発者のための実務効率化・自動化エコシステム構築ガイド。';
 
