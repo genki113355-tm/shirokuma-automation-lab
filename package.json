@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "deploy": "npm run build && npx wrangler pages deploy dist --project-name shirokuma-automation-lab --commit-dirty=true && git push origin master"
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name shirokuma-automation-lab --commit-dirty=true && git push origin master",
+    "postbuild": "node scripts/generate-seo.mjs"
   },
   "dependencies": {
     "@mdx-js/react": "^3.1.1",
