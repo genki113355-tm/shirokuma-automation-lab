@@ -91,17 +91,47 @@ export default function ChapterContent() {
         <Content />
       </div>
 
-      {/* Action Button */}
-      <div className="flex justify-end pt-6 sm:pt-10">
-        {meta.chapterId < 12 ? (
-          <Link to={`/chapter/${meta.chapterId + 1}`} className="w-full sm:w-auto justify-center bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500 text-cyan-400 font-bold px-6 sm:px-8 py-3 rounded-lg flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-            第{meta.chapterId + 1}章へ進む →
-          </Link>
-        ) : (
-          <Link to="/" className="w-full sm:w-auto justify-center bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500 text-cyan-400 font-bold px-6 sm:px-8 py-3 rounded-lg flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-            トップページへ戻る
-          </Link>
+      {/* Action Button & Next Stage Baton Pass */}
+      <div className="pt-6 sm:pt-10 space-y-6">
+        {meta.chapterId === 12 && (
+          <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-emerald-950/80 via-navy-900 to-[#062016] border border-emerald-500/40 flex flex-col md:flex-row items-center justify-between gap-5 shadow-2xl relative overflow-hidden">
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="space-y-2 text-center md:text-left relative z-10">
+              <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-mono text-emerald-300 font-bold">
+                <span className="px-2.5 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/40">NEXT STAGE 🖥️</span>
+                <span>シロクマ技術探検隊・第3ステージ</span>
+              </div>
+              <h4 className="text-lg sm:text-xl font-black text-white">
+                CI/CD環境を整えたら、次は【Qt×C++ラボ】で産業GUIを作る！
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                車載・産業機器のLinux環境で絶対にフリーズしないマルチスレッド設計と、リアルタイム波形描画・60fps計器ダッシュボード構築を完全習得。
+              </p>
+            </div>
+            <a
+              href="/qt/"
+              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm whitespace-nowrap shadow-xl hover:shadow-emerald-500/25 transition transform hover:scale-105 active:scale-95 flex items-center gap-2 flex-shrink-0 relative z-10"
+            >
+              <span>Qt×C++ラボへ進む</span>
+              <span>➔</span>
+            </a>
+          </div>
         )}
+
+        <div className="flex justify-between items-center flex-wrap gap-4">
+          <Link to="/" className="text-slate-400 hover:text-cyan-400 text-sm font-mono flex items-center gap-1 transition-colors">
+            ← 全章カリキュラム目次へ
+          </Link>
+          {meta.chapterId < 12 ? (
+            <Link to={`/chapter/${meta.chapterId + 1}`} className="w-full sm:w-auto justify-center bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500 text-cyan-400 font-bold px-6 sm:px-8 py-3 rounded-lg flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              第{meta.chapterId + 1}章へ進む →
+            </Link>
+          ) : (
+            <Link to="/" className="w-full sm:w-auto justify-center bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500 text-cyan-400 font-bold px-6 sm:px-8 py-3 rounded-lg flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              🎉 全12章修了！トップへ
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
