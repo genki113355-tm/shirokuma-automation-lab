@@ -317,13 +317,27 @@ export default function CodeLab() {
           onClick={focusInput}
         >
           {/* Terminal Header */}
-          <div className="bg-[#2d2d2d] border-b border-slate-700 p-3 flex items-center gap-4 select-none">
-            <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          <div className="bg-[#2d2d2d] border-b border-slate-700 p-3 flex items-center justify-between select-none">
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <div className="text-xs text-slate-400 font-mono">bash - shirokuma@ubuntu: ~/shirokuma-lab</div>
             </div>
-            <div className="text-xs text-slate-400 font-mono">bash - shirokuma@ubuntu: ~/shirokuma-lab</div>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                const textToCopy = history.map(h => typeof h.content === 'string' ? h.content : '').filter(Boolean).join('\n');
+                navigator.clipboard.writeText(textToCopy);
+                alert('ログをクリップボードにコピーしました');
+              }}
+              className="text-slate-400 hover:text-white flex items-center gap-1 text-xs px-2 py-1 bg-navy-800 rounded border border-slate-700 transition-colors"
+              title="実行ログをコピー"
+            >
+              <FileText size={12} /> Copy
+            </button>
           </div>
 
           {/* Terminal Content */}
@@ -357,6 +371,7 @@ export default function CodeLab() {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 disabled={isProcessing}
+                maxLength={100}
                 className="flex-1 bg-transparent text-white outline-none border-none focus:ring-0 p-0"
                 autoFocus
                 spellCheck={false}
