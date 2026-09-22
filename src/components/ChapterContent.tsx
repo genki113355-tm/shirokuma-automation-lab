@@ -93,8 +93,29 @@ export default function ChapterContent() {
 
       {/* Action Button & Next Stage Baton Pass */}
       <div className="pt-6 sm:pt-10 space-y-6">
+
+        {/* ▶ 課題解決ミッション（CodeLab）への導線 */}
+        <div className="bg-gradient-to-r from-navy-800 to-cyan-950/40 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10 space-y-2 text-center md:text-left">
+            <h4 className="text-lg sm:text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+              <Zap className="text-cyan-400" size={24} /> 
+              読んだ後は、実際に手を動かして解決してみよう！
+            </h4>
+            <p className="text-sm text-slate-300">
+              ブラウザ上の「コード実行ラボ」で、手動テスト地獄や環境構築の課題に挑戦できます。
+            </p>
+          </div>
+          <Link
+            to="/lab"
+            className="w-full md:w-auto shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 relative z-10"
+          >
+            ▶ 今すぐミッションに挑戦する
+          </Link>
+        </div>
+
         {meta.chapterId === 12 && (
-          <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-emerald-950/80 via-navy-900 to-[#062016] border border-emerald-500/40 flex flex-col md:flex-row items-center justify-between gap-5 shadow-2xl relative overflow-hidden">
+          <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-emerald-950/80 via-navy-900 to-[#062016] border border-emerald-500/40 flex flex-col md:flex-row items-center justify-between gap-5 shadow-2xl relative overflow-hidden mt-8">
             <div className="absolute -top-12 -right-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
             <div className="space-y-2 text-center md:text-left relative z-10">
               <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-mono text-emerald-300 font-bold">
@@ -109,26 +130,28 @@ export default function ChapterContent() {
               </p>
             </div>
             <a
-              href="/qt/"
+              href="https://shirokuma-qt-cpp.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm whitespace-nowrap shadow-xl hover:shadow-emerald-500/25 transition transform hover:scale-105 active:scale-95 flex items-center gap-2 flex-shrink-0 relative z-10"
             >
               <span>Qt×C++ラボへ進む</span>
-              <span>➔</span>
+              <span>➡️</span>
             </a>
           </div>
         )}
 
-        <div className="flex justify-between items-center flex-wrap gap-4">
+        <div className="flex justify-between items-center flex-wrap gap-4 mt-8">
           <Link to="/" className="text-slate-400 hover:text-cyan-400 text-sm font-mono flex items-center gap-1 transition-colors">
-            ← 全章カリキュラム目次へ
+            ⬅ 全章カリキュラム目次へ
           </Link>
           {meta.chapterId < 12 ? (
             <Link to={`/chapter/${meta.chapterId + 1}`} className="w-full sm:w-auto justify-center bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500 text-cyan-400 font-bold px-6 sm:px-8 py-3 rounded-lg flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-              第{meta.chapterId + 1}章へ進む →
+              第{meta.chapterId + 1}章へ進む ➡
             </Link>
           ) : (
             <Link to="/" className="w-full sm:w-auto justify-center bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500 text-cyan-400 font-bold px-6 sm:px-8 py-3 rounded-lg flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-              🎉 全12章修了！トップへ
+              🎉 全12章修了（トップへ）
             </Link>
           )}
         </div>

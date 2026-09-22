@@ -125,7 +125,12 @@ export default function CodeLab() {
           await new Promise(resolve => setTimeout(resolve, 800));
           addLog('output', 'Compilation finished successfully.');
         } else {
-          addLog('error', 'g++: fatal error: no input files');
+          addLog('error', (
+            <div>
+              g++: fatal error: no input files<br/>
+              <span className="text-cyan-400 mt-1 inline-block">💡 ヒント: コンパイルする対象ファイルが指定されていません。例: <code className="bg-navy-900 px-1 rounded">g++ main.cpp</code></span>
+            </div>
+          ));
         }
         break;
 
@@ -157,6 +162,15 @@ export default function CodeLab() {
         break;
 
       case 'valgrind':
+        if (args.length < 2) {
+          addLog('error', (
+            <div>
+              valgrind: no program specified<br/>
+              <span className="text-cyan-400 mt-1 inline-block">💡 ヒント: メモリチェックする対象の実行ファイルを指定してください。例: <code className="bg-navy-900 px-1 rounded">valgrind ./app</code></span>
+            </div>
+          ));
+          break;
+        }
         addLog('system', '==12345== Memcheck, a memory error detector');
         await new Promise(resolve => setTimeout(resolve, 600));
         addLog('output', (
@@ -174,6 +188,15 @@ export default function CodeLab() {
 
       case 'docker':
         if (trimmed.includes('build')) {
+          if (!trimmed.endsWith('.')) {
+            addLog('error', (
+              <div>
+                ERROR: "docker build" requires exactly 1 argument.<br/>
+                <span className="text-cyan-400 mt-1 inline-block">💡 ヒント: ビルド対象のディレクトリ（カレントディレクトリを示す <code className="bg-navy-900 px-1 rounded">.</code>）を指定し忘れましたか？例: <code className="bg-navy-900 px-1 rounded">docker build .</code></span>
+              </div>
+            ));
+            break;
+          }
           addLog('system', 'Sending build context to Docker daemon  4.096kB');
           await new Promise(resolve => setTimeout(resolve, 400));
           addLog('output', 'Step 1/5 : FROM ubuntu:22.04\n ---> 216c552ea5ba');
@@ -182,7 +205,7 @@ export default function CodeLab() {
           await new Promise(resolve => setTimeout(resolve, 800));
           addLog('output', <span className="text-green-400">Successfully built 9d8e7f6a5b4c</span>);
         } else {
-          addLog('error', 'docker: "build" requires 1 argument.');
+          addLog('error', 'docker: command not found or invalid syntax');
         }
         break;
 
