@@ -105,6 +105,29 @@ const PAGES = [
   }
 ];
 
+const SISTER_SITES_HTML = `
+  <footer style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #1e293b;">
+    <h3 style="font-size: 18px; color: #22d3ee; margin-bottom: 15px;">シロクマ技術学習エコシステム</h3>
+    <p style="font-size: 14px; color: #94a3b8; margin-bottom: 10px;">
+      C++の開発環境を自動化した後は、設計手法やGUI開発、特定ドメインへの応用も学んでみましょう。
+    </p>
+    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+      <li>
+        🔹 <strong>C++のコア設計とオブジェクト指向を深く学ぶなら：</strong><br/>
+        <a href="https://www.shirokuma-cpp.jp/" rel="noopener" style="color: #38bdf8; text-decoration: none;">シロクマC++ラボ</a>
+      </li>
+      <li>
+        🔹 <strong>C++を用いたLinux向けリアルタイム計器・GUI開発を学ぶなら：</strong><br/>
+        <a href="https://shirokuma-qt-cpp.jp/" rel="noopener" style="color: #34d399; text-decoration: none;">シロクマQt×C++ラボ</a>
+      </li>
+      <li>
+        🔹 <strong>C++の計算能力を活かした音波・信号処理（ドメイン知識）を学ぶなら：</strong><br/>
+        <a href="https://sonar-guide.jp/" rel="noopener" style="color: #60a5fa; text-decoration: none;">水中音響・ソナー技術入門</a>
+      </li>
+    </ul>
+  </footer>
+`;
+
 async function generateSEO() {
   const indexHtmlPath = path.join(distDir, 'index.html');
   if (!fs.existsSync(indexHtmlPath)) {
@@ -113,12 +136,127 @@ async function generateSEO() {
 
   const baseHtml = fs.readFileSync(indexHtmlPath, 'utf8');
 
-  // Generate subpages
+  // 1. トップページ (dist/index.html) のプリレンダリングとJSON-LD追加
+  {
+    const topJsonLd = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          'name': siteTitle,
+          'url': `${baseUrl}/`,
+          'description': siteDesc,
+          'inLanguage': 'ja',
+          'publisher': {
+            '@type': 'Organization',
+            'name': 'シロクマ技術開発室'
+          }
+        },
+        {
+          '@type': 'Course',
+          'name': 'C++開発自動化・効率化チュートリアル',
+          'description': '手作業ビルドからCMake、Pythonテスト、ASanメモリ検査、Docker、GitHub Actionsによる完全自動CI/CDまでを学ぶ実践型カリキュラム。',
+          'provider': {
+            '@type': 'Organization',
+            'name': 'シロクマ技術開発室'
+          }
+        }
+      ]
+    };
+
+    const topInitialContent = `
+      <div style="max-width: 960px; margin: 40px auto; padding: 24px; font-family: sans-serif; line-height: 1.6; color: #e2e8f0; background: #0b1322; border-radius: 16px; border: 1px solid #1e293b;">
+        <h1 style="font-size: 32px; color: #ffffff; margin-bottom: 8px;">${siteTitle}</h1>
+        <p style="font-size: 18px; color: #22d3ee; margin-bottom: 20px;">C++開発の泥臭い作業、全部「全自動化」しませんか？</p>
+        <p style="font-size: 16px; color: #94a3b8; margin-bottom: 24px;">${siteDesc}</p>
+        
+        <div style="background: #1e293b; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #334155;">
+          <h2 style="font-size: 20px; color: #f59e0b; margin-top: 0;">🎯 MISSION: テストの全自動化</h2>
+          <p style="color: #cbd5e1; margin-bottom: 0;">「このプロジェクトのテストを毎回手動で実行するのをやめたい」――手動ビルド ➔ CMake ➔ 自動テスト ➔ ASan ➔ Docker ➔ GitHub Actions による完全自動CI/CDのワークフローを構築せよ。</p>
+        </div>
+
+        <h2 style="font-size: 22px; color: #ffffff; margin-bottom: 16px;">📚 全12章カリキュラム一覧</h2>
+        <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: #cbd5e1; font-size: 15px;">
+          ${PAGES.filter(p => p.path.startsWith('chapter/')).map(p => `
+            <li><a href="/${p.path}" style="color: #38bdf8; text-decoration: none;"><strong>${p.heading}</strong></a> - ${p.desc}</li>
+          `).join('')}
+        </ol>
+
+        <div style="margin-top: 30px;">
+          <a href="/chapter/1" style="display: inline-block; padding: 12px 24px; background: #06b6d4; color: #0f172a; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 16px;">第1章から学習を開始する ➔</a>
+        </div>
+
+        ${SISTER_SITES_HTML}
+      </div>
+    `;
+
+    let topHtml = baseHtml;
+    // JSON-LD 注入
+    topHtml = topHtml.replace(
+      '</head>',
+      `  <script type="application/ld+json">${JSON.stringify(topJsonLd)}</script>\n  </head>`
+    );
+    // クローラー用初期コンテンツ注入
+    topHtml = topHtml.replace(
+      /<div id="root">.*?<\/div>/s,
+      `<div id="root">${topInitialContent}</div>`
+    );
+
+    fs.writeFileSync(indexHtmlPath, topHtml, 'utf8');
+    console.log('✅ Successfully prerendered TOP page (dist/index.html)');
+  }
+
+  // 2. 各サブページのプリレンダリング
   for (const page of PAGES) {
     const pageDir = path.join(distDir, ...page.path.split('/'));
     fs.mkdirSync(pageDir, { recursive: true });
 
     const pageUrl = `${baseUrl}/${page.path}`;
+
+    // 構造化データ (JSON-LD)
+    const pageJsonLd = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'TechArticle',
+          'headline': page.title,
+          'description': page.desc,
+          'url': pageUrl,
+          'inLanguage': 'ja',
+          'author': {
+            '@type': 'Organization',
+            'name': 'シロクマ技術開発室'
+          },
+          'publisher': {
+            '@type': 'Organization',
+            'name': siteTitle
+          },
+          'about': [
+            { '@type': 'ComputerLanguage', 'name': 'C++' },
+            { '@type': 'SoftwareApplication', 'name': 'Docker' },
+            { '@type': 'SoftwareApplication', 'name': 'CMake' },
+            { '@type': 'SoftwareApplication', 'name': 'GitHub Actions' }
+          ]
+        },
+        {
+          '@type': 'BreadcrumbList',
+          'itemListElement': [
+            {
+              '@type': 'ListItem',
+              'position': 1,
+              'name': 'TOP',
+              'item': `${baseUrl}/`
+            },
+            {
+              '@type': 'ListItem',
+              'position': 2,
+              'name': page.heading,
+              'item': pageUrl
+            }
+          ]
+        }
+      ]
+    };
 
     // クローラー用・JSオフ時の初期コンテンツ
     const initialContent = `
@@ -135,27 +273,7 @@ async function generateSEO() {
           <p><a href="/lab" style="display: inline-block; padding: 10px 20px; background: #0891b2; color: white; border-radius: 8px; text-decoration: none; font-weight: bold;">コード実行ラボを起動</a></p>
         </div>
 
-        <!-- 姉妹サイトへのカリキュラム文脈に沿った自然なリンク（SEO最適化） -->
-        <footer style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #1e293b;">
-          <h3 style="font-size: 18px; color: #22d3ee; margin-bottom: 15px;">シロクマ技術学習エコシステム</h3>
-          <p style="font-size: 14px; color: #94a3b8; margin-bottom: 10px;">
-            C++の開発環境を自動化した後は、設計手法やGUI開発、特定ドメインへの応用も学んでみましょう。
-          </p>
-          <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
-            <li>
-              🔹 <strong>C++のコア設計とオブジェクト指向を深く学ぶなら：</strong><br/>
-              <a href="https://www.shirokuma-cpp.jp/" rel="noopener" style="color: #38bdf8; text-decoration: none;">シロクマC++ラボ</a>
-            </li>
-            <li>
-              🔹 <strong>C++を用いたLinux向けリアルタイム計器・GUI開発を学ぶなら：</strong><br/>
-              <a href="https://shirokuma-qt-cpp.jp/" rel="noopener" style="color: #34d399; text-decoration: none;">シロクマQt×C++ラボ</a>
-            </li>
-            <li>
-              🔹 <strong>C++の計算能力を活かした音波・信号処理（ドメイン知識）を学ぶなら：</strong><br/>
-              <a href="https://sonar-guide.jp/" rel="noopener" style="color: #60a5fa; text-decoration: none;">水中音響・ソナー技術入門</a>
-            </li>
-          </ul>
-        </footer>
+        ${SISTER_SITES_HTML}
       </div>
     `;
 
@@ -201,6 +319,12 @@ async function generateSEO() {
         `<meta property="og:url" content="${pageUrl}" />`
       );
     }
+
+    // JSON-LD 注入
+    pageHtml = pageHtml.replace(
+      '</head>',
+      `  <script type="application/ld+json">${JSON.stringify(pageJsonLd)}</script>\n  </head>`
+    );
 
     // Inject initial content into root
     pageHtml = pageHtml.replace(
