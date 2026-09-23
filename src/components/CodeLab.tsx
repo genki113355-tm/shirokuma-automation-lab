@@ -13,8 +13,8 @@ const SCENARIOS = [
   {
     id: 1,
     chapterRef: '第1章',
-    title: 'C++テスト自動化の仕組みを体験',
-    description: '手作業のテストを自動化するまでの裏側の仕組みを、順を追ってトレースしてみましょう。',
+    title: 'Python×C++ 自動テスト連携の仕組み',
+    description: '手作業のテストを自動化するまでの裏側の仕組み（共有ライブラリ化とpytest）をトレースします。',
     mentalModel: 'C++コア計算 ➔ 共有ライブラリ(.so)化 ➔ Python/pytestで一括検証',
     prerequisites: [
       'C++はコンパイルが必要なため、テストのたびに再ビルドすると時間がかかり非効率です。',
@@ -25,34 +25,34 @@ const SCENARIOS = [
       {
         command: 'cat src/data_processor.cpp',
         matchKeywords: ['cat', 'data_processor.cpp'],
-        instruction: '【全体像：① テスト対象コードの確認】\nまずはテスト対象となるC++コードを確認し、何を検証するのか把握します。\n➔ `cat src/data_processor.cpp` と入力',
+        instruction: '【第1章 STEP 1/4：テスト対象コードの確認】\nまずはテスト対象となるC++コードを確認し、何を検証するのか把握します。\n➔ `cat src/data_processor.cpp` と入力',
         explanation: '`process` 関数は、渡された配列の数値をすべて「合計」して返す処理になっているね。\n（例： 1, 2, 3 を渡せば 6 を返す）\nこのロジックが正しく動くかどうかを、これから自動テストで検証していくよ！'
       },
       {
         command: 'cat tests/test_processor.py',
         matchKeywords: ['cat', 'test_processor.py'],
-        instruction: '【全体像：② 自動検証コードの確認】\nC++を再ビルドせず、Pythonから高速にループ検証するためのpytestコードを確認します。\n➔ `cat tests/test_processor.py` と入力',
+        instruction: '【第1章 STEP 2/4：自動検証コードの確認】\nC++を再ビルドせず、Pythonから高速にループ検証するためのpytestコードを確認します。\n➔ `cat tests/test_processor.py` と入力',
         explanation: '2行目でC++のシステムをPythonにインポートしているね。\n注目すべきは `@pytest.mark.parametrize` だ！\n「あれ？for文が無いのにどうやってループしてるの？」と思うかもしれないね。\n実はこの `@pytest...` という魔法の目印（デコレータ）をつけると、テスト実行ツールが裏側で自動的にリストの数だけ関数をループ実行してくれるんだ！\nだから自分でループを書かなくても、リストにパターンを書き足すだけで何百個でも一気に自動検証できるんだよ！'
       },
       {
         command: './build.sh',
         matchKeywords: ['./build.sh'],
-        instruction: '【全体像：③ C++の共有ライブラリ化】\nPythonからC++を直接呼べるように、C++コードを共有ライブラリ(.so)へコンパイルします。\n➔ `./build.sh` と入力',
+        instruction: '【第1章 STEP 3/4：C++の共有ライブラリ化】\nPythonからC++を直接呼べるように、C++コードを共有ライブラリ(.so)へコンパイルします。\n➔ `./build.sh` と入力',
         explanation: 'お疲れ様！今実行したスクリプトが、C++のコードをコンパイルして「Pythonから呼び出せる魔法のファイル（.soファイル）」に変換してくれたんだよ。\nこれでテストの準備は完璧だ。'
       },
       {
         command: 'pytest',
         matchKeywords: ['pytest'],
-        instruction: '【全体像：④ 一括テストの自動実行】\n準備完了！Pythonのテストランナー(pytest)を起動し、4つの検証パターンを一気に走らせます。\n➔ `pytest` と入力',
+        instruction: '【第1章 STEP 4/4：一括テストの自動実行】\n準備完了！Pythonのテストランナー(pytest)を起動し、4つの検証パターンを一気に走らせます。\n➔ `pytest` と入力',
         explanation: '素晴らしい！たった1つのコマンドで、さっきのPythonテストが一瞬で実行されたね。\n手作業で画面をポチポチしなくても、これでいつでもプログラムの正しさを証明できるよ！'
       }
     ]
   },
   {
-    id: 3,
+    id: 2,
     chapterRef: '第2章',
-    title: '「私のPCでは動いた」の撲滅',
-    description: 'Dockerを使って、環境に依存しない統一されたビルド環境を構築する流れをトレースします。',
+    title: 'Dockerで「私のPCでは動いた」を撲滅',
+    description: 'Dockerを使って、OSやコンパイラに依存しない統一されたビルド環境を構築する流れをトレースします。',
     mentalModel: 'Dockerfile(設計図) ➔ Dockerイメージ(金型) ➔ Dockerコンテナ(隔離空間)',
     prerequisites: [
       'OSやコンパイラ(GCC)のバージョンが違うだけで、C++は「私のPCでは動くのに」問題が頻発します。',
@@ -63,27 +63,65 @@ const SCENARIOS = [
       {
         command: 'cat Dockerfile',
         matchKeywords: ['cat', 'Dockerfile'],
-        instruction: '【全体像：① 環境のコード化】\n全員のPCで同じLinux・ツール群を再現するための設計図(Dockerfile)を確認します。\n➔ `cat Dockerfile` と入力',
+        instruction: '【第2章 STEP 1/3：環境のコード化】\n全員のPCで同じLinux・ツール群を再現するための設計図(Dockerfile)を確認します。\n➔ `cat Dockerfile` と入力',
         explanation: 'これがコンテナの設計図（Dockerfile）だよ！1行ずつ重要な役割があるんだ：\n・`FROM ubuntu:22.04`: ベースとなるまっさらなOS（Ubuntu）を用意する。\n・`RUN apt-get... / pip3...`: C++コンパイラ(g++)、ビルドツール(cmake)、テストツール(pytest)を自動インストールする。\n・`COPY . /app`: 手元のソースコード一式をコンテナの中（/app）へ丸ごと転送する。\n・`WORKDIR /app`: コンテナ内での作業ディレクトリを `/app` に移動する。\n・`CMD ["./build.sh"]`: コンテナを起動した瞬間に自動実行する命令を指定する。\n手順をこうしてコード化しておけば、環境構築の属人化が完全にゼロになるんだよ！'
       },
       {
         command: 'docker build -t app .',
         matchKeywords: ['docker', 'build'],
-        instruction: '【全体像：② イメージ(金型)のビルド】\n設計図をもとに、全員が同じ状態から始められるDockerイメージ(app)を組み立てます。\n➔ `docker build -t app .` と入力',
+        instruction: '【第2章 STEP 2/3：イメージ(金型)のビルド】\n設計図をもとに、全員が同じ状態から始められるDockerイメージ(app)を組み立てます。\n➔ `docker build -t app .` と入力',
         explanation: '全6ステップのビルドが完了したね！今裏側で起きた仕組みを解説するよ：\n・`docker build`: Dockerfileの命令を1行ずつ上から実行し、層（レイヤー）を重ねてOSイメージを作り上げる。\n・`-t app`: 出来上がったイメージに「app」という名前（タグ）をつけたよ。\n・`.`（末尾のドット）: 「このフォルダにあるファイルやDockerfileを使ってね」という意味。\nこれで『誰のPCでも寸分違わず同じ動きをする独立したLinux環境』がパッケージ化されたんだ！'
       },
       {
         command: 'docker run --rm app',
         matchKeywords: ['docker', 'run'],
-        instruction: '【全体像：③ 隔離コンテナでのテスト実行】\nホストPCを一切汚さず、隔離されたLinuxコンテナ内部でテストが完走するか確認します。\n➔ `docker run --rm app` と入力',
+        instruction: '【第2章 STEP 3/3：隔離コンテナでのテスト実行】\nホストPCを一切汚さず、隔離されたLinuxコンテナ内部でテストが完走するか確認します。\n➔ `docker run --rm app` と入力',
         explanation: 'お見事！ホストPCの環境を一切汚さずに、使い捨てのコンテナ内部でC++のビルドとテストが全自動で完走したね！\n`--rm` オプションを付けたから、テストが終わればゴミを残さず綺麗サッパリ消滅してくれるんだ。\n「私のPCでは動くのに」問題は、こうして完全に撲滅されるんだよ！'
       }
     ]
   },
   {
-    id: 2,
+    id: 3,
+    chapterRef: '第3章',
+    title: 'CMakeビルド自動化＆CTest一括テスト',
+    description: 'CMakeLists.txtからMakefileを自動生成し、CTestで全テストバイナリを一括実行する流れをトレースします。',
+    mentalModel: 'CMakeLists.txt(希望レシピ) ➔ cmake(Makefile自動生成) ➔ ctest(テスト一括自動実行)',
+    prerequisites: [
+      '手書きMakefileはタブ文字の罠や依存関係の手動追跡などミスが頻発するため、現代はCMakeに任せます。',
+      '人間は「add_library」「target_include_directories」と目的を宣言するだけで、CMakeが最適なMakefileを作ります。',
+      '複数のテストバイナリも、CTestを使えばコマンド1発で並列実行し、合否サマリーを自動集計できます。'
+    ],
+    steps: [
+      {
+        command: 'cat CMakeLists.txt',
+        matchKeywords: ['cat', 'CMakeLists.txt'],
+        instruction: '【第3章 STEP 1/4：CMake設計図の確認】\n人間が「やりたい目的」だけをシンプルに宣言したCMakeLists.txtを確認します。\n➔ `cat CMakeLists.txt` と入力',
+        explanation: '`CMakeLists.txt` の内容を確認できたね！\n手書きのMakefileと違って、泥臭いg++コマンドやファイルの依存関係を手作業で列挙する必要は一切ないんだ。\n人間は「sonar_coreというライブラリを作って」と目的だけをCMakeに伝えているね！'
+      },
+      {
+        command: 'cmake -B build',
+        matchKeywords: ['cmake', 'build'],
+        instruction: '【第3章 STEP 2/4：Makefileの自動生成】\nCMakeを実行し、OSやコンパイラに合わせた最適なMakefileをbuildディレクトリに自動生成させます。\n➔ `cmake -B build` と入力',
+        explanation: '`build` ディレクトリが自動作成され、その中に最適な `Makefile` が全自動生成されたよ！\nコンパイラ（g++）の存在チェックや依存関係の解析も、CMakeが裏側で全部完了させてくれたんだ。'
+      },
+      {
+        command: 'cmake --build build',
+        matchKeywords: ['--build'],
+        instruction: '【第3章 STEP 3/4：並列ビルドの実行】\n生成されたMakefileを元に、ライブラリとテストバイナリを一括コンパイル＆リンクします。\n➔ `cmake --build build` と入力',
+        explanation: 'ビルド完了！裏側でMakeが走り、コアライブラリ `libsonar_core.a` とテスト実行ファイル `sonar_test` が一気にコンパイル・リンクされたよ！\nソースコードを修正したときは、更新されたファイルだけが差分コンパイルされるから超高速なんだ。'
+      },
+      {
+        command: 'ctest --test-dir build --output-on-failure',
+        matchKeywords: ['ctest'],
+        instruction: '【第3章 STEP 4/4：CTestによるテスト一括自動実行】\n何十個ものテストバイナリを1つずつ叩く代わりに、CTestで一括並列実行します！\n➔ `ctest --test-dir build --output-on-failure` と入力',
+        explanation: 'お見事！CTestによって登録された全テストが一括並列実行され、「100% tests passed」とサマリーが集計されたね！\nCI/CD自動化パイプラインでも、この ctest コマンドの成否（終了コード0か1か）を見て自動判定するんだよ！'
+      }
+    ]
+  },
+  {
+    id: 9,
     chapterRef: '第9章',
-    title: '見えないメモリリークの特定',
+    title: 'Valgrindで見えないメモリリークを特定',
     description: '動的解析ツールを使って、目視では見つけられないメモリの解放忘れを特定する流れをトレースします。',
     mentalModel: 'new(メモリ確保) ➔ delete忘れ ➔ プロセス終了まで残存 ➔ Valgrindで検知',
     prerequisites: [
@@ -95,13 +133,13 @@ const SCENARIOS = [
       {
         command: 'cat src/main.cpp',
         matchKeywords: ['cat', 'main.cpp'],
-        instruction: '【全体像：① バグの潜むコード確認】\n一見普通に動くけれど、メモリの解放忘れ(newの放置)が潜んでいるC++コードを確認します。\n➔ `cat src/main.cpp` と入力',
+        instruction: '【第9章 STEP 1/2：バグの潜むコード確認】\n一見普通に動くけれど、メモリの解放忘れ(newの放置)が潜んでいるC++コードを確認します。\n➔ `cat src/main.cpp` と入力',
         explanation: 'コードの後半を見てごらん。 `new int[100]` でメモリを確保しているのに、どこにも `delete` が書かれていないよね。\nこれがシステムをクラッシュさせる「メモリリーク」の正体だよ。'
       },
       {
         command: 'valgrind ./app',
         matchKeywords: ['valgrind', './app'],
-        instruction: '【全体像：② 動的解析ツールの実行】\n目視では見つけられないメモリの解放漏れを、Valgrindを使って実行中に監視・特定します。\n➔ `valgrind ./app` と入力',
+        instruction: '【第9章 STEP 2/2：動的解析ツールの実行】\n目視では見つけられないメモリの解放漏れを、Valgrindを使って実行中に監視・特定します。\n➔ `valgrind ./app` と入力',
         explanation: '赤い文字で `definitely lost: 400 bytes` と出たね！\nValgrindはこうやって、目で見つけにくいメモリの解放忘れをプログラムを実行しながら監視して教えてくれる、心強い相棒なんだ。'
       }
     ]
@@ -133,9 +171,11 @@ export default function CodeLab() {
   useEffect(() => {
     if (isLabOpen) {
       if (currentChapter === 2) {
-        setActiveScenarioId(3); // Docker (第2章対応)
+        setActiveScenarioId(2); // Docker (第2章対応)
+      } else if (currentChapter === 3) {
+        setActiveScenarioId(3); // CMake & CTest (第3章対応)
       } else if (currentChapter === 9) {
-        setActiveScenarioId(2); // Memory leak (第9章対応)
+        setActiveScenarioId(9); // Memory leak (第9章対応)
       } else {
         setActiveScenarioId(1); // Default C++ Auto Test (第1章対応)
       }
@@ -143,7 +183,7 @@ export default function CodeLab() {
   }, [isLabOpen, currentChapter]);
 
   const [completedScenarios, setCompletedScenarios] = useState<number[]>([]);
-  const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0 });
+  const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 9: 0 });
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
   
@@ -183,7 +223,7 @@ export default function CodeLab() {
                   {stepIndex === 0 && (
                     <div className="text-slate-300 mt-3 p-3.5 bg-slate-800/90 border border-cyan-500/30 rounded-xl mb-3 shadow-lg animate-fade-in">
                       <div className="font-bold text-sm text-cyan-400 flex items-center gap-2 mb-2">
-                        <BookOpen size={16} /> 【ミッション全体像と前提知識】
+                        <BookOpen size={16} /> 【{activeScenario.chapterRef}ミッションの全体像と前提知識】
                       </div>
                       <div className="text-xs bg-navy-950/80 p-2 rounded border border-slate-700 font-mono text-cyan-200 mb-2">
                         {activeScenario.mentalModel}
@@ -197,7 +237,7 @@ export default function CodeLab() {
                   )}
                   <div className="text-cyan-400 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
                     <div className="font-bold text-lg mb-1 flex items-center gap-2">
-                      <Map size={18} /> 【STEP {stepIndex + 1}/{activeScenario.steps.length}】
+                      <Map size={18} /> 【{activeScenario.chapterRef} STEP {stepIndex + 1}/{activeScenario.steps.length}】
                     </div>
                     <div className="text-slate-200 whitespace-pre-wrap">{step.instruction}</div>
                   </div>
@@ -502,6 +542,56 @@ export default function CodeLab() {
         }
         break;
 
+      case 'cmake':
+        isStandardCommand = true;
+        if (args.includes('-B') || args.includes('-b') || args.some(a => a.toLowerCase().includes('build') && !a.includes('--build'))) {
+          addLog('system', '-- The CXX compiler identification is GNU 11.4.0');
+          await new Promise(resolve => setTimeout(resolve, 400));
+          addLog('output', (
+            <div className="text-slate-300 font-mono text-xs">
+              -- Detecting CXX compiler ABI info - done<br/>
+              -- Check for working CXX compiler: /usr/bin/g++ - skipped<br/>
+              -- Detecting CXX compile features - done<br/>
+              -- Configuring done (0.2s)<br/>
+              -- Generating done (0.1s)<br/>
+              <span className="text-cyan-400 font-bold">-- Build files have been written to: /app/build (Makefile generated)</span>
+            </div>
+          ));
+        } else if (args.includes('--build')) {
+          addLog('system', 'Executing build target in build/ ...');
+          await new Promise(resolve => setTimeout(resolve, 600));
+          addLog('output', (
+            <div className="text-slate-300 font-mono text-xs">
+              [ 25%] Building CXX object CMakeFiles/sonar_core.dir/src/sonar_filter.cpp.o<br/>
+              [ 50%] Building CXX object CMakeFiles/sonar_core.dir/src/math_utils.cpp.o<br/>
+              [ 75%] Linking CXX static library libsonar_core.a<br/>
+              <span className="text-green-400 font-bold">[ 75%] Built target sonar_core</span><br/>
+              [100%] Building CXX object tests/CMakeFiles/sonar_test.dir/test_main.cpp.o<br/>
+              [100%] Linking CXX executable tests/sonar_test<br/>
+              <span className="text-cyan-400 font-bold">[100%] Built target sonar_test</span>
+            </div>
+          ));
+        } else {
+          addLog('output', 'Usage: cmake -B build | cmake --build build');
+        }
+        break;
+
+      case 'ctest':
+        isStandardCommand = true;
+        addLog('system', 'Test project /app/build');
+        await new Promise(resolve => setTimeout(resolve, 500));
+        addLog('output', (
+          <div className="text-slate-200 font-mono text-xs">
+            &nbsp;&nbsp;&nbsp;&nbsp;Start 1: SonarFilterTest.SignalAttenuation<br/>
+            1/2 Test #1: SonarFilterTest.SignalAttenuation .... <span className="text-green-400 font-bold">Passed</span>&nbsp;&nbsp;&nbsp;&nbsp;0.02 sec<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;Start 2: MathUtilsTest.VectorSum<br/>
+            2/2 Test #2: MathUtilsTest.VectorSum .............. <span className="text-green-400 font-bold">Passed</span>&nbsp;&nbsp;&nbsp;&nbsp;0.01 sec<br/><br/>
+            <span className="text-green-400 font-bold text-sm">100% tests passed, 0 tests failed out of 2</span><br/>
+            Total Test time (real) = 0.04 sec
+          </div>
+        ));
+        break;
+
       default:
         addLog('error', `bash: ${baseCmd}: command not found`);
     }
@@ -543,7 +633,7 @@ export default function CodeLab() {
           addLog('system', (
             <div className="text-cyan-400 mt-6 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
               <div className="font-bold text-lg mb-1 flex items-center gap-2">
-                <Map size={18} /> 【STEP {nextStepIndex + 1}/{activeScenario!.steps.length}】
+                <Map size={18} /> 【{activeScenario!.chapterRef} STEP {nextStepIndex + 1}/{activeScenario!.steps.length}】
               </div>
               <div className="text-slate-200 whitespace-pre-wrap">{nextStep.instruction}</div>
             </div>
@@ -580,12 +670,12 @@ export default function CodeLab() {
       const lastWord = words[words.length - 1];
 
       if (words.length === 1) {
-        const cmds = ['cat ', 'ls', 'clear', 'pytest', './build.sh', 'valgrind ', 'docker '];
+        const cmds = ['cat ', 'ls', 'clear', 'pytest', './build.sh', 'valgrind ', 'docker ', 'cmake ', 'ctest '];
         const match = cmds.find(c => c.startsWith(input));
         if (match) setInput(match);
       } else {
         const searchWord = lastWord || '';
-        const paths = ['tests/test_processor.py', 'src/main.cpp', 'Dockerfile', './app'];
+        const paths = ['tests/test_processor.py', 'src/main.cpp', 'Dockerfile', 'CMakeLists.txt', './app'];
         const match = paths.find(p => p.startsWith(searchWord));
         if (match) {
           words[words.length - 1] = match;
@@ -765,14 +855,19 @@ export default function CodeLab() {
               onClick={focusInput}
             >
               {/* Terminal Header */}
-              <div className="bg-[#2d2d2d] border-b border-slate-700 p-3 flex items-center justify-between select-none">
-                <div className="flex items-center gap-4">
+              <div className="bg-[#2d2d2d] border-b border-slate-700 p-3 flex flex-wrap items-center justify-between gap-2 select-none">
+                <div className="flex items-center gap-3">
                   <div className="flex gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  <div className="text-xs text-slate-400 font-mono">bash - shirokuma@ubuntu: ~/shirokuma-lab</div>
+                  <div className="text-xs text-slate-300 font-mono flex items-center gap-2">
+                    <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2.5 py-0.5 rounded text-[11px] font-bold">
+                      🎯 {activeScenario?.chapterRef}実践ミッション
+                    </span>
+                    <span className="text-white font-bold hidden sm:inline">{activeScenario?.title}</span>
+                  </div>
                 </div>
                 <button 
                   onClick={(e) => {
@@ -780,19 +875,37 @@ export default function CodeLab() {
                     const textToCopy = history.map(h => typeof h.content === 'string' ? h.content : '').filter(Boolean).join('\n');
                     navigator.clipboard.writeText(textToCopy);
                   }}
-                  className="text-slate-400 hover:text-white flex items-center gap-1 text-xs px-2 py-1 bg-navy-800 rounded border border-slate-700 transition-colors"
+                  className="text-slate-400 hover:text-white flex items-center gap-1 text-xs px-2 py-1 bg-navy-800 rounded border border-slate-700 transition-colors cursor-pointer"
                   title="ログをコピー"
                 >
                   <FileText size={12} /> Copy
                 </button>
               </div>
 
+              {/* Mobile Scenario Selector Tabs */}
+              <div className="md:hidden flex items-center gap-2 px-3 py-2 bg-navy-950 border-b border-slate-700 overflow-x-auto select-none shrink-0">
+                <span className="text-[11px] text-slate-400 shrink-0 font-bold">ミッション切替:</span>
+                {SCENARIOS.map(s => (
+                  <button
+                    key={s.id}
+                    onClick={() => setActiveScenarioId(s.id)}
+                    className={`shrink-0 px-2.5 py-1 rounded text-xs font-bold transition-all ${
+                      activeScenarioId === s.id
+                        ? 'bg-cyan-500 text-navy-950 font-black shadow-md'
+                        : 'bg-navy-800 text-slate-300 border border-slate-700'
+                    }`}
+                  >
+                    {s.chapterRef}
+                  </button>
+                ))}
+              </div>
+
               {/* Chapter Guard Notice Banner */}
-              {currentChapter && ![1, 2, 9].includes(currentChapter) && (
-                <div className="bg-amber-950/50 border-b border-amber-500/30 px-4 py-2 text-xs text-amber-200/90 flex items-center justify-between select-none shrink-0">
+              {currentChapter && ![1, 2, 3, 9].includes(currentChapter) && (
+                <div className="bg-amber-950/60 border-b border-amber-500/40 px-4 py-2 text-xs text-amber-200/90 flex items-center justify-between select-none shrink-0">
                   <div className="flex items-center gap-2">
                     <span className="text-base">💡</span>
-                    <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。左側メニューから【第1・2・9章】の実践シナリオをお試しいただけます。</span>
+                    <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。上記タブから<strong>【第1・2・3・9章】</strong>の実践ミッションをお試しいただけます。</span>
                   </div>
                 </div>
               )}
@@ -850,7 +963,7 @@ export default function CodeLab() {
                     <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle2 size={32} className="text-emerald-400" />
                     </div>
-                    <h3 className="text-2xl font-black text-white mb-2">シナリオコンプリート！</h3>
+                    <h3 className="text-2xl font-black text-white mb-2">【{activeScenario?.chapterRef}ミッション】コンプリート！</h3>
                     <p className="text-slate-300 text-sm mb-6">
                       素晴らしい！{activeScenario?.title} の仕組みを完全にトレースしました。
                     </p>

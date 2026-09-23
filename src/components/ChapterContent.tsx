@@ -119,25 +119,59 @@ export default function ChapterContent() {
       <div className="pt-6 sm:pt-10 space-y-6">
 
         {/* ▶ 課題解決ミッション（CodeLab）への導線 */}
-        <div className="bg-gradient-to-r from-navy-800 to-cyan-950/40 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="relative z-10 space-y-2 text-center md:text-left">
-            <h4 className="text-lg sm:text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
-              <Zap className="text-cyan-400" size={24} /> 
-              読んだ後は、実際に手を動かして解決してみよう！
-            </h4>
-            <p className="text-sm text-slate-300">
-              ブラウザ上の「コード実行ラボ」で、手動テスト地獄や環境構築の課題に挑戦できます。
-            </p>
-          </div>
-          <button
-            onClick={openLab}
-            className="w-full md:w-auto shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 relative z-10 cursor-pointer"
-          >
-            <Play size={20} fill="currentColor" />
-            今すぐミッションに挑戦する
-          </button>
-        </div>
+        {(() => {
+          const chapterMissions: Record<number, { title: string; desc: string; buttonText: string }> = {
+            1: {
+              title: '【第1章 実践ミッション】Python×C++ 自動テスト連携を体験！',
+              desc: '第1章で学んだ「C++の共有ライブラリ化」と「pytestによる一括検証」の全自動サイクルを、ブラウザ上で実際にコマンド入力して体験できます。',
+              buttonText: '第1章のミッションに挑戦する',
+            },
+            2: {
+              title: '【第2章 実践ミッション】Dockerで「私のPCでは動いた」を撲滅！',
+              desc: 'Dockerfileの設計図確認からイメージのビルド、使い捨て隔離コンテナ内部でのテスト完走までをブラウザ上で体験できます。',
+              buttonText: '第2章のミッションに挑戦する',
+            },
+            3: {
+              title: '【第3章 実践ミッション】CMakeビルド自動化＆CTest一括テスト！',
+              desc: '手書きMakefileの苦行から解放！CMakeLists.txtによるMakefile自動生成とCTestによる一括並列テストをブラウザ上で体験できます。',
+              buttonText: '第3章のミッションに挑戦する',
+            },
+            9: {
+              title: '【第9章 実践ミッション】Valgrindで見えないメモリリークを特定！',
+              desc: 'deleteし忘れたC++プログラムを動的解析ツールValgrindにかけ、1バイト単位でメモリ漏れをあぶり出すデバッグ体験ができます。',
+              buttonText: '第9章のミッションに挑戦する',
+            },
+          };
+
+          const currentMission = chapterMissions[meta.chapterId];
+
+          return (
+            <div className="bg-gradient-to-r from-navy-800 to-cyan-950/40 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+              <div className="relative z-10 space-y-2 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-1">
+                  <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                    {currentMission ? `🎯 第${meta.chapterId}章 実践ハンズオン` : '🎯 コード実行ラボ（ハンズオン演習）'}
+                  </span>
+                </div>
+                <h4 className="text-lg sm:text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                  <Zap className="text-cyan-400" size={24} /> 
+                  {currentMission ? currentMission.title : 'コード実行ラボで実際のC++自動化を体験しよう！'}
+                </h4>
+                <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
+                  {currentMission ? currentMission.desc : 'ブラウザ上のコード実行ラボで、【第1章：テスト自動化】【第2章：Docker】【第3章：CMake/CTest】【第9章：メモリ解析】の実践ミッションを体験できます。'}
+                </p>
+              </div>
+              <button
+                onClick={openLab}
+                className="w-full md:w-auto shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 relative z-10 cursor-pointer"
+              >
+                <Play size={20} fill="currentColor" />
+                {currentMission ? currentMission.buttonText : '実践ミッションを開く（第1・2・3・9章）'}
+              </button>
+            </div>
+          );
+        })()}
 
         {meta.chapterId === 12 && (
           <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-r from-emerald-950/80 via-navy-900 to-[#062016] border border-emerald-500/40 flex flex-col md:flex-row items-center justify-between gap-5 shadow-2xl relative overflow-hidden mt-8">
