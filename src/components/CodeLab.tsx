@@ -409,12 +409,31 @@ export default function CodeLab() {
         isStandardCommand = true;
         if (trimmed.includes('build')) {
           addLog('system', 'Sending build context to Docker daemon  4.096kB');
+          await new Promise(resolve => setTimeout(resolve, 300));
+          addLog('output', 'Step 1/6 : FROM ubuntu:22.04\n ---> 216c552ea5ba');
           await new Promise(resolve => setTimeout(resolve, 400));
-          addLog('output', 'Step 1/5 : FROM ubuntu:22.04\n ---> 216c552ea5ba');
+          addLog('output', 'Step 2/6 : RUN apt-get update && apt-get install -y g++ cmake python3 python3-pip\n ---> Running in 8b4a2d9c1e3f\n ---> a1b2c3d4e5f6');
+          await new Promise(resolve => setTimeout(resolve, 350));
+          addLog('output', 'Step 3/6 : RUN pip3 install pytest\n ---> Running in 9f8e7d6c5b4a\n ---> b2c3d4e5f6a1');
+          await new Promise(resolve => setTimeout(resolve, 250));
+          addLog('output', 'Step 4/6 : COPY . /app\n ---> c3d4e5f6a1b2');
+          await new Promise(resolve => setTimeout(resolve, 250));
+          addLog('output', 'Step 5/6 : WORKDIR /app\n ---> Running in d4e5f6a1b2c3\n ---> e5f6a1b2c3d4');
+          await new Promise(resolve => setTimeout(resolve, 250));
+          addLog('output', 'Step 6/6 : CMD ["./build.sh"]\n ---> Running in f6a1b2c3d4e5\n ---> 9d8e7f6a5b4c');
+          await new Promise(resolve => setTimeout(resolve, 300));
+          addLog('output', (
+            <div>
+              <span className="text-green-400 font-bold">Successfully built 9d8e7f6a5b4c</span><br/>
+              <span className="text-cyan-400 font-bold">Successfully tagged app:latest</span>
+            </div>
+          ));
+        } else if (trimmed.includes('run')) {
+          addLog('system', 'Running container app:latest...');
           await new Promise(resolve => setTimeout(resolve, 400));
-          addLog('output', 'Step 2/5 : RUN apt-get update && apt-get install -y g++ cmake\n ---> Running in 8b4a2d9c1e3f');
-          await new Promise(resolve => setTimeout(resolve, 800));
-          addLog('output', <span className="text-green-400">Successfully built 9d8e7f6a5b4c</span>);
+          addLog('output', 'Building C++ extensions for Python inside container...\nAll tests passed inside isolated Linux container!');
+        } else {
+          addLog('output', 'Usage: docker build -t <tag> . | docker run <image>');
         }
         break;
 
