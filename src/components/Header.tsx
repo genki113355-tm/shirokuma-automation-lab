@@ -35,9 +35,29 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
         {currentChapter && (
           <div className="flex items-center gap-1.5 ml-1 text-xs font-medium text-slate-400 shrink-0">
             <span className="flex items-center text-slate-500"><ChevronRight size={16} /></span>
-            <span className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 whitespace-nowrap font-bold">
-              第{currentChapter}章
-            </span>
+            
+            <div className="flex items-center gap-3 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 whitespace-nowrap">
+              <span className="text-cyan-400 font-bold">第{currentChapter}章</span>
+              
+              <div className="hidden sm:flex items-center gap-1 border-l border-cyan-500/30 pl-3">
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const chapNum = i + 1;
+                  const isCurrent = chapNum === parseInt(currentChapter);
+                  const isPast = chapNum < parseInt(currentChapter);
+                  
+                  return (
+                    <div 
+                      key={chapNum}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        isCurrent ? 'w-4 bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.6)]' :
+                        isPast ? 'w-1.5 bg-cyan-700' : 'w-1.5 bg-slate-600/50'
+                      }`}
+                      title={`第${chapNum}章`}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
         )}
       </div>
