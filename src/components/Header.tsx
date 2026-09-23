@@ -47,12 +47,16 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
       <div className="flex items-center gap-3">
         <button 
           onClick={openLab}
+          aria-label="コード実行ラボを開く"
           className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors cursor-pointer"
         >
           <Play size={14} fill="currentColor" />
           <span>コード実行ラボ</span>
         </button>
-        <button className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors hidden sm:flex">
+        <button 
+          aria-label="環境構築スクリプトをダウンロード"
+          className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors hidden sm:flex"
+        >
           <Download size={14} />
           <span>環境構築スクリプト</span>
         </button>

@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  lab:
+    build: .
+    volumes:
+      - .:/app
+    command: bash -c "./build.sh && pytest"

@@ -5,7 +5,7 @@ export const meta = {
   chapterId: 3,
   category: "環境構築・インフラ編",
   title: "CMakeを使ったターゲットビルドとテスト（CTest）の統合",
-  description: "生の手書きMakefileと格闘するのはやめましょう。CMakeを使って、プロダクトコードとテストコードを綺麗に分離してビルドし、CTestで一括実行するモダンな設計を学びます。",
+  description: "生の手書きMakefileから脱却！CMakeLists.txtによるターゲット分割ビルドと、CTestによるテストバイナリの並列一括実行・合否サマリー自動集計を実践。",
   responsibility: "CMakeビルドスクリプト構築・CTest統合",
   evolution: "手書きMakefileの依存関係地獄から解放され、コマンド一発で全テストバイナリを一括実行可能に！",
   tags: ["#CMake", "#CTest", "#ビルド自動化"]
@@ -201,3 +201,10 @@ ctest --test-dir build --output-on-failure
 > 📚 **CTestのコマンドや詳細設定をもっと知りたい方へ**  
 > `-R` による特定テストのピンポイント実行、`-j` によるCPU並列実行、タイムアウト設定、CI向けJUnit XML出力など、実務で必須のCTestテクニックは付録として体系化しています。  
 > ➔ **[【付録 2】CTest 逆引き実践リファレンス](/appendix/ctest)** も合わせてご参照ください！
+
+<RelatedLab 
+  target="cpp"
+  title="シロクマC++ラボ：Makefileとコンパイル・リンク入門"
+  description="CMakeが裏で生成しているMakefileや、g++による分割コンパイル、静的ライブラリ（.a）と動的リンクの低レイヤな仕組みを復習したい方はこちら。"
+  url="https://www.shirokuma-cpp.jp"
+/>

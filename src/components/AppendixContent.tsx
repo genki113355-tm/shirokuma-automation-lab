@@ -128,6 +128,7 @@ export default function AppendixContent() {
         )}
         <Link
           to={otherAppendix.path}
+          aria-label={otherAppendix.label}
           className="text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 bg-cyan-950/40 border border-cyan-500/30 px-3 py-1.5 rounded-lg"
         >
           {otherAppendix.label}
@@ -166,12 +167,14 @@ export default function AppendixContent() {
           <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
             <Link
               to={`/chapter/${relatedChapter}`}
+              aria-label={`${relatedChapterName}に戻る`}
               className="bg-navy-700 hover:bg-navy-600 text-white font-bold px-5 py-3 rounded-xl border border-cyan-500/30 flex items-center justify-center gap-2 text-sm transition-colors"
             >
               <ArrowLeft size={16} /> {relatedChapterName}に戻る
             </Link>
             <button
               onClick={() => openLab(relatedChapter)}
+              aria-label={`第${relatedChapter}章のコード実行ラボミッションを開く`}
               className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 text-sm transition-all cursor-pointer"
             >
               <Terminal size={16} /> 第{relatedChapter}章ミッションを開く

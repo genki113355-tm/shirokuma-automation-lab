@@ -5,7 +5,7 @@ export const meta = {
   chapterId: 2,
   category: "環境構築・インフラ編",
   title: "Dockerによる再現性のあるビルド基盤の構築",
-  description: "「私のPCでは動くのに...」というC++最大の環境依存問題を、Dockerコンテナ技術を用いて根本から解決する実践的なハンズオン。",
+  description: "「私のPCでは動いたのに」を根絶！DockerfileによるUbuntu環境のコード化、GCC/CMakeのパッケージ化、使い捨て隔離コンテナでの確実なビルド＆テスト自動完走手法を解説。",
   responsibility: "Dockerfile作成・ボリュームマウント・コンテナ起動",
   evolution: "環境依存によるビルド失敗が消滅し、チーム全員が1秒で同じ開発環境を構築できるようになる！",
   tags: ["#Docker", "#環境構築", "#インフラ自動化"]
@@ -143,3 +143,10 @@ g++ (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
 </Dialogue>
 
 環境依存の呪縛から解放されました。次章からは、このクリーンな環境の上で、**CMake**を用いたモダンなビルドシステムの構築に進みます。
+
+<RelatedLab 
+  target="cpp"
+  title="シロクマC++ラボ：開発環境セットアップガイド（ローカルVS Code設定・コンパイラ入門）"
+  description="Dockerによるコンテナ化の前に、ホストPC側でのVS Code設定やC++拡張機能、コンパイラ（GCC/Clang）の動作原理を基礎から学びたい方はこちら。"
+  url="https://www.shirokuma-cpp.jp"
+/>

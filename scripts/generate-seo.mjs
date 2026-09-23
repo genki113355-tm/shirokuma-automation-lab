@@ -22,14 +22,14 @@ const PAGES = [
   {
     path: 'chapter/1',
     title: '第1章: C++と自動化の重要性 | シロクマ C++開発自動化ラボ',
-    desc: 'なぜC++開発においてビルドやテストの自動化が必要なのか？手動作業の限界と自動化のメリットを解説します。',
+    desc: 'C++開発における「ビルド→手動実行→目視確認」の泥臭いループを脱却！なぜコンパイル言語こそテストとビルドの自動化が必要なのか、手作業の限界と自動化の絶大な効果を徹底解説。',
     heading: '【Chap 1】C++と自動化の重要性',
     content: 'C++開発における手作業（コンパイル、テスト、メモリチェック）の辛さと、それをPythonやDockerで自動化するアプローチについて学びます。'
   },
   {
     path: 'chapter/2',
     title: '第2章: Docker環境構築 | シロクマ C++開発自動化ラボ',
-    desc: '「私のPCでは動いた」を撲滅するDockerを活用したC++ビルド環境のコンテナ化手法を解説。',
+    desc: '「自分のPCでは動いた」を根絶する！Ubuntu環境をDockerコンテナ化し、aptパッケージの自動インストールとgcc/g++ビルド基盤をチーム共通で再現する手法をマスター。',
     heading: '【Chap 2】Docker環境構築',
     content: 'チーム開発における環境依存をなくすため、Dockerfileを記述し、UbuntuベースのC++ビルド環境を構築します。'
   },
@@ -50,56 +50,56 @@ const PAGES = [
   {
     path: 'chapter/5',
     title: '第5章: PythonからC++を直接叩く | シロクマ C++開発自動化ラボ',
-    desc: 'pybind11を活用してC++の共有ライブラリをPythonから直接呼び出すバインディング技術。',
+    desc: 'C++の共有ライブラリ（.so）をpybind11でラップしてPythonモジュール化！ヘッダと型変換を自動バインドし、PythonからC++の超高速ロジックを1行で呼び出す架け橋を構築。',
     heading: '【Chap 5】PythonからC++を直接叩く',
     content: 'Pythonの柔軟なエコシステム（pytestなど）を活用するため、pybind11を用いてC++コードをPythonモジュール化します。'
   },
   {
     path: 'chapter/6',
     title: '第6章: Python統合の実践 | シロクマ C++開発自動化ラボ',
-    desc: 'C++モジュールとPythonスクリプトを連携させた実務レベルのテスト・制御手法。',
+    desc: 'pybind11でバインドしたC++モジュールをPythonスクリプトから対話的に操作！ctypesやシェルスクリプトとの違いを比較し、C++の計算速度とPythonの柔軟性を融合した実務設計を学ぶ。',
     heading: '【Chap 6】Python統合の実践',
     content: 'C++の高速な処理をPythonの柔軟なスクリプトから制御し、自動化システムのコアとなる連携部分を実践します。'
   },
   {
     path: 'chapter/7',
     title: '第7章: Pytestによる評価自動化 | シロクマ C++開発自動化ラボ',
-    desc: 'Pythonの強力なテストフレームワークpytestを用いて、C++コードの挙動を簡潔かつ網羅的に自動テストします。',
+    desc: 'C++のロジックテストをあえてPythonのpytestで自動化！@pytest.mark.parametrizeを使った大量テストデータの一括投入や、NumPy・Matplotlibによる数理検証とグラフ可視化を実践。',
     heading: '【Chap 7】Pytestによる評価自動化',
     content: 'C++のテストをあえてPython（pytest）で行うメリットと、パラメーター化テストなど高度なテスト自動化手法を解説。'
   },
   {
     path: 'chapter/8',
     title: '第8章: AddressSanitizerメモリチェック | シロクマ C++開発自動化ラボ',
-    desc: 'C++特有のメモリリークや不正アクセスを自動検知するAddressSanitizer (ASan) の導入。',
+    desc: 'リリース後に発覚すると致命傷になるC++のメモリバグ。GCC/ClangのAddressSanitizer（ASan）をコンパイラオプション1つで有効化し、バッファオーバーフローやUse-after-Freeを実行時に即死検知。',
     heading: '【Chap 8】AddressSanitizerメモリチェック',
     content: 'コンパイラにASanフラグを追加し、テスト実行時にメモリバグを自動的に検知してクラッシュさせるセキュアな自動化パイプライン。'
   },
   {
     path: 'chapter/9',
     title: '第9章: Sanitizerによるメモリ解析 | シロクマ C++開発自動化ラボ',
-    desc: 'ValgrindやSanitizerのログを解析し、C++のメモリ障害を自動化フローの中で特定・報告する手法。',
+    desc: 'テストはパスしたのにメモリが解放されていない……。ASanのLeakSanitizer（LSan）を活用し、CI実行時にメモリリークを自動検知してパイプラインを即座に失敗させる防御ラインを構築。',
     heading: '【Chap 9】Sanitizerによるメモリ解析',
     content: 'CI上でSanitizerの出力をパースし、メモリリークを発見した際に自動的にテストをフェイルさせる実践的な運用方法。'
   },
   {
     path: 'chapter/10',
     title: '第10章: GitHub Actionsによる自動化 | シロクマ C++開発自動化ラボ',
-    desc: 'これまでに構築したビルド・テスト・メモリチェックの全工程を、GitHub Actionsで完全自動のCI/CDパイプラインに乗せる。',
+    desc: 'GitHub Actionsで完全自動のCI/CDパイプラインを構築！コードをgit pushするだけでDockerビルド、CTest、ASan、pytestが全自動実行されるゲートウェイを構築。',
     heading: '【Chap 10】GitHub Actionsによる自動化',
     content: 'ソースコードをPushするだけで、Docker上でのビルド、pytest、ASanチェックが全自動で走るCI環境を構築します。'
   },
   {
     path: 'chapter/11',
     title: '第11章: HILシミュレーションへの応用 | シロクマ C++開発自動化ラボ',
-    desc: 'Hardware-in-the-Loop。実機と連携したC++の自動テストシステムへの応用と将来展望。',
+    desc: '実機ハードウェアとシミュレータを組み合わせたHardware-in-the-Loop（HIL）テスト。Pythonでモックを作成し、実機レスでC++コアロジックを全自動検証する車載・組み込みの極意を解説。',
     heading: '【Chap 11】HILシミュレーションへの応用',
     content: '実機ハードウェアとPCを連携させたシミュレーション環境において、Pythonスクリプトで一連の動作を自動化・検証する手法。'
   },
   {
     path: 'chapter/12',
     title: '第12章: 自動テストシステム構築の実践 | シロクマ C++開発自動化ラボ',
-    desc: 'C++開発における「泥臭い手作業」を排除した、モダンな自動化エコシステム構築の総括。',
+    desc: 'C++開発における「泥臭い手作業」を完全駆逐した全自動化システムの総括。開発環境からCI/CD・品質保証までを統合したモダンC++エンジニアのベストプラクティス。',
     heading: '【Chap 12】自動テストシステム構築の実践',
     content: '全カリキュラムの総括として、C++開発者に求められる「自動化・効率化」の全体像とマインドセットを振り返ります。'
   },
@@ -338,6 +338,14 @@ async function generateSEO() {
       pageHtml = pageHtml.replace(
         /<meta property="og:url" content=".*?" \/>/s,
         `<meta property="og:url" content="${pageUrl}" />`
+      );
+      pageHtml = pageHtml.replace(
+        /<meta name="twitter:title" content=".*?" \/>/s,
+        `<meta name="twitter:title" content="${escapeHtml(page.title)}" />`
+      );
+      pageHtml = pageHtml.replace(
+        /<meta name="twitter:description" content=".*?" \/>/s,
+        `<meta name="twitter:description" content="${escapeHtml(page.desc)}" />`
       );
     }
 

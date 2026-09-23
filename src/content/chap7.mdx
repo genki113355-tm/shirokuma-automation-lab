@@ -5,7 +5,7 @@ export const meta = {
   chapterId: 7,
   category: "自動評価編",
   title: "Pythonによる「誤差評価・グラフ化」の全自動化",
-  description: "C++の出力結果と理論値を比較し、RMSE（二乗平均平方根誤差）の算出からエラー時のMatplotlibグラフ保存までを自動化する仕組みを構築します。",
+  description: "pytestのパラメタライズテストとMatplotlibを連携！何百通りのパラメータ境界値を一括自動検証し、波形比較グラフを自動画像生成してレポート化する手法。",
   responsibility: "pytest導入・RMSE評価・Matplotlibグラフ自動生成",
   evolution: "Excelでの手動グラフ作成・目視確認が完全に消滅。エラー起因が一瞬でわかるプロ品質の自動化パイプラインが完成！",
   tags: ["#pytest", "#Matplotlib", "#自動テスト"]
@@ -77,3 +77,10 @@ def test_sonar_lowpass_filter():
 <Dialogue character="shirokuma" title="シロクマ先生の総括">
   「そういうことだ。これで『目視確認による見落とし』はゼロになり、アルゴリズムをリファクタリングしても、一瞬でデグレ（先祖返り）を検知できるようになったね。次章からは、この仕組みをさらに強力にする『シェルスクリプトによる一括実行』と『CI/CD連携』というインフラ技術に踏み込んでいくよ。」
 </Dialogue>
+
+<RelatedLab 
+  target="qt"
+  title="シロクマQt×C++ラボ：産業機器向けリアルタイム波形描画ダッシュボード"
+  description="Python/Matplotlibによる静的なテストレポート生成だけでなく、C++/Qtによる60fpsのリアルタイム波形オシロスコープ描画を学びたい方はこちら。"
+  url="https://shirokuma-qt-cpp.jp"
+/>

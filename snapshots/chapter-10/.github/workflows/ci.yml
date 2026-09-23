@@ -1,0 +1,34 @@
+name: Shirokuma C++ CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ python3-pip valgrind
+          pip3 install pytest numpy matplotlib
+
+      - name: Configure CMake & Build (with ASan)
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Debug -DENABLE_ASAN=ON
+          cmake --build build -j$(nproc)
+
+      - name: Run CTest Unit Suite
+        run: |
+          ctest --test-dir build --output-on-failure
+
+      - name: Run Python Automated Validation
+        run: |
+          pytest -v

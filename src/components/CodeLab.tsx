@@ -931,7 +931,11 @@ export default function CodeLab() {
   return (
     <div className="fixed inset-0 z-[100] bg-navy-950/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-10">
       <div className="w-full max-w-[1400px] h-full max-h-[900px] flex flex-col bg-navy-900 border border-cyan-500/30 rounded-2xl shadow-2xl relative overflow-hidden">
-        <button onClick={closeLab} className="absolute top-4 right-4 z-50 text-slate-400 hover:text-white bg-navy-800 hover:bg-navy-700 p-2 rounded-full transition-colors flex items-center justify-center border border-slate-700/50 shadow-lg cursor-pointer">
+        <button 
+          onClick={closeLab} 
+          aria-label="コード実行ラボを閉じる"
+          className="absolute top-4 right-4 z-50 text-slate-400 hover:text-white bg-navy-800 hover:bg-navy-700 p-2 rounded-full transition-colors flex items-center justify-center border border-slate-700/50 shadow-lg cursor-pointer"
+        >
           <X size={20} />
         </button>
         <div className="p-4 lg:p-8 flex flex-col h-full min-h-0">
@@ -949,6 +953,7 @@ export default function CodeLab() {
             {/* 前提知識・用語早見事典ボタン */}
             <button
               onClick={() => setShowGlossary(true)}
+              aria-label="前提知識・用語早わかり事典を開く"
               className="flex items-center gap-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-[0_0_12px_rgba(6,182,212,0.15)] cursor-pointer"
             >
               <BookOpen size={14} /> 💡 前提知識・用語早わかり事典
@@ -1114,6 +1119,7 @@ export default function CodeLab() {
                     const textToCopy = history.map(h => typeof h.content === 'string' ? h.content : '').filter(Boolean).join('\n');
                     navigator.clipboard.writeText(textToCopy);
                   }}
+                  aria-label="ターミナルログをクリップボードにコピー"
                   className="text-slate-400 hover:text-white flex items-center gap-1 text-xs px-2 py-1 bg-navy-800 rounded border border-slate-700 transition-colors cursor-pointer"
                   title="ログをコピー"
                 >
@@ -1128,6 +1134,7 @@ export default function CodeLab() {
                   <button
                     key={s.id}
                     onClick={() => setActiveScenarioId(s.id)}
+                    aria-label={`${s.chapterRef}のミッションに切り替える`}
                     className={`shrink-0 px-2.5 py-1 rounded text-xs font-bold transition-all ${
                       activeScenarioId === s.id
                         ? 'bg-cyan-500 text-navy-950 font-black shadow-md'
@@ -1209,12 +1216,14 @@ export default function CodeLab() {
                     <div className="space-y-3">
                       <button 
                         onClick={closeLab}
+                        aria-label="ラボを終了して元のページに戻る"
                         className="bg-emerald-500 hover:bg-emerald-400 text-navy-900 font-bold px-8 py-3 rounded-xl transition-transform hover:scale-105 w-full cursor-pointer"
                       >
                         元のページに戻って学習を続ける
                       </button>
                       <button 
                         onClick={() => setShowSuccessOverlay(false)}
+                        aria-label="ターミナルに戻る"
                         className="text-slate-400 hover:text-white text-sm font-bold px-8 py-2 rounded-xl transition-colors w-full cursor-pointer"
                       >
                         ターミナルに戻る
@@ -1228,7 +1237,11 @@ export default function CodeLab() {
 
           {/* Navigation Links */}
           <div className="flex justify-center mt-6 pt-6 border-t border-slate-700/50 shrink-0">
-            <button onClick={closeLab} className="bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-8 py-3 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.3)] w-full sm:w-auto cursor-pointer">
+            <button 
+              onClick={closeLab} 
+              aria-label="ラボを終了して元のページに戻る"
+              className="bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-8 py-3 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.3)] w-full sm:w-auto cursor-pointer"
+            >
               ラボを終了して元のページに戻る
             </button>
           </div>
@@ -1244,6 +1257,7 @@ export default function CodeLab() {
                   </div>
                   <button 
                     onClick={() => setShowGlossary(false)} 
+                    aria-label="事典モーダルを閉じる"
                     className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-navy-700 transition-colors cursor-pointer"
                   >
                     <X size={18} />
@@ -1332,6 +1346,7 @@ export default function CodeLab() {
                 <div className="p-4 border-t border-slate-700 bg-navy-800/60 flex justify-end">
                   <button
                     onClick={() => setShowGlossary(false)}
+                    aria-label="事典モーダルを閉じる"
                     className="bg-cyan-500 hover:bg-cyan-400 text-navy-950 font-bold px-5 py-2 rounded-xl text-xs transition-colors cursor-pointer"
                   >
                     閉じる

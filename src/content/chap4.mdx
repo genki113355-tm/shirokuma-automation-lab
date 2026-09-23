@@ -5,7 +5,7 @@ export const meta = {
   chapterId: 4,
   category: "自動評価編",
   title: "GoogleTest（gtest）によるC++ロジックの網羅テスト",
-  description: "GoogleTestを用いて、信号処理などの数理ロジックをテストします。浮動小数点の丸め誤差を考慮したEXPECT_NEARの使い方と、テストしやすい疎結合な設計の重要性を解説します。",
+  description: "GoogleTest（gtest）でC++数理ロジックを徹底検証。EXPECT_NEARを用いた浮動小数点の丸め誤差許容比較、TESTマクロの分割設計、CTest連携を解説。",
   responsibility: "GoogleTest導入・単体テスト実装・浮動小数点比較",
   evolution: "波形のズレをExcelで目視チェックする代わりに、コード上で『理論値との差が閾値以内か』を自動判定できるように進化！",
   tags: ["#GoogleTest", "#CTest", "#単体テスト", "#浮動小数点"]
@@ -127,4 +127,11 @@ TEST(SonarFilterTest, SignalAttenuation) {
 > 📚 **もっとGoogleTestの構文や実践テクニックを深く知りたい方へ**  
 > 本章で扱った `TEST` や `EXPECT_NEAR` のほか、実務で必須となる **テストフィクスチャ（`TEST_F`）**、**パラメータ化テスト（`TEST_P`）**、**例外テスト（`EXPECT_THROW`）**、**CLI実行制御（`--gtest_filter`）**、**CMake連携（`gtest_discover_tests`）** などの網羅的な文法・パターンは、付録として体系的に整理しています。  
 > ➔ **[【付録 1】GoogleTest 逆引き実践リファレンス](/appendix/googletest)** をぜひご参照ください！
+
+<RelatedLab 
+  target="qt"
+  title="シロクマQt×C++ラボ：GUI＆シグナル・スロットの自動テスト実践"
+  description="C++の数値計算ロジックだけでなく、Qt Testを用いたGUI操作の自動テストやシグナル・スロット通信の非同期検証を学びたい方はこちら。"
+  url="https://shirokuma-qt-cpp.jp"
+/>
 
