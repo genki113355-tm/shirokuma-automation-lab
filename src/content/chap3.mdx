@@ -82,10 +82,9 @@ target_include_directories(sonar_core PUBLIC include)
 | **依存関係の追跡** | ヘッダーファイル（`.h`）の更新を手動で書かないと、**コードを直しても再コンパイルされない** | `#include` を**CMakeが自動解析**し、ヘッダー更新時も確実に再コンパイルされる |
 | **OS・IDEの移植性** | Linux（gcc）専用になりがち。WindowsのVisual StudioやMacのXcodeでは使えない | 1つの `CMakeLists.txt` から、Linux用MakefileもWindows用VSソリューションも**自動生成**できる |
 
-> [!NOTE]
-> **CMakeとMakeは「ライバル」ではなく「協力関係」！**<br/>
-> 「CMakeを使ったらMakeは不要になるの？」と勘違いされがちですが、そうではありません。<br/>
-> **CMakeはMakeのための指示書（Makefile）を自動生成するツール**です。<br/>
+> 💡 **CMakeとMakeは「ライバル」ではなく「協力関係」！**  
+> 「CMakeを使ったらMakeは不要になるの？」と勘違いされがちですが、そうではありません。  
+> **CMakeはMakeのための指示書（Makefile）を自動生成するツール**です。  
 > 開発者は `cmake -B build` でMakefileを作らせ、その裏で `make`（またはNinja）が実際のコンパイル作業を担っています。
 
 ---
@@ -96,7 +95,7 @@ target_include_directories(sonar_core PUBLIC include)
 
 これを毎回手動で1つずつ `./test_math`, `./test_filter` ... と叩いて回るのは不可能です。
 
-> **CTestとは？**<br/>
+> 📌 **CTestとは？**  
 > CMakeに最初から標準搭載されている**「テスト一括自動実行＆結果集約マネージャー」**です。
 
 * **一括実行**: 登録された全テストを1コマンドで並列実行する。
@@ -173,5 +172,5 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-> [!TIP]
+> 💡 **ワンポイントアドバイス**  
 > `ctest` に `--output-on-failure` を付けると、**失敗したテストの詳細ログだけを画面に出力**してくれます。何百個もテストがある実務では必須のオプションです。

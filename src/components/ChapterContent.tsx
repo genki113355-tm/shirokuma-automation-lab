@@ -30,6 +30,29 @@ export default function ChapterContent() {
 
   if (!meta) return <div className="p-8 text-red-500">Error: Metadata (export const meta) not found in Chapter {id}.</div>;
 
+  const mdxComponents = {
+    table: (props: any) => (
+      <div className="not-prose overflow-x-auto my-6 border border-slate-700/80 rounded-xl shadow-lg bg-navy-900/80">
+        <table className="w-full border-collapse text-left text-xs sm:text-sm m-0" {...props} />
+      </div>
+    ),
+    thead: (props: any) => (
+      <thead className="bg-navy-950/90 border-b border-slate-700 text-cyan-300 font-semibold" {...props} />
+    ),
+    th: (props: any) => (
+      <th className="p-3.5 text-cyan-300 font-bold border-b border-slate-700 whitespace-nowrap" {...props} />
+    ),
+    td: (props: any) => (
+      <td className="p-3.5 border-b border-slate-800/80 text-slate-300 align-top leading-relaxed" {...props} />
+    ),
+    tr: (props: any) => (
+      <tr className="hover:bg-cyan-500/5 transition-colors border-b border-slate-800/60 last:border-b-0" {...props} />
+    ),
+    blockquote: (props: any) => (
+      <blockquote className="not-prose block border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-950/40 to-navy-900/60 px-5 py-4 rounded-r-xl my-6 text-slate-200 text-sm sm:text-base leading-relaxed shadow-md [&>p]:m-0 [&>p+p]:mt-2" {...props} />
+    ),
+  };
+
   return (
     <div className="p-4 sm:p-6 md:p-12 max-w-[1600px] mx-auto space-y-6 sm:space-y-8 pb-32">
       
@@ -87,9 +110,9 @@ export default function ChapterContent() {
                       prose-headings:text-slate-100 prose-headings:border-b prose-headings:border-cyan-500/20 prose-headings:pb-2 prose-headings:mt-8 sm:prose-headings:mt-10
                       prose-p:text-slate-300 prose-p:leading-relaxed 
                       prose-pre:overflow-x-auto prose-pre:max-w-full
-                      prose-table:overflow-x-auto prose-table:block
+                      prose-blockquote:not-italic prose-blockquote:quotes-none
                       prose-li:text-slate-300 prose-strong:text-cyan-300">
-        <Content />
+        <Content components={mdxComponents} />
       </div>
 
       {/* Action Button & Next Stage Baton Pass */}

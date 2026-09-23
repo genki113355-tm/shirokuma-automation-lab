@@ -42,9 +42,9 @@ endif()
   afterText="ASanが『src/sonar_filter.cppの42行目で、確保した配列サイズを超えて書き込みが発生しました』と具体的に教えてくれる。3分で修正完了。"
 />
 
-> [!WARNING]
-> **Valgrind との使い分け**
-> AddressSanitizerはコンパイル時にコードを埋め込むため非常に高速ですが、再ビルドが必要です。一方、レガシーな巨大プロジェクトなどで再ビルドが難しい場合は、バイナリをそのまま解析できる `valgrind --leak-check=full ./sonar_test` を使用する手もあります。現代的な開発ではASanが主流です。
+> ⚠️ **注意：Valgrind との使い分け**  
+> AddressSanitizerはコンパイル時にコードを埋め込むため非常に高速ですが、再ビルドが必要です。  
+> 一方、レガシーな巨大プロジェクトなどで再ビルドが難しい場合は、バイナリをそのまま解析できる `valgrind --leak-check=full ./sonar_test` を使用する手もあります。現代的な開発ではASanが主流です。
 
 <Dialogue character="penguin" title="ペンギンくんの歓喜">
   「うおおお！エラーの場所がドンピシャで分かる！これで『メモリ破壊の恐怖』から解放されるっスね！」
