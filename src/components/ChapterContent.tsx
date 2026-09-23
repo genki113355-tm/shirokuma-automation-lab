@@ -44,10 +44,10 @@ export default function ChapterContent() {
           </span>
         </div>
         
-        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-snug">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-3 leading-tight tracking-tight">
           第{meta.chapterId}章：{meta.title}
-        </h2>
-        <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+        </h1>
+        <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
           {meta.description}
         </p>
 
