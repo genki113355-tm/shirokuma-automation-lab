@@ -119,6 +119,38 @@ const SCENARIOS = [
     ]
   },
   {
+    id: 4,
+    chapterRef: '第4章',
+    title: 'GoogleTestによるC++ロジックの網羅テスト',
+    description: 'GoogleTest（gtest）を使い、浮動小数点計算（EXPECT_NEAR）を含むC++単体テストの実行と検証をトレースします。',
+    mentalModel: 'テスト対象C++コード ➔ GoogleTest記述(TEST/EXPECT_NEAR) ➔ 単体バイナリ直接実行(即座判定) ➔ CTestでの統合',
+    prerequisites: [
+      '第3章のCTestは「大会運営マネージャー」でしたが、GoogleTestはC++コードの内部で合否を直接下す「個別審判員」です。',
+      'doubleやfloatの計算結果は丸め誤差が発生するため、完全一致のEXPECT_EQではなく、EXPECT_NEARで許容誤差を指定します。',
+      '開発中はGoogleTestバイナリを直接叩いて素早くデバッグし、合格を確認したらCTestやCI/CDで全件一括実行します。'
+    ],
+    steps: [
+      {
+        command: 'cat tests/test_sonar_filter.cpp',
+        matchKeywords: ['cat', 'test_sonar_filter.cpp'],
+        instruction: '【第4章 STEP 1/3：GoogleTestコードの確認】\nC++の単体テストコードを確認し、TESTマクロと浮動小数点の許容誤差比較(EXPECT_NEAR)を把握します。\n➔ `cat tests/test_sonar_filter.cpp` と入力',
+        explanation: '`TEST(SonarFilterTest, SignalAttenuation)` マクロが使われているね！\n注目は `EXPECT_NEAR(output_signal, expected_output, 0.01);` だ！\n浮動小数点の計算結果は微小な丸め誤差が出るため、`EXPECT_EQ` ではなく `EXPECT_NEAR` で許容誤差（±0.01）を持たせて判定しているよ。'
+      },
+      {
+        command: './build/tests/sonar_test',
+        matchKeywords: ['sonar_test'],
+        instruction: '【第4章 STEP 2/3：GoogleTestバイナリの直接実行】\nCTestを介さず、ビルド済みのGoogleTestバイナリを直接実行して即座に判定結果を確認します。\n➔ `./build/tests/sonar_test` と入力',
+        explanation: 'GoogleTestのテストランナーが直接走り、`[ RUN ]` から `[ OK ]`、そして緑色で `[ PASSED ] 2 tests.` と出力されたね！\n手作業でExcelを開いて数値を比較する代わりに、一瞬で「ロジックが理論値通り動いているか」が証明されたよ！'
+      },
+      {
+        command: 'ctest --test-dir build --output-on-failure',
+        matchKeywords: ['ctest'],
+        instruction: '【第4章 STEP 3/3：CTest連携による総合判定】\nGoogleTestで合格したバイナリを、全体のテスト統括マネージャー(CTest)に合否判定させます。\n➔ `ctest --test-dir build --output-on-failure` と入力',
+        explanation: '完璧だ！個別競技の審判員（GoogleTest）が合格を出し、大会運営マネージャー（CTest）が「100% tests passed」と全体集計したね！\n実務ではこうして2つのテストツールが二人三脚で動いているんだよ！'
+      }
+    ]
+  },
+  {
     id: 9,
     chapterRef: '第9章',
     title: 'Valgrindで見えないメモリリークを特定',
@@ -150,10 +182,13 @@ const FILE_TREE = [
   { name: 'src', type: 'folder', children: [
     { name: 'main.cpp', type: 'cpp' },
     { name: 'data_processor.h', type: 'header' },
-    { name: 'data_processor.cpp', type: 'cpp' }
+    { name: 'data_processor.cpp', type: 'cpp' },
+    { name: 'sonar_filter.h', type: 'header' },
+    { name: 'sonar_filter.cpp', type: 'cpp' }
   ]},
   { name: 'tests', type: 'folder', children: [
-    { name: 'test_processor.py', type: 'python' }
+    { name: 'test_processor.py', type: 'python' },
+    { name: 'test_sonar_filter.cpp', type: 'cpp' }
   ]},
   { name: 'CMakeLists.txt', type: 'txt' },
   { name: 'Dockerfile', type: 'docker' },
@@ -168,10 +203,10 @@ export default function CodeLab() {
 
   // Resolve target scenario
   const getResolvedScenarioId = () => {
-    if (targetScenarioId && [1, 2, 3, 9].includes(targetScenarioId)) {
+    if (targetScenarioId && [1, 2, 3, 4, 9].includes(targetScenarioId)) {
       return targetScenarioId;
     }
-    if ([1, 2, 3, 9].includes(currentChapter)) {
+    if ([1, 2, 3, 4, 9].includes(currentChapter)) {
       return currentChapter;
     }
     return 1;
@@ -188,7 +223,7 @@ export default function CodeLab() {
   }, [isLabOpen, targetScenarioId, currentChapter]);
 
   const [completedScenarios, setCompletedScenarios] = useState<number[]>([]);
-  const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 9: 0 });
+  const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 4: 0, 9: 0 });
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
   
@@ -386,6 +421,60 @@ export default function CodeLab() {
               {'}'};<br/>
               <br/>
               <span className="text-purple-400">#endif</span> <span className="text-slate-500">// DATA_PROCESSOR_H</span>
+            </div>
+          ));
+        } else if (file.includes('test_sonar_filter.cpp')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;gtest/gtest.h&gt;</span><br/>
+              <span className="text-purple-400">#include</span> <span className="text-green-300">"sonar_filter.h"</span><br/>
+              <br/>
+              <span className="text-slate-500">// 1. クラスの初期化とゲッターのテスト</span><br/>
+              <span className="text-blue-400">TEST</span>(SonarFilterTest, Initialization) {'{'}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;SonarFilter <span className="text-yellow-200">filter</span>(<span className="text-green-300">60.0</span>); <span className="text-slate-500">// カットオフ周波数 60Hz</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">EXPECT_DOUBLE_EQ</span>(filter.GetCutoffFrequency(), <span className="text-green-300">60.0</span>);<br/>
+              {'}'}<br/>
+              <br/>
+              <span className="text-slate-500">// 2. 数理ロジックのテスト（浮動小数点の丸め誤差を考慮）</span><br/>
+              <span className="text-blue-400">TEST</span>(SonarFilterTest, SignalAttenuation) {'{'}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;SonarFilter <span className="text-yellow-200">filter</span>(<span className="text-green-300">60.0</span>);<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">double</span> input_signal = <span className="text-green-300">100.0</span>;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">double</span> output_signal = filter.<span className="text-yellow-200">Process</span>(input_signal);<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">double</span> expected_output = <span className="text-green-300">45.23</span>;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500">// 誤差 0.01 以内であれば合格（EXPECT_NEAR）</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-cyan-400 font-bold">EXPECT_NEAR</span>(output_signal, expected_output, <span className="text-green-300">0.01</span>);<br/>
+              {'}'}
+            </div>
+          ));
+        } else if (file.includes('sonar_filter.h')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-purple-400">#ifndef</span> SONAR_FILTER_H<br/>
+              <span className="text-purple-400">#define</span> SONAR_FILTER_H<br/>
+              <br/>
+              <span className="text-blue-400">class</span> <span className="text-yellow-200">SonarFilter</span> {'{'}<br/>
+              <span className="text-blue-400">private:</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">double</span> cutoff_freq_;<br/>
+              <span className="text-blue-400">public:</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-yellow-200">SonarFilter</span>(<span className="text-blue-400">double</span> cutoff) : cutoff_freq_(cutoff) {'{}'}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">double</span> <span className="text-yellow-200">GetCutoffFrequency</span>() <span className="text-blue-400">const</span> {'{ return cutoff_freq_; }'}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">double</span> <span className="text-yellow-200">Process</span>(<span className="text-blue-400">double</span> signal);<br/>
+              {'}'};<br/>
+              <br/>
+              <span className="text-purple-400">#endif</span>
+            </div>
+          ));
+        } else if (file.includes('sonar_filter.cpp')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-purple-400">#include</span> <span className="text-green-300">"sonar_filter.h"</span><br/>
+              <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;cmath&gt;</span><br/>
+              <br/>
+              <span className="text-blue-400">double</span> SonarFilter::<span className="text-yellow-200">Process</span>(<span className="text-blue-400">double</span> signal) {'{'}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500">// 減衰特性に基づくフィルタ計算（理論値 45.23）</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">return</span> signal * std::exp(-cutoff_freq_ / <span className="text-green-300">75.64</span>);<br/>
+              {'}'}
             </div>
           ));
         } else if (file.includes('CMakeLists.txt')) {
@@ -602,6 +691,30 @@ export default function CodeLab() {
         ));
         break;
 
+      case './build/tests/sonar_test':
+      case './sonar_test':
+      case 'sonar_test':
+        isStandardCommand = true;
+        addLog('system', 'Running GoogleTest binary: ./build/tests/sonar_test ...');
+        await new Promise(resolve => setTimeout(resolve, 500));
+        addLog('output', (
+          <div className="text-slate-200 font-mono text-xs leading-relaxed">
+            <span className="text-slate-400">Running main() from gmock_main.cc</span><br/>
+            <span className="text-cyan-400 font-bold">[==========]</span> Running 2 tests from 1 test suite.<br/>
+            <span className="text-cyan-400 font-bold">[----------]</span> Global test environment set-up.<br/>
+            <span className="text-cyan-400 font-bold">[----------]</span> 2 tests from SonarFilterTest<br/>
+            <span className="text-green-400 font-bold">[ RUN      ]</span> SonarFilterTest.Initialization<br/>
+            <span className="text-green-400 font-bold">[       OK ]</span> SonarFilterTest.Initialization (0 ms)<br/>
+            <span className="text-green-400 font-bold">[ RUN      ]</span> SonarFilterTest.SignalAttenuation<br/>
+            <span className="text-green-400 font-bold">[       OK ]</span> SonarFilterTest.SignalAttenuation (0 ms)<br/>
+            <span className="text-cyan-400 font-bold">[----------]</span> 2 tests from SonarFilterTest (0 ms total)<br/><br/>
+            <span className="text-cyan-400 font-bold">[----------]</span> Global test environment tear-down<br/>
+            <span className="text-cyan-400 font-bold">[==========]</span> 2 tests from 1 test suite ran. (0 ms total)<br/>
+            <span className="text-green-400 font-bold text-sm">[  PASSED  ] 2 tests.</span>
+          </div>
+        ));
+        break;
+
       default:
         addLog('error', `bash: ${baseCmd}: command not found`);
     }
@@ -680,12 +793,24 @@ export default function CodeLab() {
       const lastWord = words[words.length - 1];
 
       if (words.length === 1) {
-        const cmds = ['cat ', 'ls', 'clear', 'pytest', './build.sh', 'valgrind ', 'docker ', 'cmake ', 'ctest '];
+        const cmds = ['cat ', 'ls', 'clear', 'pytest', './build.sh', 'valgrind ', 'docker ', 'cmake ', 'ctest ', './build/tests/sonar_test'];
         const match = cmds.find(c => c.startsWith(input));
         if (match) setInput(match);
       } else {
         const searchWord = lastWord || '';
-        const paths = ['tests/test_processor.py', 'src/main.cpp', 'Dockerfile', 'CMakeLists.txt', './app'];
+        const paths = [
+          'tests/test_processor.py',
+          'tests/test_sonar_filter.cpp',
+          'src/main.cpp',
+          'src/data_processor.h',
+          'src/data_processor.cpp',
+          'src/sonar_filter.h',
+          'src/sonar_filter.cpp',
+          'Dockerfile',
+          'CMakeLists.txt',
+          './app',
+          './build/tests/sonar_test'
+        ];
         const match = paths.find(p => p.startsWith(searchWord));
         if (match) {
           words[words.length - 1] = match;
@@ -911,11 +1036,11 @@ export default function CodeLab() {
               </div>
 
               {/* Chapter Guard Notice Banner */}
-              {currentChapter && ![1, 2, 3, 9].includes(currentChapter) && (
+              {currentChapter && ![1, 2, 3, 4, 9].includes(currentChapter) && (
                 <div className="bg-amber-950/60 border-b border-amber-500/40 px-4 py-2 text-xs text-amber-200/90 flex items-center justify-between select-none shrink-0">
                   <div className="flex items-center gap-2">
                     <span className="text-base">💡</span>
-                    <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。上記タブから<strong>【第1・2・3・9章】</strong>の実践ミッションをお試しいただけます。</span>
+                    <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。上記タブから<strong>【第1・2・3・4・9章】</strong>の実践ミッションをお試しいただけます。</span>
                   </div>
                 </div>
               )}

@@ -14,6 +14,9 @@ export default function ChapterContent() {
       .then((m) => {
         setModule(m);
         setLoading(false);
+        if (m.meta?.title) {
+          document.title = `${m.meta.title} | シロクマ C++開発自動化ラボ`;
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -136,6 +139,11 @@ export default function ChapterContent() {
               desc: '手書きMakefileの苦行から解放！CMakeLists.txtによるMakefile自動生成とCTestによる一括並列テストをブラウザ上で体験できます。',
               buttonText: '第3章のミッションに挑戦する',
             },
+            4: {
+              title: '【第4章 実践ミッション】GoogleTestで数理ロジックを単体検証！',
+              desc: 'Excelでの波形目視チェックを完全駆逐！TESTマクロとEXPECT_NEAR（浮動小数点比較）を用いたC++単体テストの直接実行とCTest連携をブラウザ上で体験できます。',
+              buttonText: '第4章のミッションに挑戦する',
+            },
             9: {
               title: '【第9章 実践ミッション】Valgrindで見えないメモリリークを特定！',
               desc: 'deleteし忘れたC++プログラムを動的解析ツールValgrindにかけ、1バイト単位でメモリ漏れをあぶり出すデバッグ体験ができます。',
@@ -159,7 +167,7 @@ export default function ChapterContent() {
                   {currentMission ? currentMission.title : 'コード実行ラボで実際のC++自動化を体験しよう！'}
                 </h4>
                 <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
-                  {currentMission ? currentMission.desc : 'ブラウザ上のコード実行ラボで、【第1章：テスト自動化】【第2章：Docker】【第3章：CMake/CTest】【第9章：メモリ解析】の実践ミッションを体験できます。'}
+                  {currentMission ? currentMission.desc : 'ブラウザ上のコード実行ラボで、C++自動テスト連携・Docker・CMake・GoogleTest・Valgrindの実践ミッションを体験できます。'}
                 </p>
               </div>
               <button
@@ -167,7 +175,7 @@ export default function ChapterContent() {
                 className="w-full md:w-auto shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 relative z-10 cursor-pointer"
               >
                 <Play size={20} fill="currentColor" />
-                {currentMission ? currentMission.buttonText : '実践ミッションを開く（第1・2・3・9章）'}
+                {currentMission ? currentMission.buttonText : 'コード実行ラボを開く'}
               </button>
             </div>
           );

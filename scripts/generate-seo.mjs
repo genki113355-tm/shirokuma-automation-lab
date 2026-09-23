@@ -35,17 +35,17 @@ const PAGES = [
   },
   {
     path: 'chapter/3',
-    title: '第3章: CMakeビルド自動化 | シロクマ C++開発自動化ラボ',
-    desc: '手動g++コンパイルからの脱却。CMakeを使ったクロスプラットフォームなビルドプロセスの自動化。',
-    heading: '【Chap 3】CMakeビルド自動化',
-    content: '手動のg++コマンドから卒業し、CMakeLists.txtを記述してビルドプロセスをコード化・自動化する方法を学びます。'
+    title: '第3章: CMakeビルド自動化＆CTest統合 | シロクマ C++開発自動化ラボ',
+    desc: '生の手書きMakefileと格闘するのはやめましょう。CMakeを使ってプロダクトコードとテストコードを綺麗に分離してビルドし、CTestで一括実行するモダンな設計を学びます。',
+    heading: '【Chap 3】CMakeビルド自動化＆CTest統合',
+    content: '手書きMakefileの苦行から脱却し、CMakeLists.txtでビルドとCTestテストをコード化・自動化する方法を学びます。'
   },
   {
     path: 'chapter/4',
-    title: '第4章: CTest自動テスト | シロクマ C++開発自動化ラボ',
-    desc: 'CMakeに組み込まれたテストランナー「CTest」を用いて、C++の単体テストを自動実行する基盤を作ります。',
-    heading: '【Chap 4】CTest自動テスト',
-    content: 'CTestを用いてC++の実行ファイルをテストとして登録し、一括でテストを実行・集計する自動化の第一歩を踏み出します。'
+    title: '第4章: GoogleTestによるC++網羅テスト | シロクマ C++開発自動化ラボ',
+    desc: 'GoogleTestを用いて数理ロジックをテスト。浮動小数点の丸め誤差を考慮したEXPECT_NEARの使い方と、テストしやすい疎結合な設計を解説。',
+    heading: '【Chap 4】GoogleTestによるC++網羅テスト',
+    content: 'GoogleTestを用いてC++ロジックの単体テストを実装し、浮動小数点誤差の検証や網羅的なテスト自動化の基礎を固めます。'
   },
   {
     path: 'chapter/5',
