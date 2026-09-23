@@ -6,11 +6,11 @@ export default function TopPage() {
     <div className="p-4 md:p-8 lg:p-12 max-w-[1600px] mx-auto space-y-12 md:space-y-20 pb-32">
       
       {/* Hero Section */}
-      <div className="flex flex-col xl:flex-row items-center justify-between bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-5 sm:p-8 md:p-10 lg:p-16 rounded-2xl md:rounded-3xl border border-cyan-500/20 shadow-2xl gap-8 md:gap-12 relative overflow-hidden">
+      <div className="flex flex-col justify-center bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-5 sm:p-8 md:p-10 lg:p-16 rounded-2xl md:rounded-3xl border border-cyan-500/20 shadow-2xl gap-8 md:gap-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-cyan-500/10 blur-[80px] md:blur-[100px] rounded-full pointer-events-none"></div>
         
-        {/* 左側: タイトルとストーリー */}
-        <div className="xl:w-1/2 space-y-6 md:space-y-8 relative z-10 w-full min-w-0">
+        {/* 左：タイトルとストーリー */}
+        <div className="w-full max-w-5xl space-y-6 md:space-y-8 relative z-10">
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-cyan-400 text-xs md:text-sm font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)] max-w-full">
               <Rocket size={16} className="shrink-0" />
@@ -33,8 +33,8 @@ export default function TopPage() {
           </p>
         </div>
 
-        {/* 右側: ターミナル体験とMISSION */}
-        <div className="xl:w-1/2 w-full relative z-10 flex flex-col gap-6">
+        {/* 右：ターミナル風のMISSION */}
+        <div className="w-full max-w-5xl relative z-10 flex flex-col gap-6">
           <div className="bg-slate-900/90 border border-slate-700/60 p-5 rounded-2xl shadow-xl relative backdrop-blur-sm">
             <div className="absolute -top-3 left-6 bg-amber-500 text-slate-950 text-[11px] font-black px-3 py-0.5 rounded-sm shadow-sm tracking-widest">MISSION</div>
             <p className="text-sm sm:text-base text-slate-100 font-bold mb-2">Q. このプロジェクトのテストを毎回「手動」で実行するのをやめたい。</p>
