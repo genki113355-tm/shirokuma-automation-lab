@@ -1,11 +1,13 @@
 import { Play, Download, ChevronRight, Home, Menu } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useLab } from '../contexts/LabContext';
 
 export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => void }) {
   const location = useLocation();
   const isTop = location.pathname === '/';
   const chapterMatch = location.pathname.match(/\/chapter\/(\d+)/);
   const currentChapter = chapterMatch ? chapterMatch[1] : null;
+  const { openLab } = useLab();
 
   return (
     <header className="h-14 border-b border-cyan-500/20 bg-navy-800/90 backdrop-blur-md sticky top-0 z-50 flex items-center justify-between px-4 lg:px-6">
@@ -53,13 +55,13 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
 
       {/* Right Actions */}
       <div className="flex items-center gap-3">
-        <Link 
-          to="/lab"
-          className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors"
+        <button 
+          onClick={openLab}
+          className="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors cursor-pointer"
         >
           <Play size={14} fill="currentColor" />
           <span>コード実行ラボ</span>
-        </Link>
+        </button>
         <button className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors hidden sm:flex">
           <Download size={14} />
           <span>環境構築スクリプト</span>

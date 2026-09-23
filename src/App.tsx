@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { LabProvider } from './contexts/LabContext';
 
 // Code Splitting: 遅延読み込みで初期バンドルサイズを削減
 const TopPage = lazy(() => import('./components/TopPage'));
@@ -25,28 +26,30 @@ function App() {
   const basename = isSubdirectory ? '/auto' : '/';
 
   return (
-    <Router basename={basename}>
-      <div className="flex h-screen overflow-hidden bg-navy-900 text-slate-100 font-sans">
-        <Sidebar isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />
-        <div className="flex-1 flex flex-col h-screen overflow-hidden relative min-w-0">
-          {/* subtle background glow */}
-          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/20 blur-[120px] pointer-events-none"></div>
-          
-          <Header toggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
-          
-          <main className="flex-1 overflow-y-auto pb-20 relative z-0 flex flex-col">
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={<TopPage />} />
-                <Route path="/chapter/:id" element={<ChapterContent />} />
-                <Route path="/lab" element={<CodeLab />} />
-              </Routes>
-            </Suspense>
-            <Footer />
-          </main>
+    <LabProvider>
+      <Router basename={basename}>
+        <div className="flex h-screen overflow-hidden bg-navy-900 text-slate-100 font-sans">
+          <Sidebar isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />
+          <div className="flex-1 flex flex-col h-screen overflow-hidden relative min-w-0">
+            {/* subtle background glow */}
+            <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/20 blur-[120px] pointer-events-none"></div>
+            
+            <Header toggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+            
+            <main className="flex-1 overflow-y-auto pb-20 relative z-0 flex flex-col">
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<TopPage />} />
+                  <Route path="/chapter/:id" element={<ChapterContent />} />
+                </Routes>
+                <CodeLab />
+              </Suspense>
+              <Footer />
+            </main>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </LabProvider>
   );
 }
 

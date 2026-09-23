@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Target, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Target, CheckCircle2, X } from 'lucide-react';
+import { useLab } from '../contexts/LabContext';
 
 type LogEntry = {
   id: number;
@@ -28,10 +28,10 @@ const MISSIONS = [
   {
     id: 3,
     title: '「私のPCでは動いた」撲滅',
-    problem: '新入社員のPCでビルドが通りません。環境構築手順書（Excel）も古くて役に立ちません。',
-    goal: 'Dockerを使って、誰でも一瞬で同じビルド環境を作れるようにしましょう。',
-    command: 'docker build .',
-    hint: 'docker build . と入力してEnter'
+    problem: '自分のMacではビルドできるのに、CIサーバー（Linux）だとビルドがコケます。',
+    goal: 'Dockerを使って、どこでも同じ環境でビルドできるコンテナを作りましょう。',
+    command: 'docker build -t app .',
+    hint: 'docker build -t app . と入力してEnter'
   }
 ];
 
@@ -50,8 +50,30 @@ const FILE_TREE = [
 ];
 
 export default function CodeLab() {
+  const { isLabOpen, closeLab } = useLab();
   const [activeMissionId, setActiveMissionId] = useState(1);
   const [completedMissions, setCompletedMissions] = useState<number[]>([]);
+  
+  useEffect(() => {
+    const mission = MISSIONS.find(m => m.id === activeMissionId);
+    if (mission && !completedMissions.includes(mission.id)) {
+      setHistory(prev => [
+        ...prev,
+        { 
+          id: Date.now() + Math.random(), 
+          type: 'system', 
+          content: (
+            <div className="text-cyan-400 mt-2 p-2 bg-cyan-900/20 border-l-2 border-cyan-500 mb-2">
+              <strong>【MISSION: {mission.title}】</strong><br/>
+              {mission.problem}<br/>
+              ➔ <strong>{mission.goal}</strong><br/>
+              <span className="text-cyan-200">💡 ヒント: <code className="bg-navy-900 px-1 rounded">{mission.hint}</code></span>
+            </div>
+          )
+        }
+      ]);
+    }
+  }, [activeMissionId, completedMissions.length]);
   const activeMission = MISSIONS.find(m => m.id === activeMissionId);
 
   const [history, setHistory] = useState<LogEntry[]>([
@@ -236,8 +258,15 @@ export default function CodeLab() {
     }
   };
 
+  if (!isLabOpen) return null;
+
   return (
-    <div className="p-4 lg:p-8 max-w-[1600px] mx-auto h-[calc(100vh-3.5rem)] flex flex-col">
+    <div className="fixed inset-0 z-[100] bg-navy-950/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-10">
+      <div className="w-full max-w-[1400px] h-full max-h-[900px] flex flex-col bg-navy-900 border border-cyan-500/30 rounded-2xl shadow-2xl relative overflow-hidden">
+        <button onClick={closeLab} className="absolute top-4 right-4 z-50 text-slate-400 hover:text-white bg-navy-800 hover:bg-navy-700 p-2 rounded-full transition-colors flex items-center justify-center border border-slate-700/50 shadow-lg cursor-pointer">
+          <X size={20} />
+        </button>
+        <div className="p-4 lg:p-8 flex flex-col h-full min-h-0">
       <div className="mb-6">
         <h1 className="text-2xl md:text-3xl font-black text-white flex items-center gap-3">
           <TerminalIcon size={32} className="text-cyan-400" />
@@ -412,17 +441,35 @@ export default function CodeLab() {
               PROCESSING
             </div>
           )}
+          {activeMission && completedMissions.includes(activeMission.id) && (
+            <div className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 z-10 animate-fade-in">
+              <div className="bg-navy-900 border border-emerald-500/50 p-8 rounded-2xl max-w-md text-center shadow-[0_0_40px_rgba(16,185,129,0.2)]">
+                <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle2 size={32} className="text-emerald-400" />
+                </div>
+                <h3 className="text-2xl font-black text-white mb-2">ミッションクリア！</h3>
+                <p className="text-slate-300 text-sm mb-8">
+                  素晴らしい！{activeMission.title}の自動化に成功しました。
+                </p>
+                <button 
+                  onClick={closeLab}
+                  className="bg-emerald-500 hover:bg-emerald-400 text-navy-900 font-bold px-8 py-3 rounded-xl transition-transform hover:scale-105 w-full cursor-pointer"
+                >
+                  元のページに戻って学習を続ける
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Navigation Links */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mt-12 pt-8 border-t border-slate-700/50 gap-6">
-        <Link to="/" className="text-slate-400 hover:text-cyan-400 text-sm font-bold flex items-center gap-2 transition-colors order-2 sm:order-1">
-          <ArrowLeft size={16} /> トップ（目次）へ戻る
-        </Link>
-        <Link to="/chapter/1" className="bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.3)] w-full sm:w-auto order-1 sm:order-2">
-          第1章へ進む <ArrowRight size={20} />
-        </Link>
+      <div className="flex justify-center mt-6 pt-6 border-t border-slate-700/50 shrink-0">
+        <button onClick={closeLab} className="bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-8 py-3 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.3)] w-full sm:w-auto cursor-pointer">
+          ミッションを終了して元のページに戻る
+        </button>
+      </div>
+      </div>
       </div>
     </div>
   );

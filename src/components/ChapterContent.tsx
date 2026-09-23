@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Shield, Zap } from 'lucide-react';
+import { Shield, Zap, Play } from 'lucide-react';
+import { useLab } from '../contexts/LabContext';
 
 export default function ChapterContent() {
+  const { openLab } = useLab();
   const { id } = useParams();
   const [module, setModule] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     setLoading(true);
     import(`../content/chap${id}.mdx`)
@@ -106,12 +107,13 @@ export default function ChapterContent() {
               ブラウザ上の「コード実行ラボ」で、手動テスト地獄や環境構築の課題に挑戦できます。
             </p>
           </div>
-          <Link
-            to="/lab"
-            className="w-full md:w-auto shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 relative z-10"
+          <button
+            onClick={openLab}
+            className="w-full md:w-auto shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 relative z-10 cursor-pointer"
           >
-            ▶ 今すぐミッションに挑戦する
-          </Link>
+            <Play size={20} fill="currentColor" />
+            今すぐミッションに挑戦する
+          </button>
         </div>
 
         {meta.chapterId === 12 && (
