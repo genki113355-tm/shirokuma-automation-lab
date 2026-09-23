@@ -12,6 +12,7 @@ type LogEntry = {
 const SCENARIOS = [
   {
     id: 1,
+    chapterRef: '第1章',
     title: 'C++テスト自動化の仕組みを体験',
     description: '手作業のテストを自動化するまでの裏側の仕組みを、順を追ってトレースしてみましょう。',
     steps: [
@@ -42,26 +43,8 @@ const SCENARIOS = [
     ]
   },
   {
-    id: 2,
-    title: '見えないメモリリークの特定',
-    description: '動的解析ツールを使って、目視では見つけられないメモリの解放忘れを特定する流れをトレースします。',
-    steps: [
-      {
-        command: 'cat src/main.cpp',
-        matchKeywords: ['cat', 'main.cpp'],
-        instruction: 'まずは問題のありそうなC++コードを確認します。\n➔ `cat src/main.cpp` と入力',
-        explanation: 'コードの後半を見てごらん。 `new int[100]` でメモリを確保しているのに、どこにも `delete` が書かれていないよね。\nこれがシステムをクラッシュさせる「メモリリーク」の正体だよ。'
-      },
-      {
-        command: 'valgrind ./app',
-        matchKeywords: ['valgrind', './app'],
-        instruction: 'Valgrindを使って、プログラム実行中のメモリ使用状況を監視・解析します。\n➔ `valgrind ./app` と入力',
-        explanation: '赤い文字で `definitely lost: 400 bytes` と出たね！\nValgrindはこうやって、目で見つけにくいメモリの解放忘れをプログラムを実行しながら監視して教えてくれる、心強い相棒なんだ。'
-      }
-    ]
-  },
-  {
     id: 3,
+    chapterRef: '第2章',
     title: '「私のPCでは動いた」の撲滅',
     description: 'Dockerを使って、環境に依存しない統一されたビルド環境を構築する流れをトレースします。',
     steps: [
@@ -76,6 +59,26 @@ const SCENARIOS = [
         matchKeywords: ['docker', 'build'],
         instruction: 'この設計図をもとに、全員が同じ状態から始められるコンテナを作成します。\n➔ `docker build -t app .` と入力',
         explanation: 'できたね！このコマンドは、さっきの設計図を元に「必要なものがすべて揃った独立した部屋（コンテナ）」を作ってくれるんだ。\nこの設計図をチームに配れば、もう『私のPCでは動くのに』なんてトラブルは起きないよ！'
+      }
+    ]
+  },
+  {
+    id: 2,
+    chapterRef: '第9章',
+    title: '見えないメモリリークの特定',
+    description: '動的解析ツールを使って、目視では見つけられないメモリの解放忘れを特定する流れをトレースします。',
+    steps: [
+      {
+        command: 'cat src/main.cpp',
+        matchKeywords: ['cat', 'main.cpp'],
+        instruction: 'まずは問題のありそうなC++コードを確認します。\n➔ `cat src/main.cpp` と入力',
+        explanation: 'コードの後半を見てごらん。 `new int[100]` でメモリを確保しているのに、どこにも `delete` が書かれていないよね。\nこれがシステムをクラッシュさせる「メモリリーク」の正体だよ。'
+      },
+      {
+        command: 'valgrind ./app',
+        matchKeywords: ['valgrind', './app'],
+        instruction: 'Valgrindを使って、プログラム実行中のメモリ使用状況を監視・解析します。\n➔ `valgrind ./app` と入力',
+        explanation: '赤い文字で `definitely lost: 400 bytes` と出たね！\nValgrindはこうやって、目で見つけにくいメモリの解放忘れをプログラムを実行しながら監視して教えてくれる、心強い相棒なんだ。'
       }
     ]
   }
@@ -98,23 +101,22 @@ const FILE_TREE = [
 export default function CodeLab() {
   const { isLabOpen, closeLab } = useLab();
   const location = useLocation();
+  const chapterMatch = location.pathname.match(/\/chapter\/(\d+)/);
+  const currentChapter = chapterMatch ? parseInt(chapterMatch[1]) : 1;
   const [activeScenarioId, setActiveScenarioId] = useState(1);
 
   // Sync active scenario based on current chapter when lab is opened
   useEffect(() => {
     if (isLabOpen) {
-      const chapterMatch = location.pathname.match(/\/chapter\/(\d+)/);
-      const currentChapter = chapterMatch ? parseInt(chapterMatch[1]) : 1;
-      
       if (currentChapter === 2) {
-        setActiveScenarioId(3); // Docker (「私のPCでは動いた」の撲滅)
-      } else if (currentChapter >= 9) {
-        setActiveScenarioId(2); // Memory leak (見えないメモリリークの特定) - Chapter 9
+        setActiveScenarioId(3); // Docker (第2章対応)
+      } else if (currentChapter === 9) {
+        setActiveScenarioId(2); // Memory leak (第9章対応)
       } else {
-        setActiveScenarioId(1); // Default C++ Auto Test
+        setActiveScenarioId(1); // Default C++ Auto Test (第1章対応)
       }
     }
-  }, [isLabOpen, location.pathname]);
+  }, [isLabOpen, currentChapter]);
 
   const [completedScenarios, setCompletedScenarios] = useState<number[]>([]);
   const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0 });
@@ -307,6 +309,7 @@ export default function CodeLab() {
               <br/>
               <span className="text-blue-400">set</span>(CMAKE_CXX_STANDARD <span className="text-green-300">17</span>)<br/>
               <br/>
+              <span className="text-slate-500"># ※実務ではpybind11等を用いてPythonと結合します</span><br/>
               <span className="text-slate-500"># Pythonから読み込める共有ライブラリとしてビルド</span><br/>
               <span className="text-blue-400">add_library</span>(shirokuma_cpp <span className="text-purple-400">SHARED</span> src/data_processor.cpp)<br/>
             </div>
@@ -551,11 +554,18 @@ export default function CodeLab() {
                         onClick={() => setActiveScenarioId(scenario.id)}
                         className={`p-4 rounded-lg border cursor-pointer transition-colors ${isActive ? 'bg-cyan-900/30 border-cyan-500/50' : 'bg-navy-900/50 border-slate-700 hover:border-cyan-500/30'} ${isCompleted && !isActive ? 'opacity-70' : ''}`}
                       >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className={`text-sm font-bold ${isActive ? 'text-cyan-400' : 'text-slate-300'}`}>
-                            {scenario.title}
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                          <div className="space-y-1">
+                            <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                              isActive ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' : 'bg-slate-800 text-slate-400 border-slate-700'
+                            }`}>
+                              {scenario.chapterRef}対応
+                            </span>
+                            <div className={`text-sm font-bold leading-snug ${isActive ? 'text-cyan-400' : 'text-slate-300'}`}>
+                              {scenario.title}
+                            </div>
                           </div>
-                          {isCompleted && <CheckCircle2 size={16} className="text-emerald-400" />}
+                          {isCompleted && <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />}
                         </div>
                         {isActive && (
                           <div className="mt-3">
@@ -662,6 +672,16 @@ export default function CodeLab() {
                   <FileText size={12} /> Copy
                 </button>
               </div>
+
+              {/* Chapter Guard Notice Banner */}
+              {currentChapter && ![1, 2, 9].includes(currentChapter) && (
+                <div className="bg-amber-950/50 border-b border-amber-500/30 px-4 py-2 text-xs text-amber-200/90 flex items-center justify-between select-none shrink-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">💡</span>
+                    <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。左側メニューから【第1・2・9章】の実践シナリオをお試しいただけます。</span>
+                  </div>
+                </div>
+              )}
 
               {/* Terminal Content */}
               <div className="flex-1 overflow-y-auto p-4 font-mono text-sm md:text-base leading-relaxed">
