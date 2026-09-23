@@ -57,6 +57,13 @@ export default function AppendixContent() {
     ),
   };
 
+  const isCTest = id === 'ctest';
+  const relatedChapter = isCTest ? 3 : 4;
+  const relatedChapterName = isCTest ? '第3章（CMake/CTest統合）' : '第4章（GoogleTest網羅テスト）';
+  const otherAppendix = isCTest
+    ? { path: '/appendix/googletest', label: '【付録1】GoogleTest 逆引きリファレンスを見る ➔' }
+    : { path: '/appendix/ctest', label: '【付録2】CTest 逆引きリファレンスを見る ➔' };
+
   return (
     <div className="p-4 sm:p-6 md:p-12 max-w-[1600px] mx-auto space-y-6 sm:space-y-8 pb-32">
       
@@ -108,16 +115,24 @@ export default function AppendixContent() {
         </div>
       )}
 
-      {/* Tags */}
-      {meta.tags && (
-        <div className="flex flex-wrap gap-2">
-          {meta.tags.map((tag: string) => (
-            <span key={tag} className="bg-navy-700 border border-slate-600 text-slate-300 text-xs px-2.5 sm:px-3 py-1 rounded-md">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
+      {/* Tags & Sister Appendix Link */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {meta.tags && (
+          <div className="flex flex-wrap gap-2">
+            {meta.tags.map((tag: string) => (
+              <span key={tag} className="bg-navy-700 border border-slate-600 text-slate-300 text-xs px-2.5 sm:px-3 py-1 rounded-md">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        <Link
+          to={otherAppendix.path}
+          className="text-xs font-bold text-cyan-400 hover:text-cyan-300 hover:underline flex items-center gap-1 bg-cyan-950/40 border border-cyan-500/30 px-3 py-1.5 rounded-lg"
+        >
+          {otherAppendix.label}
+        </Link>
+      </div>
 
       <hr className="border-slate-700/50 my-6 sm:my-10" />
 
@@ -143,21 +158,23 @@ export default function AppendixContent() {
               リファレンスで構文を確認したら、実際に動かしてみよう！
             </h4>
             <p className="text-sm text-slate-300 max-w-xl">
-              第4章ではGoogleTestによるC++単体テストの基礎を解説。コード実行ラボではブラウザ上でGoogleTestバイナリの実行やCTest連携を直接体験できます。
+              {isCTest
+                ? '第3章ではCMakeとCTestによるビルド＆テスト統合の基本を解説。コード実行ラボではブラウザ上でMakefile自動生成からCTest一括実行までを直接体験できます。'
+                : '第4章ではGoogleTestによるC++単体テストの基礎を解説。コード実行ラボではブラウザ上でGoogleTestバイナリの実行やCTest連携を直接体験できます。'}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full md:w-auto">
             <Link
-              to="/chapter/4"
+              to={`/chapter/${relatedChapter}`}
               className="bg-navy-700 hover:bg-navy-600 text-white font-bold px-5 py-3 rounded-xl border border-cyan-500/30 flex items-center justify-center gap-2 text-sm transition-colors"
             >
-              <ArrowLeft size={16} /> 第4章（本編）に戻る
+              <ArrowLeft size={16} /> {relatedChapterName}に戻る
             </Link>
             <button
-              onClick={() => openLab(4)}
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 text-sm transition-all"
+              onClick={() => openLab(relatedChapter)}
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 text-sm transition-all cursor-pointer"
             >
-              <Terminal size={16} /> 第4章ミッションを開く
+              <Terminal size={16} /> 第{relatedChapter}章ミッションを開く
             </button>
           </div>
         </div>

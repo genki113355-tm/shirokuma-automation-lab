@@ -1,0 +1,271 @@
+import Dialogue from '../../components/mdx/Dialogue';
+
+export const meta = {
+  id: "ctest",
+  chapterId: "appendix-2",
+  category: "付録・逆引きリファレンス",
+  title: "CTest（CMakeテストランナー）逆引き実践リファレンス",
+  description: "CMake標準のテストランナー「CTest」を使いこなすための実践チートシート。コマンドライン引数（-R絞り込み、-j並列実行、--output-on-failure）、CMakeLists.txtでのテストプロパティ（タイムアウト、依存関係、環境変数）、gtest_discover_tests連携、CI向けJUnit出力までを完全網羅。",
+  responsibility: "CTestコマンド網羅・CMakeLists.txtテストプロパティ・並列テスト運用",
+  evolution: "手作業でテストバイナリを1個ずつ実行する泥臭い作業から脱却し、コマンド1発で全テストを並列集計するモダン基盤をマスター！",
+  tags: ["#CTest", "#CMake", "#テスト自動化", "#並列テスト", "#CI/CD"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの気づき">
+  「先生！ 第4章の付録でGoogleTestの書き方は完璧になりました！ でも、そういえばCTestって `ctest --output-on-failure` くらいしか叩いてないっス。特定のテストだけ走らせたり、並列で爆速実行したりできないんスか？」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の解答">
+  「もちろんできるよ！ CTestは単にテストを回すだけのツールじゃない。**正規表現フィルタリング、CPUコアを活かした並列実行、テストごとのタイムアウト設定、CI連携用のレポート出力**まで、自動テスト基盤を支える強力な機能が山ほど詰まっているんだ。この付録でCTestの真価を引き出そう！」
+</Dialogue>
+
+---
+
+## 1. そもそもCTestの役割とは？（GoogleTestとの棲み分け）
+
+テスト自動化の世界では、**「テストフレームワーク」** と **「テストランナー」** の役割分担を理解することが大切です。
+
+```
+【CTest (テストランナー / 大会マネージャー)】
+  $ ctest --output-on-failure -j4
+  ├── ▶ sonar_test        (GoogleTestバイナリ) ─── [PASS]
+  ├── ▶ network_test      (GoogleTestバイナリ) ─── [PASS]
+  ├── ▶ e2e_pipeline.py   (pytestスクリプト)   ─── [PASS]
+  └── ▶ check_schema.sh   (シェルスクリプト)   ─── [PASS]
+  ────────────────────────────────────────────────────────
+  集計: 100% tests passed, 0 tests failed out of 4 (所要時間: 0.85秒)
+```
+
+* **GoogleTest（gtest）**：  
+  C++コード内部の関数やクラスを検証する **「審判員」**。計算結果が理論値通りか、例外が飛んだかを判定します。
+* **CTest**：  
+  プロジェクト全体の様々なテスト（GoogleTest、Pythonスクリプト、シェルスクリプトなど）を束ねて実行し、**終了コード（0か非0か）・実行時間・ログを集約する「大会運営マネージャー」**。
+
+---
+
+## 2. `ctest` コマンドライン引数（CLI）完全チートシート
+
+実務で日常的に使う主要フラグ一覧です。
+
+| オプション | 意味・役割 | 使用例 |
+| :--- | :--- | :--- |
+| **`--test-dir <dir>`** | テスト対象のbuildディレクトリを指定（CMake 3.20+推奨） | `ctest --test-dir build` |
+| **`--output-on-failure`** | **【必須】テスト失敗時のみ、そのテストの標準出力を画面に表示** | `ctest --test-dir build --output-on-failure` |
+| **`-j <N>` / `--parallel <N>`** | **テストを N 並列で同時実行（実行時間を劇的に短縮）** | `ctest --test-dir build -j 8` |
+| **`-R <regex>`** | テスト名が正規表現 `<regex>` に一致するものだけを実行 | `ctest --test-dir build -R "Sonar.*"` |
+| **`-E <regex>`** | テスト名が正規表現 `<regex>` に一致するものを除外 | `ctest --test-dir build -E "SlowTest"` |
+| **`-L <label>`** | 特定のラベル（タグ）が付いたテストを実行 | `ctest --test-dir build -L "Unit"` |
+| **`-LE <label>`** | 特定のラベルが付いたテストを除外 | `ctest --test-dir build -LE "Nightly"` |
+| **`-V` / `--verbose`** | 全テストの標準出力をリアルタイム表示（詳細ログ） | `ctest --test-dir build -V` |
+| **`-VV` / `--extra-verbose`** | CTestの内部デバッグ情報まで含む極詳細ログ | `ctest --test-dir build -VV` |
+| **`--stop-on-failure`** | 1件でもテストが落ちた瞬間に、以降のテストを中止（Fail-Fast） | `ctest --test-dir build --stop-on-failure` |
+| **`--repeat until-fail:<N>`** | **不安定なテスト（Flaky test）の炙り出し**（失敗するまで最大N回反復） | `ctest --test-dir build --repeat until-fail:50` |
+| **`--repeat until-pass:<N>`** | 一時的な通信エラー等の救済（成功するまで最大N回再試行） | `ctest --test-dir build --repeat until-pass:3` |
+| **`--output-junit <file>`** | **GitHub Actions等のCI連携用レポート（JUnit XML）を出力** | `ctest --test-dir build --output-junit report.xml` |
+
+---
+
+## 3. 実務で役立つ `ctest` コマンド実践レシピ
+
+### 🎯 ① 特定の機能テストだけピンポイント実行する
+テストが数百件ある時、修正したモジュールだけを高速に回します。
+
+```bash
+# 「SonarFilter」を含むテストだけを実行
+ctest --test-dir build -R SonarFilter --output-on-failure
+
+# 複数のモジュール（FilterまたはMath）を同時に指定
+ctest --test-dir build -R "SonarFilter|MathUtils"
+
+# 重い結合テスト（Integration）を除外して単体テストだけ高速実行
+ctest --test-dir build -E Integration
+```
+
+### ⚡ ② CPUコアをフル活用して並列爆速実行
+複数のテストバイナリやテストケースをCPUマルチコアで同時に走らせます。
+
+```bash
+# 8並列で実行
+ctest --test-dir build -j 8 --output-on-failure
+```
+
+### 🔁 ③ たまにしか落ちない Flaky Test を見つけ出す
+タイミング依存やマルチスレッド競合で「10回に1回だけ落ちるバグ」を検出します。
+
+```bash
+# 失敗するまで最大100回連続でテストを回し続ける
+ctest --test-dir build --repeat until-fail:100 --output-on-failure
+```
+
+---
+
+## 4. `CMakeLists.txt` でのテスト登録とプロパティ制御
+
+CTestは `CMakeLists.txt` の中でプロパティ（属性）を設定することで、きめ細やかな実行制御が可能です。
+
+### 基本のテスト登録
+
+```cmake
+# 1. テスト機能の有効化（トップレベルの CMakeLists.txt に必須）
+enable_testing()
+
+# 2. C++実行バイナリをテストとして登録
+add_test(
+    NAME SonarFilterUnitTest
+    COMMAND sonar_test
+)
+
+# 3. PythonのテストスクリプトもCTestに登録可能！
+add_test(
+    NAME PythonE2ETest
+    COMMAND python3 -m pytest tests/e2e/test_stream.py
+)
+```
+
+---
+
+### 実務で必須のテストプロパティ（`set_tests_properties`）
+
+`set_tests_properties(テスト名 PROPERTIES プロパティ名 値)` を使うことで、テストの振る舞いをカスタマイズできます。
+
+#### ① タイムアウト設定（無限ループ・デッドロック防止）
+ネットワーク待ちやデッドロックでCIが固まるのを防ぐため、テストごとにタイムアウト秒数を設定します。
+
+```cmake
+set_tests_properties(SonarFilterUnitTest PROPERTIES
+    TIMEOUT 10 # 10秒以内に終わらなければ強制終了・FAIL扱い
+)
+```
+
+#### ② 出力テキストによる合否判定（`PASS_REGULAR_EXPRESSION`）
+「標準出力に特定の文字列が出たら合格」「エラーが出たら不合格」という検証ができます。
+
+```cmake
+set_tests_properties(SonarFilterUnitTest PROPERTIES
+    PASS_REGULAR_EXPRESSION "All tests passed"
+    FAIL_REGULAR_EXPRESSION "FATAL|Segmentation fault|Exception"
+)
+```
+
+#### ③ 期待される失敗テスト（`WILL_FAIL`）
+「異常な引数を渡して終了コード 1（エラー）で落ちること」を正解とするテストです。
+
+```cmake
+add_test(NAME InvalidArgCrashTest COMMAND sonar_app --corrupted-input)
+
+set_tests_properties(InvalidArgCrashTest PROPERTIES
+    WILL_FAIL TRUE # プロセスが非ゼロで終了したら「テスト合格」
+)
+```
+
+#### ④ テストの依存関係・順序制御（`DEPENDS`）
+並列実行（`-j`）時でも、「テストAが終わってからテストBを実行したい」依存関係を保証します。
+
+```cmake
+add_test(NAME SetupDatabase COMMAND init_db.sh)
+add_test(NAME QueryTest COMMAND test_query)
+
+# QueryTest は SetupDatabase が成功した後にのみ実行される
+set_tests_properties(QueryTest PROPERTIES
+    DEPENDS SetupDatabase
+)
+```
+
+#### ⑤ テスト用の環境変数注入（`ENVIRONMENT`）
+テスト実行時専用のパスや設定フラグを渡します。
+
+```cmake
+set_tests_properties(SonarFilterUnitTest PROPERTIES
+    ENVIRONMENT "SONAR_CONFIG_PATH=/tmp/test_config.json;LOG_LEVEL=DEBUG"
+)
+```
+
+#### ⑥ ラベル付け（`LABELS`）
+テストを「Unit」「Integration」「Slow」「GPU」などのタグで分類し、CLIの `-L` フラグで一括指定できるようにします。
+
+```cmake
+set_tests_properties(SonarFilterUnitTest PROPERTIES LABELS "Unit")
+set_tests_properties(HeavyHILSimulation PROPERTIES LABELS "Slow;Hardware")
+```
+➔ `ctest -L Unit` で単体テストだけ実行可能に！
+
+---
+
+## 5. GoogleTestとモダンCTestの完全連携（`gtest_discover_tests`）
+
+第4章の付録でも紹介した、実務C++プロジェクトの最高峰パターンです。
+
+### なぜ `gtest_discover_tests` が最強なのか？
+
+従来の `add_test` では、どれだけGoogleTest側に `TEST()` が100個あっても、CTestからは **「sonar_test」という1個のカタマリ** にしか見えませんでした。  
+しかし、`gtest_discover_tests` を使うと、CMakeがバイナリを自動解析し、**100個の `TEST()` を個別のCTest項目として自動展開**してくれます。
+
+```cmake
+# CMakeLists.txt
+enable_testing()
+find_package(GTest REQUIRED)
+
+add_executable(sonar_test tests/test_sonar_filter.cpp)
+target_link_libraries(sonar_test PRIVATE sonar_core GTest::gtest GTest::gtest_main)
+
+include(GoogleTest)
+
+# ここがポイント！
+gtest_discover_tests(sonar_test
+    TEST_PREFIX "Sonar::"                # テスト名の先頭にプレフィックスを付与
+    PROPERTIES TIMEOUT 15                # 全テストに一括でタイムアウト15秒を設定
+    DISCOVERY_TIMEOUT 30                 # テスト解析自体のタイムアウト
+)
+```
+
+### 実行結果の違い
+```
+【通常の add_test】
+  1/1 Test #1: sonar_test ........................ Passed  0.25 sec
+  ※ どのテストが何秒かかったか不明。並列実行もできない。
+
+【gtest_discover_tests】
+  1/3 Test #1: Sonar::FilterTest.Initialization .. Passed  0.01 sec
+  2/3 Test #2: Sonar::FilterTest.Attenuation ..... Passed  0.02 sec
+  3/3 Test #3: Sonar::MathTest.VectorSum ......... Passed  0.01 sec
+  ※ テスト単位で合否と時間が丸見え！ ctest -j4 でCPU並列実行可能！
+```
+
+---
+
+## 6. CI/CD（GitHub Actions）でのベストプラクティス
+
+GitHub ActionsでCTestを自動実行する場合、以下の3つのオプションを組み合わせるのが実務の標準です。
+
+```yaml
+# .github/workflows/ci.yml
+- name: Run Tests via CTest
+  run: |
+    ctest --test-dir build \
+          --output-on-failure \
+          --parallel $(nproc) \
+          --output-junit test-results.xml
+
+- name: Upload Test Report
+  if: always() # テストが失敗してもレポートはアップロードする
+  uses: actions/upload-artifact@v4
+  with:
+    name: ctest-results
+    path: build/test-results.xml
+```
+
+* **`--output-on-failure`**：CIのコンソールログが成功したテストで埋もれず、**落ちたテストの原因だけを綺麗に表示**。
+* **`--parallel $(nproc)`**：CIランナーのCPUコア数（GitHub Actions Ubuntuなら2コア）を自動検知して並列実行。
+* **`--output-junit`**：合否結果をXML出力し、GitHubのPR画面で「どのテストが落ちたか」をグラフィカルに表示可能に。
+
+---
+
+## 7. まとめ：プロフェッショナルのCTest活用術
+
+1. **基本実行コマンドは常に `ctest --test-dir build --output-on-failure -j4`**。
+2. **作業中は `-R <正規表現>` で現在いじっているモジュールだけピンポイント高速実行**。
+3. **GoogleTestのバイナリは必ず `gtest_discover_tests` で個別展開して並列性を最大化**。
+4. **CIや放置テストには `TIMEOUT` プロパティを仕掛けて無限ハングを未然に防ぐ**。
+5. **不安定な挙動は `--repeat until-fail:100` で徹底的に再現させる**。
+
+この2大巨頭（**GoogleTestの審判力 ✕ CTestの統括マネジメント力**）をマスターすれば、C++のテスト自動化において向かうところ敵なしです！

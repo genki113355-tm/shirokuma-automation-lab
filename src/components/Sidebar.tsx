@@ -46,22 +46,39 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
       {/* Nav Content */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         {/* Quick Nav / 付録ショートカット */}
-        <div className="pb-1">
+        <div className="pb-1 space-y-1.5">
           <Link
             to="/appendix/googletest"
             onClick={closeDrawer}
-            className={`flex items-center justify-between p-2.5 rounded-lg border text-xs font-bold transition-all ${
+            className={`flex items-center justify-between p-2 rounded-lg border text-xs font-bold transition-all ${
               isActive('/appendix/googletest')
                 ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
                 : 'bg-navy-700/60 border-cyan-500/30 text-slate-200 hover:border-cyan-400 hover:text-white hover:bg-navy-700'
             }`}
           >
             <div className="flex items-center gap-2">
-              <BookOpen size={15} className="text-cyan-400 shrink-0" />
-              <span>【付録】GoogleTest リファレンス</span>
+              <BookOpen size={14} className="text-cyan-400 shrink-0" />
+              <span>【付録1】GoogleTest リファレンス</span>
             </div>
             <span className="text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-500/40 px-1.5 py-0.5 rounded font-mono shrink-0">
-              付録
+              単体
+            </span>
+          </Link>
+          <Link
+            to="/appendix/ctest"
+            onClick={closeDrawer}
+            className={`flex items-center justify-between p-2 rounded-lg border text-xs font-bold transition-all ${
+              isActive('/appendix/ctest')
+                ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
+                : 'bg-navy-700/60 border-cyan-500/30 text-slate-200 hover:border-cyan-400 hover:text-white hover:bg-navy-700'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <BookOpen size={14} className="text-teal-400 shrink-0" />
+              <span>【付録2】CTest 実践リファレンス</span>
+            </div>
+            <span className="text-[10px] bg-teal-950 text-teal-300 border border-teal-500/40 px-1.5 py-0.5 rounded font-mono shrink-0">
+              ランナー
             </span>
           </Link>
         </div>
@@ -236,9 +253,18 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/appendix/googletest') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
                   <span className={`text-xs font-bold ${isActive('/appendix/googletest') ? 'text-cyan-400' : 'text-slate-400'}`}>【付録 1】</span>
-                  <span className="text-cyan-300 text-[10px] border border-cyan-500/40 px-1.5 rounded bg-cyan-950/40">リファレンス</span>
+                  <span className="text-cyan-300 text-[10px] border border-cyan-500/40 px-1.5 rounded bg-cyan-950/40">単体テスト</span>
                 </div>
                 <p className={`text-sm font-medium ${isActive('/appendix/googletest') ? 'text-white' : 'text-slate-300'}`}>GoogleTest 逆引き実践リファレンス</p>
+              </li>
+            </Link>
+            <Link to="/appendix/ctest" onClick={closeDrawer} className="block">
+              <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/appendix/ctest') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
+                <div className="flex justify-between items-start mb-1">
+                  <span className={`text-xs font-bold ${isActive('/appendix/ctest') ? 'text-teal-400' : 'text-slate-400'}`}>【付録 2】</span>
+                  <span className="text-teal-300 text-[10px] border border-teal-500/40 px-1.5 rounded bg-teal-950/40">テストランナー</span>
+                </div>
+                <p className={`text-sm font-medium ${isActive('/appendix/ctest') ? 'text-white' : 'text-slate-300'}`}>CTest 逆引き実践リファレンス</p>
               </li>
             </Link>
           </ul>

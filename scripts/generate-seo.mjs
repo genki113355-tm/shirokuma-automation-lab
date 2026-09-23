@@ -109,6 +109,13 @@ const PAGES = [
     desc: 'C++実務で必須となるGoogleTestの主要構文を網羅。EXPECT vs ASSERTの使い分け、アサーション一覧、TEST_F（フィクスチャ）、TEST_P（パラメータ化テスト）、例外テスト、コマンドライン実行オプション、gtest_discover_tests連携までを完全整理。',
     heading: '【付録】GoogleTest 逆引き実践リファレンス',
     content: '基本のTESTマクロから、実務で即戦力となるテーブル駆動テスト・フィクスチャ・CLIフィルタリング・モダンCMake連携までを一挙習得できる実践リファレンス。'
+  },
+  {
+    path: 'appendix/ctest',
+    title: '付録: CTest（CMakeテストランナー）逆引き実践リファレンス | シロクマ C++開発自動化ラボ',
+    desc: 'CMake標準のテストランナー「CTest」を使いこなすための実践チートシート。コマンドライン引数（-R絞り込み、-j並列実行、--output-on-failure）、CMakeLists.txtでのテストプロパティ（タイムアウト、依存関係、環境変数）、gtest_discover_tests連携、CI向けJUnit出力までを完全網羅。',
+    heading: '【付録】CTest 逆引き実践リファレンス',
+    content: '手作業でテストバイナリを1個ずつ実行する泥臭い作業から脱却し、コマンド1発で全テストを並列集計するモダン基盤をマスターできる実践リファレンス。'
   }
 ];
 
