@@ -24,7 +24,7 @@ const SCENARIOS = [
         command: 'cat tests/test_processor.py',
         matchKeywords: ['cat', 'test_processor.py'],
         instruction: '次に、それを自動で検証するためのPythonテストコードを確認します。\n➔ `cat tests/test_processor.py` と入力',
-        explanation: '2行目でC++のシステムをPythonにインポートしているね。\n注目すべきは `@pytest.mark.parametrize` だ！空の配列、マイナス値、大量データなど、複数の検証パターンをリスト化している。\n手動テストなら一つずつ確認が必要で大変だけど、これならパターンを書き足すだけで何百個でも一気に自動検証できるんだ！'
+        explanation: '2行目でC++のシステムをPythonにインポートしているね。\n注目すべきは `@pytest.mark.parametrize` だ！\n「あれ？for文が無いのにどうやってループしてるの？」と思うかもしれないね。\n実はこの `@pytest...` という魔法の目印（デコレータ）をつけると、テスト実行ツールが裏側で自動的にリストの数だけ関数をループ実行してくれるんだ！\nだから自分でループを書かなくても、リストにパターンを書き足すだけで何百個でも一気に自動検証できるんだよ！'
       },
       {
         command: './build.sh',
