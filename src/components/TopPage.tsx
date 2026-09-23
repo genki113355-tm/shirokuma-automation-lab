@@ -16,26 +16,22 @@ export default function TopPage() {
               <Rocket size={16} className="shrink-0" />
               <span className="truncate">C++開発者のための実務効率化・自動化ガイド</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[4.5rem] font-black text-white leading-[1.3] md:leading-[1.1] tracking-tighter drop-shadow-2xl">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[4.5rem] font-black text-white leading-[1.3] md:leading-[1.1] tracking-tighter drop-shadow-2xl break-keep">
               <span className="block text-cyan-400 text-base sm:text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-4 tracking-widest font-bold">シロクマC++開発自動化ラボ</span>
-              <span className="inline-block">C++開発の</span><span className="inline-block">泥臭い作業、</span><br className="hidden xl:block"/>
-              <span className="inline-block">全部「全自動化」</span><span className="inline-block">しませんか？</span>
+              C++開発の<wbr/>泥臭い作業、<br className="block md:hidden"/>
+              <span className="hidden md:inline">　</span>全部<wbr/>「全自動化」<wbr/>しませんか？
             </h1>
           </div>
 
-          <h2 className="text-base sm:text-xl md:text-2xl font-bold text-slate-200 tracking-tight pb-4 sm:pb-6 border-b border-white/10 leading-relaxed">
-            <span className="inline-block">Python, Docker, CI/CDを活用して、</span>
-            <span className="text-yellow-400 inline-block">現場のC++開発を</span><span className="text-yellow-400 inline-block">モダンにアップデート。</span>
+          <h2 className="text-base sm:text-xl md:text-2xl font-bold text-slate-200 tracking-tight pb-4 sm:pb-6 border-b border-white/10 leading-relaxed break-keep">
+            Python, Docker, CI/CDを<wbr/>活用して、<br className="block sm:hidden"/>
+            <span className="text-yellow-400">現場のC++開発を<wbr/>モダンにアップデート。</span>
           </h2>
 
-          <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-4xl">
-            <span className="inline-block">「ビルド環境を作るだけで一苦労」</span>
-            <span className="inline-block">「テストを手動で実行するのが面倒」</span>
-            <span className="inline-block">「バグの検知が遅れる」……</span><br className="hidden sm:block"/>
-            <span className="inline-block">C++開発者が実際に直面する課題を解決するために、</span>
-            <span className="inline-block">開発プロセスを進化させましょう。</span><br className="hidden sm:block"/>
-            <span className="inline-block"><strong>手動ビルド ➔ CMake ➔ 自動テスト ➔ ASan ➔ Docker ➔ GitHub Actions</strong></span>
-            <span className="inline-block ml-1">という完全自動CI/CDのワークフローを実践します。</span>
+          <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-4xl break-keep">
+            「ビルド環境を作るだけで一苦労」<wbr/>「テストを手動で実行するのが面倒」<wbr/>「バグの検知が遅れる」……<br className="hidden sm:block"/>
+            C++開発者が実際に直面する課題を解決するために、開発プロセスを進化させましょう。<br className="hidden md:block"/>
+            <strong>手動ビルド ➔ CMake ➔ 自動テスト ➔ ASan ➔ Docker ➔ GitHub Actions</strong> という完全自動CI/CDのワークフローを実践します。
           </p>
         </div>
 
