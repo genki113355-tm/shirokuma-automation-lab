@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Map, CheckCircle2, X } from 'lucide-react';
+import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Map, CheckCircle2, X, BookOpen } from 'lucide-react';
 import { useLab } from '../contexts/LabContext';
 import { useLocation } from 'react-router-dom';
 
@@ -15,29 +15,35 @@ const SCENARIOS = [
     chapterRef: '第1章',
     title: 'C++テスト自動化の仕組みを体験',
     description: '手作業のテストを自動化するまでの裏側の仕組みを、順を追ってトレースしてみましょう。',
+    mentalModel: 'C++コア計算 ➔ 共有ライブラリ(.so)化 ➔ Python/pytestで一括検証',
+    prerequisites: [
+      'C++はコンパイルが必要なため、テストのたびに再ビルドすると時間がかかり非効率です。',
+      'C++を共有ライブラリ（.so）化することで、Pythonから直接C++関数を叩けるようになります。',
+      'テストデータ生成や合否判定はPythonに任せ、C++を再ビルドせずに何百通りの検証を高速自動化します。'
+    ],
     steps: [
       {
         command: 'cat src/data_processor.cpp',
         matchKeywords: ['cat', 'data_processor.cpp'],
-        instruction: 'まずは、テスト対象となるC++のソースコードを確認しましょう。\n➔ `cat src/data_processor.cpp` と入力',
+        instruction: '【全体像：① テスト対象コードの確認】\nまずはテスト対象となるC++コードを確認し、何を検証するのか把握します。\n➔ `cat src/data_processor.cpp` と入力',
         explanation: '`process` 関数は、渡された配列の数値をすべて「合計」して返す処理になっているね。\n（例： 1, 2, 3 を渡せば 6 を返す）\nこのロジックが正しく動くかどうかを、これから自動テストで検証していくよ！'
       },
       {
         command: 'cat tests/test_processor.py',
         matchKeywords: ['cat', 'test_processor.py'],
-        instruction: '次に、それを自動で検証するためのPythonテストコードを確認します。\n➔ `cat tests/test_processor.py` と入力',
+        instruction: '【全体像：② 自動検証コードの確認】\nC++を再ビルドせず、Pythonから高速にループ検証するためのpytestコードを確認します。\n➔ `cat tests/test_processor.py` と入力',
         explanation: '2行目でC++のシステムをPythonにインポートしているね。\n注目すべきは `@pytest.mark.parametrize` だ！\n「あれ？for文が無いのにどうやってループしてるの？」と思うかもしれないね。\n実はこの `@pytest...` という魔法の目印（デコレータ）をつけると、テスト実行ツールが裏側で自動的にリストの数だけ関数をループ実行してくれるんだ！\nだから自分でループを書かなくても、リストにパターンを書き足すだけで何百個でも一気に自動検証できるんだよ！'
       },
       {
         command: './build.sh',
         matchKeywords: ['./build.sh'],
-        instruction: '次に、C++のコードをPythonから読み込める形式（共有ライブラリ）に変換します。\n➔ `./build.sh` と入力',
+        instruction: '【全体像：③ C++の共有ライブラリ化】\nPythonからC++を直接呼べるように、C++コードを共有ライブラリ(.so)へコンパイルします。\n➔ `./build.sh` と入力',
         explanation: 'お疲れ様！今実行したスクリプトが、C++のコードをコンパイルして「Pythonから呼び出せる魔法のファイル（.soファイル）」に変換してくれたんだよ。\nこれでテストの準備は完璧だ。'
       },
       {
         command: 'pytest',
         matchKeywords: ['pytest'],
-        instruction: '準備が整いました。テストフレームワークを実行して、自動テストを走らせましょう。\n➔ `pytest` と入力',
+        instruction: '【全体像：④ 一括テストの自動実行】\n準備完了！Pythonのテストランナー(pytest)を起動し、4つの検証パターンを一気に走らせます。\n➔ `pytest` と入力',
         explanation: '素晴らしい！たった1つのコマンドで、さっきのPythonテストが一瞬で実行されたね。\n手作業で画面をポチポチしなくても、これでいつでもプログラムの正しさを証明できるよ！'
       }
     ]
@@ -47,23 +53,29 @@ const SCENARIOS = [
     chapterRef: '第2章',
     title: '「私のPCでは動いた」の撲滅',
     description: 'Dockerを使って、環境に依存しない統一されたビルド環境を構築する流れをトレースします。',
+    mentalModel: 'Dockerfile(設計図) ➔ Dockerイメージ(金型) ➔ Dockerコンテナ(隔離空間)',
+    prerequisites: [
+      'OSやコンパイラ(GCC)のバージョンが違うだけで、C++は「私のPCでは動くのに」問題が頻発します。',
+      'Dockerfileに、必要なOS(Ubuntu)やツール(CMake, g++)の手順をすべてコードとして定義します。',
+      '隔離されたコンテナ内でテストを実行することで、PC環境を汚さず、誰の環境でも100%同じ再現性を保証します。'
+    ],
     steps: [
       {
         command: 'cat Dockerfile',
         matchKeywords: ['cat', 'Dockerfile'],
-        instruction: '環境の設計図であるDockerfileの中身を確認します。\n➔ `cat Dockerfile` と入力',
+        instruction: '【全体像：① 環境のコード化】\n全員のPCで同じLinux・ツール群を再現するための設計図(Dockerfile)を確認します。\n➔ `cat Dockerfile` と入力',
         explanation: 'これがコンテナの設計図（Dockerfile）だよ！1行ずつ重要な役割があるんだ：\n・`FROM ubuntu:22.04`: ベースとなるまっさらなOS（Ubuntu）を用意する。\n・`RUN apt-get... / pip3...`: C++コンパイラ(g++)、ビルドツール(cmake)、テストツール(pytest)を自動インストールする。\n・`COPY . /app`: 手元のソースコード一式をコンテナの中（/app）へ丸ごと転送する。\n・`WORKDIR /app`: コンテナ内での作業ディレクトリを `/app` に移動する。\n・`CMD ["./build.sh"]`: コンテナを起動した瞬間に自動実行する命令を指定する。\n手順をこうしてコード化しておけば、環境構築の属人化が完全にゼロになるんだよ！'
       },
       {
         command: 'docker build -t app .',
         matchKeywords: ['docker', 'build'],
-        instruction: 'この設計図をもとに、全員が同じ状態から始められるDockerイメージをビルドします。\n➔ `docker build -t app .` と入力',
+        instruction: '【全体像：② イメージ(金型)のビルド】\n設計図をもとに、全員が同じ状態から始められるDockerイメージ(app)を組み立てます。\n➔ `docker build -t app .` と入力',
         explanation: '全6ステップのビルドが完了したね！今裏側で起きた仕組みを解説するよ：\n・`docker build`: Dockerfileの命令を1行ずつ上から実行し、層（レイヤー）を重ねてOSイメージを作り上げる。\n・`-t app`: 出来上がったイメージに「app」という名前（タグ）をつけたよ。\n・`.`（末尾のドット）: 「このフォルダにあるファイルやDockerfileを使ってね」という意味。\nこれで『誰のPCでも寸分違わず同じ動きをする独立したLinux環境』がパッケージ化されたんだ！'
       },
       {
         command: 'docker run --rm app',
         matchKeywords: ['docker', 'run'],
-        instruction: '最後に、作ったコンテナを起動して、隔離環境の中で自動テストが走るか確かめましょう。\n➔ `docker run --rm app` と入力',
+        instruction: '【全体像：③ 隔離コンテナでのテスト実行】\nホストPCを一切汚さず、隔離されたLinuxコンテナ内部でテストが完走するか確認します。\n➔ `docker run --rm app` と入力',
         explanation: 'お見事！ホストPCの環境を一切汚さずに、使い捨てのコンテナ内部でC++のビルドとテストが全自動で完走したね！\n`--rm` オプションを付けたから、テストが終わればゴミを残さず綺麗サッパリ消滅してくれるんだ。\n「私のPCでは動くのに」問題は、こうして完全に撲滅されるんだよ！'
       }
     ]
@@ -73,17 +85,23 @@ const SCENARIOS = [
     chapterRef: '第9章',
     title: '見えないメモリリークの特定',
     description: '動的解析ツールを使って、目視では見つけられないメモリの解放忘れを特定する流れをトレースします。',
+    mentalModel: 'new(メモリ確保) ➔ delete忘れ ➔ プロセス終了まで残存 ➔ Valgrindで検知',
+    prerequisites: [
+      'C++では `new` でヒープ領域に確保したメモリは、明示的に `delete` しないと解放されません。',
+      '解放を忘れると「メモリリーク」となり、長時間動かすサーバーや組込み機器が突然クラッシュします。',
+      '目視では気づけないため、動的解析ツール(Valgrind)で実行中のメモリ確保/解放を1バイト単位で監視します。'
+    ],
     steps: [
       {
         command: 'cat src/main.cpp',
         matchKeywords: ['cat', 'main.cpp'],
-        instruction: 'まずは問題のありそうなC++コードを確認します。\n➔ `cat src/main.cpp` と入力',
+        instruction: '【全体像：① バグの潜むコード確認】\n一見普通に動くけれど、メモリの解放忘れ(newの放置)が潜んでいるC++コードを確認します。\n➔ `cat src/main.cpp` と入力',
         explanation: 'コードの後半を見てごらん。 `new int[100]` でメモリを確保しているのに、どこにも `delete` が書かれていないよね。\nこれがシステムをクラッシュさせる「メモリリーク」の正体だよ。'
       },
       {
         command: 'valgrind ./app',
         matchKeywords: ['valgrind', './app'],
-        instruction: 'Valgrindを使って、プログラム実行中のメモリ使用状況を監視・解析します。\n➔ `valgrind ./app` と入力',
+        instruction: '【全体像：② 動的解析ツールの実行】\n目視では見つけられないメモリの解放漏れを、Valgrindを使って実行中に監視・特定します。\n➔ `valgrind ./app` と入力',
         explanation: '赤い文字で `definitely lost: 400 bytes` と出たね！\nValgrindはこうやって、目で見つけにくいメモリの解放忘れをプログラムを実行しながら監視して教えてくれる、心強い相棒なんだ。'
       }
     ]
@@ -160,11 +178,28 @@ export default function CodeLab() {
               id: Date.now() + 2, 
               type: 'system', 
               content: (
-                <div className="text-cyan-400 mt-4 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
-                  <div className="font-bold text-lg mb-1 flex items-center gap-2">
-                    <Map size={18} /> 【STEP {stepIndex + 1}/{activeScenario.steps.length}】
+                <div>
+                  {stepIndex === 0 && (
+                    <div className="text-slate-300 mt-3 p-3.5 bg-slate-800/90 border border-cyan-500/30 rounded-xl mb-3 shadow-lg animate-fade-in">
+                      <div className="font-bold text-sm text-cyan-400 flex items-center gap-2 mb-2">
+                        <BookOpen size={16} /> 【ミッション全体像と前提知識】
+                      </div>
+                      <div className="text-xs bg-navy-950/80 p-2 rounded border border-slate-700 font-mono text-cyan-200 mb-2">
+                        {activeScenario.mentalModel}
+                      </div>
+                      <ul className="text-xs text-slate-300 space-y-1 list-disc list-inside leading-relaxed">
+                        {activeScenario.prerequisites.map((p, i) => (
+                          <li key={i}>{p}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  <div className="text-cyan-400 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
+                    <div className="font-bold text-lg mb-1 flex items-center gap-2">
+                      <Map size={18} /> 【STEP {stepIndex + 1}/{activeScenario.steps.length}】
+                    </div>
+                    <div className="text-slate-200 whitespace-pre-wrap">{step.instruction}</div>
                   </div>
-                  <div className="text-slate-200 whitespace-pre-wrap">{step.instruction}</div>
                 </div>
               )
             }
@@ -616,14 +651,34 @@ export default function CodeLab() {
                           {isCompleted && <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />}
                         </div>
                         {isActive && (
-                          <div className="mt-3">
-                            <p className="text-xs text-slate-400 mb-4">{scenario.description}</p>
-                            <div className="space-y-2">
+                          <div className="mt-3 space-y-3">
+                            <p className="text-xs text-slate-400 leading-relaxed">{scenario.description}</p>
+                            
+                            {/* 前提知識・仕組みブロック */}
+                            <div className="bg-navy-950/80 border border-cyan-500/20 rounded-lg p-2.5 space-y-2">
+                              <div className="flex items-center gap-1.5 text-[11px] font-bold text-cyan-300">
+                                <BookOpen size={13} /> 前提知識と仕組み
+                              </div>
+                              <div className="text-[10px] text-slate-300 bg-navy-900/80 p-1.5 rounded border border-slate-700/60 font-mono">
+                                <span className="text-cyan-400 font-bold block mb-0.5">【全体フロー】</span>
+                                {scenario.mentalModel}
+                              </div>
+                              <ul className="text-[10px] text-slate-400 space-y-1 list-disc list-inside leading-snug">
+                                {scenario.prerequisites.map((p, pIdx) => (
+                                  <li key={pIdx}>{p}</li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2 pt-1">
+                              <div className="text-[10px] font-bold text-slate-400 tracking-wider">
+                                進捗ステップ ({stepIdx}/{scenario.steps.length})
+                              </div>
                               {scenario.steps.map((step, idx) => {
                                 const isStepCompleted = idx < stepIdx;
                                 const isStepActive = idx === stepIdx;
                                 return (
-                                  <div key={idx} className={`flex items-start gap-2 text-xs ${isStepActive ? 'text-cyan-300' : isStepCompleted ? 'text-slate-500' : 'text-slate-600'}`}>
+                                  <div key={idx} className={`flex items-start gap-2 text-xs ${isStepActive ? 'text-cyan-300 font-bold' : isStepCompleted ? 'text-slate-500' : 'text-slate-600'}`}>
                                     <div className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${isStepActive ? 'bg-cyan-500 text-navy-900' : isStepCompleted ? 'bg-slate-700' : 'border border-slate-700'}`}>
                                       {isStepCompleted ? <CheckCircle2 size={10} /> : idx + 1}
                                     </div>
