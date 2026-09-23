@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Target, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Target, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 
 type LogEntry = {
   id: number;
@@ -412,6 +413,16 @@ export default function CodeLab() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-12 pt-8 border-t border-slate-700/50 gap-6">
+        <Link to="/" className="text-slate-400 hover:text-cyan-400 text-sm font-bold flex items-center gap-2 transition-colors order-2 sm:order-1">
+          <ArrowLeft size={16} /> トップ（目次）へ戻る
+        </Link>
+        <Link to="/chapter/1" className="bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.3)] w-full sm:w-auto order-1 sm:order-2">
+          第1章へ進む <ArrowRight size={20} />
+        </Link>
       </div>
     </div>
   );
