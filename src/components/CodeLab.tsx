@@ -15,10 +15,16 @@ const SCENARIOS = [
     description: '手作業のテストを自動化するまでの裏側の仕組みを、順を追ってトレースしてみましょう。',
     steps: [
       {
+        command: 'cat src/data_processor.cpp',
+        matchKeywords: ['cat', 'data_processor.cpp'],
+        instruction: 'まずは、テスト対象となるC++のソースコードを確認しましょう。\n➔ `cat src/data_processor.cpp` と入力',
+        explanation: '`process` 関数は、渡された配列の数値をすべて「合計」して返す処理になっているね。\n（例： 1, 2, 3 を渡せば 6 を返す）\nこのロジックが正しく動くかどうかを、これから自動テストで検証していくよ！'
+      },
+      {
         command: 'cat tests/test_processor.py',
         matchKeywords: ['cat', 'test_processor.py'],
-        instruction: 'まずはテストコードの中身を確認します。\n➔ `cat tests/test_processor.py` と入力',
-        explanation: 'コードをよく見てみて。\nまず2行目の `from shirokuma_cpp import DataProcessor` で、C++で作ったシステムをPythonのモジュールとして読み込んでいるね。\nそして後半の `def test_...` が実際の自動テストケースさ！\n`assert processor.process([1, 2, 3]) == 6` の部分は、「データ処理結果が絶対に 6 になるはずだ！」と検証（アサーション）しているんだ。\nもしC++側の計算結果が違えば、Pythonがエラーを出してバグを教えてくれる仕組みだよ。'
+        instruction: '次に、それを自動で検証するためのPythonテストコードを確認します。\n➔ `cat tests/test_processor.py` と入力',
+        explanation: '2行目でC++のシステムをPythonにインポートしているね。\n注目すべきは `@pytest.mark.parametrize` だ！空の配列、マイナス値、大量データなど、複数の検証パターンをリスト化している。\n手動テストなら一つずつ確認が必要で大変だけど、これならパターンを書き足すだけで何百個でも一気に自動検証できるんだ！'
       },
       {
         command: './build.sh',
@@ -225,20 +231,35 @@ export default function CodeLab() {
         const file = args[1];
         if (file.includes('test_processor.py')) {
           addLog('output', (
-            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm">
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">import</span> pytest<br/>
               <span className="text-purple-400">from</span> shirokuma_cpp <span className="text-purple-400">import</span> DataProcessor<br/>
               <br/>
-              <span className="text-blue-400">def</span> <span className="text-yellow-200">test_process_data_empty</span>():<br/>
+              <span className="text-slate-500"># 複数の検証パターン（入力データ, 期待される合計値）を一気に定義</span><br/>
+              <span className="text-yellow-400">@pytest.mark.parametrize</span>(<span className="text-green-300">"input_data, expected"</span>, [<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;([], <span className="text-green-300">0</span>),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># パターン1: 空のケース</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;([<span className="text-green-300">1</span>, <span className="text-green-300">2</span>, <span className="text-green-300">3</span>], <span className="text-green-300">6</span>),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># パターン2: 正常系</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;([<span className="text-green-300">10</span>, -<span className="text-green-300">5</span>, <span className="text-green-300">5</span>], <span className="text-green-300">10</span>),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># パターン3: マイナス値</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;([<span className="text-green-300">100</span>] * <span className="text-green-300">1000</span>, <span className="text-green-300">100000</span>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># パターン4: 大量データ</span><br/>
+              ])<br/>
+              <span className="text-blue-400">def</span> <span className="text-yellow-200">test_process_data</span>(input_data, expected):<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;processor = DataProcessor()<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">assert</span> processor.process([]) == <span className="text-green-300">0</span><br/>
-              <br/>
-              <span className="text-blue-400">def</span> <span className="text-yellow-200">test_process_data_normal</span>():<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;processor = DataProcessor()<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">assert</span> processor.process([<span className="text-green-300">1</span>, <span className="text-green-300">2</span>, <span className="text-green-300">3</span>]) == <span className="text-green-300">6</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">assert</span> processor.process(input_data) == expected<br/>
             </div>
           ));
-        } else if (file.includes('main.cpp') || file.includes('data_processor')) {
+        } else if (file.includes('data_processor.cpp')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-purple-400">#include</span> <span className="text-green-300">"data_processor.h"</span><br/>
+              <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;numeric&gt;</span><br/>
+              <br/>
+              <span className="text-slate-500">// 渡された配列の数値をすべて合計して返す処理</span><br/>
+              <span className="text-blue-400">int</span> DataProcessor::<span className="text-yellow-200">process</span>(<span className="text-blue-400">const</span> std::vector&lt;<span className="text-blue-400">int</span>&gt;&amp; data) {'{'}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">return</span> std::accumulate(data.begin(), data.end(), <span className="text-green-300">0</span>);<br/>
+              {'}'}
+            </div>
+          ));
+        } else if (file.includes('main.cpp')) {
           addLog('output', (
             <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm">
               <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;iostream&gt;</span><br/>
@@ -288,12 +309,13 @@ export default function CodeLab() {
         addLog('output', (
           <div>
             platform linux -- Python 3.10.12, pytest-7.4.0<br/>
-            collected 3 items<br/><br/>
+            collected 4 items<br/><br/>
             tests/test_processor.py <span className="text-green-400">.</span>
             <span className="text-green-400">.</span>
             <span className="text-green-400">.</span>
+            <span className="text-green-400">.</span>
             <span className="text-green-400 ml-4">[100%]</span><br/><br/>
-            <span className="text-green-400 font-bold">========================== 3 passed in 0.15s ===========================</span>
+            <span className="text-green-400 font-bold">========================== 4 passed in 0.28s ===========================</span>
           </div>
         ));
         break;
