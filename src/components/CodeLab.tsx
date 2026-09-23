@@ -390,8 +390,9 @@ export default function CodeLab() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Tab') {
+    if (e.key === 'Tab' || e.keyCode === 9) {
       e.preventDefault();
+      e.stopPropagation();
       
       if (!input) return;
 
@@ -409,9 +410,10 @@ export default function CodeLab() {
         const cmds = ['cat ', 'ls', 'clear', 'pytest', './build.sh', 'valgrind ', 'docker '];
         const match = cmds.find(c => c.startsWith(input));
         if (match) setInput(match);
-      } else if (lastWord) {
-        const paths = ['tests/test_processor.py', 'src/main.cpp', 'Dockerfile', './app', 'build -t app .'];
-        const match = paths.find(p => p.startsWith(lastWord));
+      } else {
+        const searchWord = lastWord || '';
+        const paths = ['tests/test_processor.py', 'src/main.cpp', 'Dockerfile', './app'];
+        const match = paths.find(p => p.startsWith(searchWord));
         if (match) {
           words[words.length - 1] = match;
           setInput(words.join(' '));
@@ -596,6 +598,7 @@ export default function CodeLab() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
+                    onKeyDownCapture={handleKeyDown}
                     className="flex-1 bg-transparent text-white outline-none border-none focus:ring-0 p-0"
                     autoFocus
                     spellCheck={false}
