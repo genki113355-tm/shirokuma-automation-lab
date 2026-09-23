@@ -1,0 +1,346 @@
+import Dialogue from '../../components/mdx/Dialogue';
+
+export const meta = {
+  id: "googletest",
+  chapterId: "appendix-1",
+  category: "付録・逆引きリファレンス",
+  title: "GoogleTest（gtest）逆引き実践リファレンス",
+  description: "C++実務で必須となるGoogleTestの主要構文を網羅。EXPECT vs ASSERTの使い分け、アサーション一覧、TEST_F（フィクスチャ）、TEST_P（パラメータ化テスト）、例外テスト、コマンドライン実行オプション、gtest_discover_tests連携までを完全整理。",
+  responsibility: "GoogleTest構文網羅・テスト設計パターン・CLIオプション",
+  evolution: "基本のTESTマクロから、実務で即戦力となるテーブル駆動テスト・フィクスチャ・CLIフィルタリングまでを一挙習得！",
+  tags: ["#GoogleTest", "#gtest", "#単体テスト", "#TEST_F", "#TEST_P", "#C++"]
+};
+
+<Dialogue character="penguin" title="ペンギンくんの向上心">
+  「先生！ 第4章で `TEST` と `EXPECT_NEAR` の基本はバッチリ分かりました！ でも、実際の業務コードを見ると `TEST_F` とか `TEST_P` とか、見たことのないマクロが山ほど出てきて混乱したっス……」
+</Dialogue>
+
+<Dialogue character="shirokuma" title="シロクマ先生の激励">
+  「素晴らしい着眼点だね！ 第4章で扱ったのはGoogleTestの『入口』に過ぎない。実務の大規模なC++開発では、テストの重複を省く**フィクスチャ（TEST_F）**や、何十通りもの境界値を一括検証する**パラメータ化テスト（TEST_P）**が当たり前に使われるんだ。この付録でGoogleTestの全貌をマスターしてしまおう！」
+</Dialogue>
+
+---
+
+## 1. アサーションの基本思想：`EXPECT_*` vs `ASSERT_*`
+
+GoogleTestのアサーション（合否判定マクロ）には、すべて **`EXPECT_`** で始まるものと **`ASSERT_`** で始まるものの2系統が存在します。この使い分けは実務での鉄則です。
+
+| 系統 | 判定失敗時の挙動 | 推奨される使いどころ |
+| :--- | :--- | :--- |
+| **`EXPECT_*`** | **非致命的エラー（テストを続行）**<br/>失敗を記録するが、**その関数の後続の検証コードも最後まで実行する**。 | **原則としてこちらを標準使用する**。<br/>1回のテスト実行で「何箇所失敗したか」をすべて把握できるため。 |
+| **`ASSERT_*`** | **致命的エラー（テストを即座中断）**<br/>失敗した瞬間に**現在のテスト関数を即座に `return` し、以降の処理を打ち切る**。 | **失敗したら後続コードがクラッシュ（SEGV）する場合**。<br/>（例：ポインタのNULLチェック、配列のサイズチェック等） |
+
+### 💡 典型的な使い分けコード例
+
+```cpp
+TEST(SonarBufferTest, SafeProcessing) {
+    SonarBuffer* buffer = CreateBuffer(1024);
+
+    // 1. bufferがnullptrなら、これ以降のメンバアクセスでSegfaultするため即座中断
+    ASSERT_NE(buffer, nullptr) << "致命的エラー: バッファのメモリ確保に失敗しました";
+
+    // 2. ここ以降は安全なので、複数の検証項目をEXPECTで網羅的にチェック
+    EXPECT_EQ(buffer->GetCapacity(), 1024);
+    EXPECT_EQ(buffer->GetReadIndex(), 0);
+    EXPECT_TRUE(buffer->IsEmpty());
+
+    DestroyBuffer(buffer);
+}
+```
+
+> 💬 **カスタムエラーメッセージ（ストリーム演算子 `<<`）**  
+> 上の例のように、アサーションの末尾に `<<` でメッセージを連結すると、テスト失敗時に原因究明の手がかり（変数の中身など）を一緒に出力できます。  
+> `EXPECT_EQ(result, expected) << "失敗したインデックス i = " << i;`
+
+---
+
+## 2. アサーション完全一覧チートシート
+
+### ① 真偽値の検証
+
+| マクロ | 意味 |
+| :--- | :--- |
+| `EXPECT_TRUE(condition)` | `condition` が `true` であること |
+| `EXPECT_FALSE(condition)` | `condition` が `false` であること |
+
+### ② 数値・オブジェクトの基本比較
+
+| マクロ | 意味 | 備考 |
+| :--- | :--- | :--- |
+| `EXPECT_EQ(val1, val2)` | `val1 == val2`（等しい） | `val1` に「期待値」、`val2` に「実際値」を書くのが慣例 |
+| `EXPECT_NE(val1, val2)` | `val1 != val2`（等しくない） | |
+| `EXPECT_LT(val1, val2)` | `val1 < val2`（より小さい） | Less Than |
+| `EXPECT_LE(val1, val2)` | `val1 <= val2`（以下） | Less Equal |
+| `EXPECT_GT(val1, val2)` | `val1 > val2`（より大きい） | Greater Than |
+| `EXPECT_GE(val1, val2)` | `val1 >= val2`（以上） | Greater Equal |
+
+### ③ C文字列（`const char*`）の比較
+※ `std::string` 同士の比較は通常の `EXPECT_EQ` で比較できますが、C言語風の `const char*` ポインタ文字列はポインタアドレスの一致ではなく **中身の文字列一致** を判定する専用マクロを使います。
+
+| マクロ | 意味 |
+| :--- | :--- |
+| `EXPECT_STREQ(str1, str2)` | 2つのC文字列の内容が完全一致すること |
+| `EXPECT_STRNE(str1, str2)` | 2つのC文字列の内容が一致しないこと |
+| `EXPECT_STRCASEEQ(str1, str2)` | 大小文字を無視して一致すること（Case-insensitive） |
+| `EXPECT_STRCASENE(str1, str2)` | 大小文字を無視しても一致しないこと |
+
+### ④ 浮動小数点数（`float` / `double`）の比較
+第4章でも解説した通り、浮動小数点演算は2進数表現による微小な丸め誤差が不可避なため、`EXPECT_EQ` は使えません。
+
+| マクロ | 意味 | 推奨ユースケース |
+| :--- | :--- | :--- |
+| `EXPECT_FLOAT_EQ(val1, val2)` | 2つの `float` が 4 ULP 以内で一致 | 純粋な浮動小数演算の同値チェック |
+| `EXPECT_DOUBLE_EQ(val1, val2)` | 2つの `double` が 4 ULP 以内で一致 | 倍精度演算の同値チェック |
+| `EXPECT_NEAR(val1, val2, abs_error)` | `\|val1 - val2\| <= abs_error` | **信号処理・物理演算・数値計算の標準**<br/>「誤差 ±0.01 以内」と業務要件に合わせて指定可能 |
+
+### ⑤ 例外処理の検証
+異常系テストで「特定の不正引数を渡した時に、正しく例外が送出されるか」を検証します。
+
+```cpp
+// 1. 特定の型（std::invalid_argumentなど）の例外が投げられることを検証
+EXPECT_THROW(filter.SetCutoffFrequency(-10.0), std::invalid_argument);
+
+// 2. 例外が一切投げられず正常終了することを検証
+EXPECT_NO_THROW(filter.SetCutoffFrequency(50.0));
+
+// 3. 型は問わず何らかの例外が投げられることを検証
+EXPECT_ANY_THROW(filter.ProcessCorruptedPacket());
+```
+
+---
+
+## 3. テストフィクスチャ（`TEST_F`）：初期化コードの共通化
+
+複数のテストで「同じオブジェクトの生成」「ファイルのオープン」「共通パラメータの初期化」を毎回コピペしていませんか？  
+**テストフィクスチャ（Test Fixture）** を使えば、テストの前処理と後処理を1箇所に集約できます。
+
+### 🏢 仕組み：`::testing::Test` を継承する
+
+```cpp
+#include <gtest/gtest.h>
+#include "sonar_processor.h"
+
+// 共通の準備を行うフィクスチャクラスを作成
+class SonarProcessorTest : public ::testing::Test {
+protected:
+    SonarProcessor* processor;
+
+    // 各テストケース（TEST_F）の実行直前に自動で呼ばれる
+    void SetUp() override {
+        processor = new SonarProcessor();
+        processor->Initialize(48000 /* 48kHzサンプリング */);
+    }
+
+    // 各テストケース（TEST_F）の終了直後に自動で呼ばれる
+    void TearDown() override {
+        processor->Shutdown();
+        delete processor;
+        processor = nullptr;
+    }
+};
+
+// マクロには TEST ではなく TEST_F を使い、第1引数にフィクスチャクラス名を指定
+TEST_F(SonarProcessorTest, DefaultChannelCount) {
+    // SetUp() がすでに実行された状態で始まる
+    EXPECT_EQ(processor->GetChannelCount(), 4);
+}
+
+TEST_F(SonarProcessorTest, GainAdjustment) {
+    processor->SetGain(2.5);
+    EXPECT_DOUBLE_EQ(processor->GetGain(), 2.5);
+}
+```
+
+> ⚠️ **注意: 各テストは完全に独立して実行される**  
+> `TEST_F` ごとにフィクスチャクラスの新しいインスタンスが生成され、`SetUp()` ➔ `テスト本文` ➔ `TearDown()` の順で実行されます。  
+> したがって、テストAで `processor` の状態を変更しても、テストBには一切影響（副作用）を与えません。
+
+---
+
+## 4. パラメーター化テスト（`TEST_P`）：テーブル駆動テスト
+
+「同じ計算ロジックに対して、10通り・100通りの入力値と期待値のペアを流し込みたい」場合、テストコードを10個コピペするのは最悪のアンチパターンです。  
+**`TEST_P`（Parameterized Test）** を使うと、テストロジックは1つだけ書き、テストデータ一覧を外側から注入できます。
+
+```cpp
+#include <gtest/gtest.h>
+#include "sonar_filter.h"
+
+// テストパラメータ用の構造体
+struct FilterTestCase {
+    double cutoff_freq;
+    double input_signal;
+    double expected_attenuation;
+};
+
+// ::testing::TestWithParam<T> を継承
+class SonarFilterParamTest : public ::testing::TestWithParam<FilterTestCase> {};
+
+// TEST_P でロジックを1本記述
+TEST_P(SonarFilterParamTest, AttenuationMatchesTheory) {
+    const FilterTestCase& tc = GetParam(); // 注入されたパラメータを取り出す
+
+    SonarFilter filter(tc.cutoff_freq);
+    double actual = filter.Process(tc.input_signal);
+
+    EXPECT_NEAR(actual, tc.expected_attenuation, 0.05)
+        << "カットオフ周波数: " << tc.cutoff_freq << "Hz で計算誤差が閾値を超過しました";
+}
+
+// テストケースのデータセットを定義・注入
+INSTANTIATE_TEST_SUITE_P(
+    StandardFrequencySweep,
+    SonarFilterParamTest,
+    ::testing::Values(
+        FilterTestCase{ 20.0, 100.0, 76.84 },
+        FilterTestCase{ 40.0, 100.0, 59.05 },
+        FilterTestCase{ 60.0, 100.0, 45.23 },
+        FilterTestCase{ 80.0, 100.0, 34.62 },
+        FilterTestCase{ 100.0, 100.0, 26.54 }
+    )
+);
+```
+
+実行すると、GoogleTestが自動的に `StandardFrequencySweep/SonarFilterParamTest.AttenuationMatchesTheory/0` から `/4` までの5つの独立したテストとして実行・報告してくれます！
+
+---
+
+## 5. コマンドライン実行制御（CLIオプション）
+
+GoogleTestでビルドされたバイナリ（`sonar_test` など）は、コマンドライン引数で自在に実行挙動をコントロールできます。実務でのデバッグスピードが劇的に跳ね上がる主要フラグです。
+
+### 🎯 ① 特定のテストだけ実行する（`--gtest_filter`）
+プロジェクト全体に数百個のテストがある時、関係のないテストまで毎回走らせるのは時間の無駄です。
+
+```bash
+# SonarFilterTest の全テストを実行
+./build/tests/sonar_test --gtest_filter="SonarFilterTest.*"
+
+# 特定の1テストだけをピンポイント実行
+./build/tests/sonar_test --gtest_filter="SonarFilterTest.SignalAttenuation"
+
+# ワイルドカードを使った複合指定（*Filter* を含むテストすべて）
+./build/tests/sonar_test --gtest_filter="*Filter*"
+
+# マイナス（-）を付けると除外指定（重いテスト SlowTest を除外して高速実行）
+./build/tests/sonar_test --gtest_filter="-*SlowTest*"
+```
+
+### 🔁 ② 不安定なテスト（Flaky Test）を炙り出す（`--gtest_repeat`）
+「たまにしか落ちない」マルチスレッドやタイミング依存のバグを見つけるのに必須です。
+
+```bash
+# テストを100回連続で繰り返し実行
+./build/tests/sonar_test --gtest_repeat=100
+
+# 1回でも失敗したら即座に停止するフラグと組み合わせる
+./build/tests/sonar_test --gtest_repeat=1000 --gtest_break_on_failure
+```
+
+### 🐛 ③ 失敗時にデバッガで即ブレーク（`--gtest_break_on_failure`）
+GDBやLLDBと併用する際、テストが落ちた瞬間のコールスタックを捕捉できます。
+
+```bash
+gdb --args ./build/tests/sonar_test --gtest_break_on_failure
+```
+
+### 📄 ④ CI連携用の機械可読レポート出力（`--gtest_output`）
+GitHub ActionsやJenkinsなどのCIツールに合否レポートを渡す標準形式です。
+
+```bash
+# JUnit互換のXMLレポートを出力
+./build/tests/sonar_test --gtest_output=xml:report.xml
+
+# JSON形式で出力
+./build/tests/sonar_test --gtest_output=json:report.json
+```
+
+---
+
+## 6. モダンCMake連携：`gtest_discover_tests`
+
+第3章では `add_test(NAME AllUnitTests COMMAND sonar_test)` というシンプルな記述を紹介しました。  
+しかし、プロダクションの大規模開発では CMake 公式の **`GoogleTest` モジュール（`gtest_discover_tests`）** を使うのがデファクトスタンダードです。
+
+### 比較：なぜ `gtest_discover_tests` を使うべきなのか？
+
+* **従来の `add_test`**:  
+  CTestから見ると `sonar_test` 全体が「1つのテスト」に見えます。100個ある `TEST()` のうち1個が落ちても、CTestには「sonar_test が失敗」としか表示されず、CTestの並列実行（`ctest -j8`）も効きません。
+* **モダンな `gtest_discover_tests`**:  
+  CMakeがテストバイナリを自動解析し、`TEST()` マクロを1つずつ展開して **個別のCTestターゲットとして登録** してくれます！
+
+```cmake
+# CMakeLists.txt での設定例
+enable_testing()
+find_package(GTest REQUIRED)
+
+add_executable(sonar_test tests/test_sonar_filter.cpp)
+target_link_libraries(sonar_test PRIVATE sonar_core GTest::gtest GTest::gtest_main)
+
+# GoogleTestモジュールをインクルード
+include(GoogleTest)
+
+# 自動ディスカバリーを有効化！
+gtest_discover_tests(sonar_test)
+```
+
+この記述だけで、`ctest` を叩いた時に：
+```
+  1/2 Test #1: SonarFilterTest.Initialization ........... Passed  0.01 sec
+  2/2 Test #2: SonarFilterTest.SignalAttenuation ........ Passed  0.02 sec
+```
+のように、GoogleTest内部のテストケース名がそのままCTestに現れ、`ctest -j4` で個別テストごとにCPUコアをフル活用して並列分散実行できるようになります！
+
+---
+
+## 7. GoogleMock（gmock）によるモック化の超入門
+
+C++の単体テストで最も厄介なのが、「通信相手の機器が繋がっていない」「ファイルシステムが手元にない」「乱数や現在時刻で出力が変わる」といった外部依存です。  
+**GoogleMock（gmock）** を使うと、対象クラスの振る舞いをコード上で偽装（モック化）できます。
+
+```cpp
+#include <gmock/gmock.h>
+
+// 1. インターフェース（抽象基底クラス）
+class ISonarTransducer {
+public:
+    virtual ~ISonarTransducer() = default;
+    virtual double ReadHydrophoneVoltage(int channel_id) = 0;
+};
+
+// 2. モッククラスの定義（MOCK_METHODマクロを使用）
+class MockSonarTransducer : public ISonarTransducer {
+public:
+    // 戻り値型, 関数名, (引数型)
+    MOCK_METHOD(double, ReadHydrophoneVoltage, (int channel_id), (override));
+};
+
+// 3. テストでの振る舞い定義と検証
+TEST(SonarPipelineTest, ValidatesInputVoltage) {
+    MockSonarTransducer mock_hardware;
+
+    // 「チャンネル0番の電圧読み出しが呼ばれたら、4.85Vを返せ」と期待を定義
+    EXPECT_CALL(mock_hardware, ReadHydrophoneVoltage(0))
+        .Times(1)                  // 1回だけ呼ばれることを保証
+        .WillOnce(testing::Return(4.85)); // 4.85を偽装返却
+
+    // 偽装したモックをロジックに渡してテスト
+    EXPECT_TRUE(ProcessChannel(&mock_hardware, 0));
+}
+```
+
+実機ハードウェアや高価な測定器が手元になくても、PCのCPU上だけで100%確実にユニットテストを完走させることができます！
+
+---
+
+## 8. まとめ：プロフェッショナルのGoogleTest活用術
+
+1. **基本は `EXPECT_*`、落ちたら即座にSEGVする箇所だけ `ASSERT_*` を使う**。
+2. **浮動小数点は `EXPECT_NEAR` で実務要件に即した許容誤差を明示する**。
+3. **前処理・後処理のコピペは `TEST_F`（フィクスチャ）で撲滅する**。
+4. **大量パターンの網羅テストは `TEST_P`（パラメータ化テスト）で1本化する**。
+5. **CMakeには `gtest_discover_tests` を導入し、CTestと完全連動させる**。
+6. **日頃の開発デバッグでは `--gtest_filter` を叩いて爆速イテレーションを回す**。
+
+これらの武器を身につければ、C++の自動テスト開発において困ることはほとんどなくなります！
+各章の学習中や実務でのテストコード作成時に、ぜひこのリファレンスを逆引き辞書としてご活用ください。

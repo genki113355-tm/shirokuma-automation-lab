@@ -8,6 +8,7 @@ import { LabProvider } from './contexts/LabContext';
 // Code Splitting: 遅延読み込みで初期バンドルサイズを削減
 const TopPage = lazy(() => import('./components/TopPage'));
 const ChapterContent = lazy(() => import('./components/ChapterContent'));
+const AppendixContent = lazy(() => import('./components/AppendixContent'));
 const CodeLab = lazy(() => import('./components/CodeLab'));
 
 // ローディングフォールバックUI
@@ -41,6 +42,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<TopPage />} />
                   <Route path="/chapter/:id" element={<ChapterContent />} />
+                  <Route path="/appendix/:id" element={<AppendixContent />} />
                 </Routes>
                 <CodeLab />
               </Suspense>

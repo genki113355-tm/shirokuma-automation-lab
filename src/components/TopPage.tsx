@@ -119,6 +119,28 @@ export default function TopPage() {
           />
         </div>
 
+        {/* 付録・逆引き実践リファレンス バナー */}
+        <div className="mt-8 bg-gradient-to-r from-navy-800 to-cyan-950/40 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+          <div className="space-y-2 text-center md:text-left">
+            <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs px-2.5 py-0.5 rounded-full font-bold">
+              📚 開発者向け逆引き実践ガイド
+            </span>
+            <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+              <BookOpen className="text-cyan-400" size={24} />
+              【付録】GoogleTest 逆引き実践リファレンス
+            </h3>
+            <p className="text-slate-300 text-sm max-w-2xl leading-relaxed">
+              EXPECT vs ASSERT の使い分け、フィクスチャ（TEST_F）、パラメータ化テスト（TEST_P）、例外テスト、コマンドライン引数（--gtest_filter）など、実務で必須のGoogleTest全構文を網羅整理！
+            </p>
+          </div>
+          <Link
+            to="/appendix/googletest"
+            className="shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-cyan-500/25 transition-all flex items-center justify-center gap-2 text-sm sm:text-base group"
+          >
+            リファレンスを読む ➔
+          </Link>
+        </div>
+
         <div className="flex justify-center mt-12 sm:mt-16 pb-8">
           <Link to="/chapter/1" className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-navy-900 font-black px-10 sm:px-14 py-5 sm:py-6 rounded-2xl text-lg sm:text-xl transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(6,182,212,0.5)] w-full sm:w-auto">
             自動化チュートリアルを始める <ArrowRight size={24} />

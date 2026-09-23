@@ -1,4 +1,4 @@
-import { ChevronDown, Beaker, Play, X } from 'lucide-react';
+import { ChevronDown, Beaker, Play, X, BookOpen } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIsOpen?: (v: boolean) => void }) {
@@ -45,6 +45,27 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
 
       {/* Nav Content */}
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        {/* Quick Nav / 付録ショートカット */}
+        <div className="pb-1">
+          <Link
+            to="/appendix/googletest"
+            onClick={closeDrawer}
+            className={`flex items-center justify-between p-2.5 rounded-lg border text-xs font-bold transition-all ${
+              isActive('/appendix/googletest')
+                ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
+                : 'bg-navy-700/60 border-cyan-500/30 text-slate-200 hover:border-cyan-400 hover:text-white hover:bg-navy-700'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <BookOpen size={15} className="text-cyan-400 shrink-0" />
+              <span>【付録】GoogleTest リファレンス</span>
+            </div>
+            <span className="text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-500/40 px-1.5 py-0.5 rounded font-mono shrink-0">
+              付録
+            </span>
+          </Link>
+        </div>
+
         <div>
           <div className="flex items-center gap-2 text-slate-300 text-xs font-bold mb-3">
             <Beaker size={14} className="text-cyan-400" />
@@ -196,6 +217,28 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
                   <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">総括</span>
                 </div>
                 <p className={`text-sm font-medium ${isActive('/chapter/12') ? 'text-white' : 'text-slate-300'}`}>自動テストシステム構築の実践</p>
+              </li>
+            </Link>
+          </ul>
+        </div>
+
+        {/* --- 付録・逆引きリファレンス --- */}
+        <div>
+          <div className="flex items-center justify-between text-slate-300 text-xs font-bold mb-3 mt-6">
+            <div className="flex items-center gap-2">
+              <BookOpen size={14} className="text-cyan-400" />
+              <span>付録・実践リファレンス</span>
+            </div>
+            <ChevronDown size={14} />
+          </div>
+          <ul className="space-y-2">
+            <Link to="/appendix/googletest" onClick={closeDrawer} className="block">
+              <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/appendix/googletest') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
+                <div className="flex justify-between items-start mb-1">
+                  <span className={`text-xs font-bold ${isActive('/appendix/googletest') ? 'text-cyan-400' : 'text-slate-400'}`}>【付録 1】</span>
+                  <span className="text-cyan-300 text-[10px] border border-cyan-500/40 px-1.5 rounded bg-cyan-950/40">リファレンス</span>
+                </div>
+                <p className={`text-sm font-medium ${isActive('/appendix/googletest') ? 'text-white' : 'text-slate-300'}`}>GoogleTest 逆引き実践リファレンス</p>
               </li>
             </Link>
           </ul>

@@ -102,6 +102,13 @@ const PAGES = [
     desc: 'C++開発における「泥臭い手作業」を排除した、モダンな自動化エコシステム構築の総括。',
     heading: '【Chap 12】自動テストシステム構築の実践',
     content: '全カリキュラムの総括として、C++開発者に求められる「自動化・効率化」の全体像とマインドセットを振り返ります。'
+  },
+  {
+    path: 'appendix/googletest',
+    title: '付録: GoogleTest（gtest）逆引き実践リファレンス | シロクマ C++開発自動化ラボ',
+    desc: 'C++実務で必須となるGoogleTestの主要構文を網羅。EXPECT vs ASSERTの使い分け、アサーション一覧、TEST_F（フィクスチャ）、TEST_P（パラメータ化テスト）、例外テスト、コマンドライン実行オプション、gtest_discover_tests連携までを完全整理。',
+    heading: '【付録】GoogleTest 逆引き実践リファレンス',
+    content: '基本のTESTマクロから、実務で即戦力となるテーブル駆動テスト・フィクスチャ・CLIフィルタリング・モダンCMake連携までを一挙習得できる実践リファレンス。'
   }
 ];
 
@@ -181,6 +188,13 @@ async function generateSEO() {
             <li><a href="/${p.path}" style="color: #38bdf8; text-decoration: none;"><strong>${p.heading}</strong></a> - ${p.desc}</li>
           `).join('')}
         </ol>
+
+        <h2 style="font-size: 22px; color: #ffffff; margin-top: 30px; margin-bottom: 16px;">📖 付録・逆引き実践リファレンス</h2>
+        <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: #cbd5e1; font-size: 15px;">
+          ${PAGES.filter(p => p.path.startsWith('appendix/')).map(p => `
+            <li><a href="/${p.path}" style="color: #38bdf8; text-decoration: none;"><strong>${p.heading}</strong></a> - ${p.desc}</li>
+          `).join('')}
+        </ul>
 
         <div style="margin-top: 30px;">
           <a href="/chapter/1" style="display: inline-block; padding: 12px 24px; background: #06b6d4; color: #0f172a; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 16px;">第1章から学習を開始する ➔</a>
