@@ -523,35 +523,44 @@ export default function CodeLab() {
                 <div className="bg-navy-900/80 p-3 border-b border-slate-700 text-xs font-bold text-slate-400 tracking-wider">
                   EXPLORER
                 </div>
-                <div className="p-4 overflow-y-auto font-mono text-xs">
+                <div className="p-4 overflow-y-auto font-mono text-xs select-none">
                   <div className="text-white font-bold mb-2 flex items-center gap-2">
                     <Folder size={14} className="text-cyan-400" />
                     shirokuma-lab/
                   </div>
-                  <div className="pl-4 space-y-1.5">
+                  <div className="pl-4 space-y-0.5">
                     {FILE_TREE.map((item, idx) => (
                       <div key={idx}>
                         {item.type === 'folder' ? (
                           <div>
-                            <div className="flex items-center gap-2 text-slate-300">
+                            <div className="flex items-center gap-2 text-slate-300 py-1">
                               <Folder size={12} className="text-blue-400" /> {item.name}
                             </div>
-                            <div className="pl-4 mt-1 space-y-1">
+                            <div className="pl-4 space-y-0.5">
                               {item.children?.map((child, cIdx) => (
-                                <div key={cIdx} className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 cursor-default transition-colors">
-                                  {child.type === 'cpp' && <FileCode size={12} className="text-indigo-400" />}
-                                  {child.type === 'header' && <FileCode size={12} className="text-purple-400" />}
-                                  {child.type === 'python' && <FileCode size={12} className="text-yellow-400" />}
+                                <div 
+                                  key={cIdx} 
+                                  onDoubleClick={() => processCommand(`cat ${item.name}/${child.name}`)}
+                                  className="flex items-center gap-2 text-slate-400 hover:text-cyan-300 hover:bg-slate-700/50 cursor-pointer transition-colors px-2 py-1 -mx-2 rounded group"
+                                  title="ダブルクリックで内容を表示"
+                                >
+                                  {child.type === 'cpp' && <FileCode size={12} className="text-indigo-400 group-hover:text-indigo-300" />}
+                                  {child.type === 'header' && <FileCode size={12} className="text-purple-400 group-hover:text-purple-300" />}
+                                  {child.type === 'python' && <FileCode size={12} className="text-yellow-400 group-hover:text-yellow-300" />}
                                   {child.name}
                                 </div>
                               ))}
                             </div>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2 text-slate-400 hover:text-cyan-400 cursor-default transition-colors">
-                            {item.type === 'docker' && <HardDrive size={12} className="text-blue-500" />}
-                            {item.type === 'txt' && <FileText size={12} className="text-slate-300" />}
-                            {item.type === 'sh' && <TerminalIcon size={12} className="text-green-500" />}
+                          <div 
+                            onDoubleClick={() => processCommand(`cat ${item.name}`)}
+                            className="flex items-center gap-2 text-slate-400 hover:text-cyan-300 hover:bg-slate-700/50 cursor-pointer transition-colors px-2 py-1 -mx-2 rounded group"
+                            title="ダブルクリックで内容を表示"
+                          >
+                            {item.type === 'docker' && <HardDrive size={12} className="text-blue-500 group-hover:text-blue-400" />}
+                            {item.type === 'txt' && <FileText size={12} className="text-slate-300 group-hover:text-slate-200" />}
+                            {item.type === 'sh' && <TerminalIcon size={12} className="text-green-500 group-hover:text-green-400" />}
                             {item.name}
                           </div>
                         )}
