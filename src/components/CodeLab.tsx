@@ -16,18 +16,21 @@ const SCENARIOS = [
     steps: [
       {
         command: 'cat tests/test_processor.py',
+        matchKeywords: ['cat', 'test_processor.py'],
         instruction: 'まずはテストコードの中身を確認します。\n➔ `cat tests/test_processor.py` と入力',
-        explanation: 'Pythonのコードから、C++のクラス（DataProcessor）を直接呼び出して結果を検証していることがわかります。'
+        explanation: 'コードをよく見てみて。2行目で `from shirokuma_cpp import DataProcessor` と書いてあるよね。\nなんと、C++で作ったシステムをPythonのモジュールとして読み込んでいるんだ！\nこれなら、テストを書くのが簡単なPythonでC++のテストができちゃうね。'
       },
       {
         command: './build.sh',
+        matchKeywords: ['./build.sh'],
         instruction: '次に、C++のコードをPythonから読み込める形式（共有ライブラリ）に変換します。\n➔ `./build.sh` と入力',
-        explanation: 'C++コードのコンパイルが完了し、Python連携用のモジュールが生成されました。これで準備完了です。'
+        explanation: 'お疲れ様！今実行したスクリプトが、C++のコードをコンパイルして「Pythonから呼び出せる魔法のファイル（.soファイル）」に変換してくれたんだよ。\nこれでテストの準備は完璧だ。'
       },
       {
         command: 'pytest',
+        matchKeywords: ['pytest'],
         instruction: '準備が整いました。テストフレームワークを実行して、自動テストを走らせましょう。\n➔ `pytest` と入力',
-        explanation: '手作業で行っていたテストが一瞬で完了しました！これがビルドからテスト実行までの自動化の仕組みです。'
+        explanation: '素晴らしい！たった1つのコマンドで、さっきのPythonテストが一瞬で実行されたね。\n手作業で画面をポチポチしなくても、これでいつでもプログラムの正しさを証明できるよ！'
       }
     ]
   },
@@ -38,13 +41,15 @@ const SCENARIOS = [
     steps: [
       {
         command: 'cat src/main.cpp',
+        matchKeywords: ['cat', 'main.cpp'],
         instruction: 'まずは問題のありそうなC++コードを確認します。\n➔ `cat src/main.cpp` と入力',
-        explanation: 'コード内には new で確保したメモリを delete していない箇所が潜んでいるようです。'
+        explanation: 'コードの後半を見てごらん。 `new int[100]` でメモリを確保しているのに、どこにも `delete` が書かれていないよね。\nこれがシステムをクラッシュさせる「メモリリーク」の正体だよ。'
       },
       {
         command: 'valgrind ./app',
+        matchKeywords: ['valgrind', './app'],
         instruction: 'Valgrindを使って、プログラム実行中のメモリ使用状況を監視・解析します。\n➔ `valgrind ./app` と入力',
-        explanation: 'Valgrindが詳細なレポートを出力しました。本来ならここに「何行目でリークしたか」が表示され、原因特定が容易になります。'
+        explanation: '赤い文字で `definitely lost: 400 bytes` と出たね！\nValgrindはこうやって、目で見つけにくいメモリの解放忘れをプログラムを実行しながら監視して教えてくれる、心強い相棒なんだ。'
       }
     ]
   },
@@ -55,13 +60,15 @@ const SCENARIOS = [
     steps: [
       {
         command: 'cat Dockerfile',
+        matchKeywords: ['cat', 'Dockerfile'],
         instruction: '環境の設計図であるDockerfileの中身を確認します。\n➔ `cat Dockerfile` と入力',
-        explanation: 'Ubuntuのベースイメージに、g++やCMakeなど必要なツールをインストールする手順が書かれています。'
+        explanation: 'これが環境の設計図さ。UbuntuというOSの上に、g++やCMakeなど必要なツールをインストールする手順が全部書かれているね。'
       },
       {
         command: 'docker build -t app .',
+        matchKeywords: ['docker', 'build'],
         instruction: 'この設計図をもとに、全員が同じ状態から始められるコンテナを作成します。\n➔ `docker build -t app .` と入力',
-        explanation: '依存関係がすべてパッケージ化された独立環境が完成しました。これで「環境の違いで動かない」問題は完全に解決します。'
+        explanation: 'できたね！このコマンドは、さっきの設計図を元に「必要なものがすべて揃った独立した部屋（コンテナ）」を作ってくれるんだ。\nこの設計図をチームに配れば、もう『私のPCでは動くのに』なんてトラブルは起きないよ！'
       }
     ]
   }
@@ -327,13 +334,26 @@ export default function CodeLab() {
     }
 
     // Step verification logic
-    if (currentStep && trimmed === currentStep.command) {
-      addLog('system', (
-        <div className="mt-4 p-3 bg-emerald-900/20 border border-emerald-500/30 rounded-lg text-emerald-200 shadow-md">
-          <strong className="text-emerald-400">✅ 仕組みの解説:</strong><br/>
-          {currentStep.explanation}
-        </div>
-      ));
+    const isMatch = currentStep && currentStep.matchKeywords.every(kw => trimmed.includes(kw));
+
+    if (isMatch) {
+      setTimeout(() => {
+        addLog('system', (
+          <div className="mt-4 p-4 bg-slate-800/90 border border-slate-600 rounded-2xl rounded-tl-none relative shadow-xl ml-4 animate-fade-in">
+            <div className="absolute -top-5 -left-5 text-4xl drop-shadow-md">
+              🐻‍❄️
+            </div>
+            <div className="font-bold text-cyan-300 mb-2">
+              シロクマ先生の解説
+            </div>
+            <div className="text-slate-200 leading-relaxed text-sm">
+              {currentStep.explanation.split('\n').map((line, i) => (
+                <span key={i}>{line}<br/></span>
+              ))}
+            </div>
+          </div>
+        ));
+      }, 500);
 
       const nextStepIndex = currentStepIndex + 1;
       const newProgress = { ...scenarioProgress, [activeScenarioId]: nextStepIndex };
@@ -343,23 +363,23 @@ export default function CodeLab() {
         if (!completedScenarios.includes(activeScenarioId)) {
           setCompletedScenarios(prev => [...prev, activeScenarioId]);
         }
-        setTimeout(() => setShowSuccessOverlay(true), 2000);
+        setTimeout(() => setShowSuccessOverlay(true), 3500);
       } else {
         const nextStep = activeScenario!.steps[nextStepIndex];
         setTimeout(() => {
           addLog('system', (
-            <div className="text-cyan-400 mt-4 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
+            <div className="text-cyan-400 mt-6 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
               <div className="font-bold text-lg mb-1 flex items-center gap-2">
                 <Map size={18} /> 【STEP {nextStepIndex + 1}/{activeScenario!.steps.length}】
               </div>
               <div className="text-slate-200 whitespace-pre-wrap">{nextStep.instruction}</div>
             </div>
           ));
-        }, 1500);
+        }, 2000);
       }
     } else if (currentStep && !isStandardCommand) {
       addLog('error', (
-        <div className="text-yellow-400">
+        <div className="text-yellow-400 mt-2">
           ⚠️ 現在のステップの目標と異なります。<br/>
           <span className="text-yellow-200">指示: <code className="bg-navy-900 px-1 rounded">{currentStep.command}</code> と入力してトレースを進めてください。</span>
         </div>
