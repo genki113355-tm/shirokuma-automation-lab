@@ -132,9 +132,15 @@ export default function TopPage() {
           <BookOpen size={200} />
         </div>
         <div className="relative z-10 space-y-6 sm:space-y-8">
-          <div className="space-y-2">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">あなたの目的に合わせた学習ルート</h2>
-            <p className="text-slate-400 text-sm sm:text-base">シロクマ先生のサイト群は、目的に応じて使い分けることができます。</p>
+          <div className="space-y-3">
+            <span className="inline-block bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs px-3 py-1 rounded-full font-bold">
+              姉妹サイト（シロクマ技術学習エコシステム）
+            </span>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">目的に合わせた外部学習ルート</h2>
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+              当サイト（自動化ラボ）は、全4サイトからなるエコシステムの「STEP 2」にあたります。<br className="hidden sm:block"/>
+              C++の設計基礎、GUI開発、ドメイン応用などを学びたい場合は、以下の姉妹サイト（別サイト）をご活用ください。
+            </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
