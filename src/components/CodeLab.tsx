@@ -15,7 +15,7 @@ const MISSIONS = [
     problem: 'コードを変更するたびに、手作業で100個のケースをテストしていて日が暮れそうです。',
     goal: 'Pythonのテストフレームワークを使って、C++のロジックを一括テストしましょう。',
     command: 'pytest',
-    hint: 'pytest と入力してEnter'
+    hint: 'まずは cat tests/test_processor.py で仕組みを見てから、pytest で実行！'
   },
   {
     id: 2,
@@ -53,10 +53,12 @@ export default function CodeLab() {
   const { isLabOpen, closeLab } = useLab();
   const [activeMissionId, setActiveMissionId] = useState(1);
   const [completedMissions, setCompletedMissions] = useState<number[]>([]);
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
   
   useEffect(() => {
+    setShowSuccessOverlay(false);
     const mission = MISSIONS.find(m => m.id === activeMissionId);
-    if (mission && !completedMissions.includes(mission.id)) {
+    if (mission) {
       setHistory(prev => [
         ...prev,
         { 
@@ -73,7 +75,7 @@ export default function CodeLab() {
         }
       ]);
     }
-  }, [activeMissionId, completedMissions.length]);
+  }, [activeMissionId]);
   const activeMission = MISSIONS.find(m => m.id === activeMissionId);
 
   const [history, setHistory] = useState<LogEntry[]>([
@@ -140,6 +142,48 @@ export default function CodeLab() {
             <span className="text-green-400">build.sh</span>
           </div>
         ));
+        break;
+
+      case 'cat':
+        if (args.length < 2) {
+          addLog('error', 'cat: missing operand');
+          break;
+        }
+        const file = args[1];
+        if (file.includes('test_processor.py')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm">
+              <span className="text-purple-400">import</span> pytest<br/>
+              <span className="text-purple-400">from</span> shirokuma_cpp <span className="text-purple-400">import</span> DataProcessor<br/>
+              <br/>
+              <span className="text-blue-400">def</span> <span className="text-yellow-200">test_process_data_empty</span>():<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;processor = DataProcessor()<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">assert</span> processor.process([]) == <span className="text-green-300">0</span><br/>
+              <br/>
+              <span className="text-blue-400">def</span> <span className="text-yellow-200">test_process_data_normal</span>():<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;processor = DataProcessor()<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">assert</span> processor.process([<span className="text-green-300">1</span>, <span className="text-green-300">2</span>, <span className="text-green-300">3</span>]) == <span className="text-green-300">6</span><br/>
+            </div>
+          ));
+        } else if (file.includes('main.cpp') || file.includes('data_processor')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm">
+              <span className="text-slate-500">// ... implementation of data processor ...</span>
+            </div>
+          ));
+        } else if (file.includes('Dockerfile')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm">
+              <span className="text-purple-400">FROM</span> ubuntu:22.04<br/>
+              <span className="text-purple-400">RUN</span> apt-get update && apt-get install -y g++ cmake<br/>
+              <span className="text-purple-400">COPY</span> . /app<br/>
+              <span className="text-purple-400">WORKDIR</span> /app<br/>
+              <span className="text-purple-400">CMD</span> ["./build.sh"]
+            </div>
+          ));
+        } else {
+          addLog('error', `cat: ${file}: No such file or directory`);
+        }
         break;
 
       case 'g++':
@@ -241,12 +285,13 @@ export default function CodeLab() {
       if (!completedMissions.includes(activeMission.id)) {
         setCompletedMissions(prev => [...prev, activeMission.id]);
         addLog('system', (
-          <div className="mt-4 p-3 bg-emerald-900/30 border border-emerald-500/50 rounded-lg text-emerald-400 font-bold flex items-center gap-2">
+          <div className="mt-4 p-3 bg-emerald-900/30 border border-emerald-500/50 rounded-lg text-emerald-400 font-bold flex items-center gap-2 animate-pulse">
             <CheckCircle2 size={18} />
             ミッション「{activeMission.title}」を達成しました！
           </div>
         ));
       }
+      setTimeout(() => setShowSuccessOverlay(true), 1500);
     }
 
     setIsProcessing(false);
@@ -441,22 +486,30 @@ export default function CodeLab() {
               PROCESSING
             </div>
           )}
-          {activeMission && completedMissions.includes(activeMission.id) && (
+          {showSuccessOverlay && (
             <div className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 z-10 animate-fade-in">
               <div className="bg-navy-900 border border-emerald-500/50 p-8 rounded-2xl max-w-md text-center shadow-[0_0_40px_rgba(16,185,129,0.2)]">
                 <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle2 size={32} className="text-emerald-400" />
                 </div>
                 <h3 className="text-2xl font-black text-white mb-2">ミッションクリア！</h3>
-                <p className="text-slate-300 text-sm mb-8">
-                  素晴らしい！{activeMission.title}の自動化に成功しました。
+                <p className="text-slate-300 text-sm mb-6">
+                  素晴らしい！{activeMission?.title}の自動化に成功しました。
                 </p>
-                <button 
-                  onClick={closeLab}
-                  className="bg-emerald-500 hover:bg-emerald-400 text-navy-900 font-bold px-8 py-3 rounded-xl transition-transform hover:scale-105 w-full cursor-pointer"
-                >
-                  元のページに戻って学習を続ける
-                </button>
+                <div className="space-y-3">
+                  <button 
+                    onClick={closeLab}
+                    className="bg-emerald-500 hover:bg-emerald-400 text-navy-900 font-bold px-8 py-3 rounded-xl transition-transform hover:scale-105 w-full cursor-pointer"
+                  >
+                    元のページに戻って学習を続ける
+                  </button>
+                  <button 
+                    onClick={() => setShowSuccessOverlay(false)}
+                    className="text-slate-400 hover:text-white text-sm font-bold px-8 py-2 rounded-xl transition-colors w-full cursor-pointer"
+                  >
+                    ターミナルに戻る（再プレイ）
+                  </button>
+                </div>
               </div>
             </div>
           )}
