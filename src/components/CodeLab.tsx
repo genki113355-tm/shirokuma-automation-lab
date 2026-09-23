@@ -390,7 +390,34 @@ export default function CodeLab() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isProcessing) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      
+      if (!input) return;
+
+      // 1. チュートリアルの現在のステップの正解コマンドに前方一致すれば優先して補完
+      if (currentStep && currentStep.command.startsWith(input)) {
+        setInput(currentStep.command);
+        return;
+      }
+
+      // 2. 一般的な辞書補完（コマンドやファイルパス）
+      const words = input.split(' ');
+      const lastWord = words[words.length - 1];
+
+      if (words.length === 1) {
+        const cmds = ['cat ', 'ls', 'clear', 'pytest', './build.sh', 'valgrind ', 'docker '];
+        const match = cmds.find(c => c.startsWith(input));
+        if (match) setInput(match);
+      } else if (lastWord) {
+        const paths = ['tests/test_processor.py', 'src/main.cpp', 'Dockerfile', './app', 'build -t app .'];
+        const match = paths.find(p => p.startsWith(lastWord));
+        if (match) {
+          words[words.length - 1] = match;
+          setInput(words.join(' '));
+        }
+      }
+    } else if (e.key === 'Enter' && !isProcessing) {
       processCommand(input);
     }
   };
