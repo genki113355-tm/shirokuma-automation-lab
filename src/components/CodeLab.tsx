@@ -52,13 +52,19 @@ const SCENARIOS = [
         command: 'cat Dockerfile',
         matchKeywords: ['cat', 'Dockerfile'],
         instruction: '環境の設計図であるDockerfileの中身を確認します。\n➔ `cat Dockerfile` と入力',
-        explanation: 'これが環境の設計図さ。UbuntuというOSの上に、g++やCMakeなど必要なツールをインストールする手順が全部書かれているね。'
+        explanation: 'これがコンテナの設計図（Dockerfile）だよ！1行ずつ重要な役割があるんだ：\n・`FROM ubuntu:22.04`: ベースとなるまっさらなOS（Ubuntu）を用意する。\n・`RUN apt-get... / pip3...`: C++コンパイラ(g++)、ビルドツール(cmake)、テストツール(pytest)を自動インストールする。\n・`COPY . /app`: 手元のソースコード一式をコンテナの中（/app）へ丸ごと転送する。\n・`WORKDIR /app`: コンテナ内での作業ディレクトリを `/app` に移動する。\n・`CMD ["./build.sh"]`: コンテナを起動した瞬間に自動実行する命令を指定する。\n手順をこうしてコード化しておけば、環境構築の属人化が完全にゼロになるんだよ！'
       },
       {
         command: 'docker build -t app .',
         matchKeywords: ['docker', 'build'],
-        instruction: 'この設計図をもとに、全員が同じ状態から始められるコンテナを作成します。\n➔ `docker build -t app .` と入力',
-        explanation: 'できたね！このコマンドは、さっきの設計図を元に「必要なものがすべて揃った独立した部屋（コンテナ）」を作ってくれるんだ。\nこの設計図をチームに配れば、もう『私のPCでは動くのに』なんてトラブルは起きないよ！'
+        instruction: 'この設計図をもとに、全員が同じ状態から始められるDockerイメージをビルドします。\n➔ `docker build -t app .` と入力',
+        explanation: '全6ステップのビルドが完了したね！今裏側で起きた仕組みを解説するよ：\n・`docker build`: Dockerfileの命令を1行ずつ上から実行し、層（レイヤー）を重ねてOSイメージを作り上げる。\n・`-t app`: 出来上がったイメージに「app」という名前（タグ）をつけたよ。\n・`.`（末尾のドット）: 「このフォルダにあるファイルやDockerfileを使ってね」という意味。\nこれで『誰のPCでも寸分違わず同じ動きをする独立したLinux環境』がパッケージ化されたんだ！'
+      },
+      {
+        command: 'docker run --rm app',
+        matchKeywords: ['docker', 'run'],
+        instruction: '最後に、作ったコンテナを起動して、隔離環境の中で自動テストが走るか確かめましょう。\n➔ `docker run --rm app` と入力',
+        explanation: 'お見事！ホストPCの環境を一切汚さずに、使い捨てのコンテナ内部でC++のビルドとテストが全自動で完走したね！\n`--rm` オプションを付けたから、テストが終わればゴミを残さず綺麗サッパリ消滅してくれるんだ。\n「私のPCでは動くのに」問題は、こうして完全に撲滅されるんだよ！'
       }
     ]
   },
@@ -341,12 +347,23 @@ export default function CodeLab() {
           ));
         } else if (file.includes('Dockerfile')) {
           addLog('output', (
-            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm">
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-slate-500"># 1. まっさらなUbuntu 22.04 LTSをベースOSとして指定</span><br/>
               <span className="text-purple-400">FROM</span> ubuntu:22.04<br/>
-              <span className="text-purple-400">RUN</span> apt-get update && apt-get install -y g++ cmake python3 python3-pip<br/>
+              <br/>
+              <span className="text-slate-500"># 2. C++コンパイラ(g++)、ビルドツール(cmake)、Python環境を一括インストール</span><br/>
+              <span className="text-purple-400">RUN</span> apt-get update &amp;&amp; apt-get install -y g++ cmake python3 python3-pip<br/>
+              <br/>
+              <span className="text-slate-500"># 3. テスト自動化フレームワーク(pytest)をインストール</span><br/>
               <span className="text-purple-400">RUN</span> pip3 install pytest<br/>
+              <br/>
+              <span className="text-slate-500"># 4. 手元のC++ソースやテストコード一式をコンテナ内の /app へ転送</span><br/>
               <span className="text-purple-400">COPY</span> . /app<br/>
+              <br/>
+              <span className="text-slate-500"># 5. コンテナ内のカレント作業ディレクトリを /app に移動</span><br/>
               <span className="text-purple-400">WORKDIR</span> /app<br/>
+              <br/>
+              <span className="text-slate-500"># 6. コンテナ起動時に自動で実行するデフォルト命令（ビルド＆テスト実行）</span><br/>
               <span className="text-purple-400">CMD</span> ["./build.sh"]
             </div>
           ));
@@ -429,9 +446,21 @@ export default function CodeLab() {
             </div>
           ));
         } else if (trimmed.includes('run')) {
-          addLog('system', 'Running container app:latest...');
+          addLog('system', 'Starting isolated container from image app:latest...');
           await new Promise(resolve => setTimeout(resolve, 400));
-          addLog('output', 'Building C++ extensions for Python inside container...\nAll tests passed inside isolated Linux container!');
+          addLog('output', (
+            <div className="font-mono text-xs text-slate-300 space-y-1.5">
+              <div className="text-cyan-400 font-bold">[Container: /app] Executing CMD ["./build.sh"]...</div>
+              <div className="text-slate-400">
+                Scanning dependencies of target shirokuma_cpp<br/>
+                [100%] Built target shirokuma_cpp (pybind11 module)
+              </div>
+              <div className="text-slate-400">========================= test session starts ==========================</div>
+              <div>tests/test_processor.py <span className="text-green-400">.... [100%]</span></div>
+              <div className="text-green-400 font-bold">========================== 4 passed in 0.16s ===========================</div>
+              <div className="text-slate-500 italic mt-1">✓ Isolated container run completed with exit code 0. Auto-removed (--rm).</div>
+            </div>
+          ));
         } else {
           addLog('output', 'Usage: docker build -t <tag> . | docker run <image>');
         }
