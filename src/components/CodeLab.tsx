@@ -96,7 +96,7 @@ const SCENARIOS = [
         command: 'cat CMakeLists.txt',
         matchKeywords: ['cat', 'CMakeLists.txt'],
         instruction: '【第3章 STEP 1/4：CMake設計図の確認】\n人間が「やりたい目的」だけをシンプルに宣言したCMakeLists.txtを確認します。\n➔ `cat CMakeLists.txt` と入力',
-        explanation: '`CMakeLists.txt` の内容を確認できたね！\n手書きのMakefileと違って、泥臭いg++コマンドやファイルの依存関係を手作業で列挙する必要は一切ないんだ。\n人間は「sonar_coreというライブラリを作って」と目的だけをCMakeに伝えているね！'
+        explanation: '`CMakeLists.txt` の内容を確認できたね！\n※「sonar_core」は一般的なツール名ではなく、この演習で作成する「自作ライブラリの名前」だよ。（ゲームなら game_engine のように自由に名付けられる部分だね）\n手書きMakefileと違って、「sonar_core というライブラリを作って」と目的だけを宣言すれば、泥臭いコンパイル処理はCMakeが全部やってくれるんだ！'
       },
       {
         command: 'cmake -B build',
@@ -391,14 +391,19 @@ export default function CodeLab() {
         } else if (file.includes('CMakeLists.txt')) {
           addLog('output', (
             <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
-              <span className="text-blue-400">cmake_minimum_required</span>(<span className="text-green-300">VERSION 3.10</span>)<br/>
-              <span className="text-blue-400">project</span>(shirokuma_cpp)<br/>
-              <br/>
+              <span className="text-blue-400">cmake_minimum_required</span>(<span className="text-green-300">VERSION 3.14</span>)<br/>
+              <span className="text-blue-400">project</span>(SonarAutomationLab CXX)<br/>
               <span className="text-blue-400">set</span>(CMAKE_CXX_STANDARD <span className="text-green-300">17</span>)<br/>
               <br/>
-              <span className="text-slate-500"># ※実務ではpybind11等を用いてPythonと結合します</span><br/>
-              <span className="text-slate-500"># Pythonから読み込める共有ライブラリとしてビルド</span><br/>
-              <span className="text-blue-400">add_library</span>(shirokuma_cpp <span className="text-purple-400">SHARED</span> src/data_processor.cpp)<br/>
+              <span className="text-slate-500"># 1. コア計算ロジック（※「sonar_core」は自作ライブラリ名です）</span><br/>
+              <span className="text-blue-400">add_library</span>(sonar_core src/sonar_filter.cpp src/math_utils.cpp)<br/>
+              <span className="text-blue-400">target_include_directories</span>(sonar_core <span className="text-purple-400">PUBLIC</span> include)<br/>
+              <br/>
+              <span className="text-slate-500"># 2. CTestの有効化とテスト実行バイナリのリンク</span><br/>
+              <span className="text-blue-400">enable_testing</span>()<br/>
+              <span className="text-blue-400">add_executable</span>(sonar_test tests/test_sonar_filter.cpp)<br/>
+              <span className="text-blue-400">target_link_libraries</span>(sonar_test <span className="text-purple-400">PRIVATE</span> sonar_core gtest)<br/>
+              <span className="text-blue-400">add_test</span>(NAME AllUnitTests COMMAND sonar_test)<br/>
             </div>
           ));
         } else if (file.includes('build.sh')) {

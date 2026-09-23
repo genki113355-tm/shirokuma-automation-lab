@@ -25,6 +25,7 @@ export const meta = {
 
 ```cmake
 # CMakeLists.txt に追記（デバッグビルド時のみ有効化）
+# ※「sonar_core」は第3章で作成したプロジェクト固有の自作ライブラリ名です
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     # コンパイルオプション
     target_compile_options(sonar_core PUBLIC -fsanitize=address -g)

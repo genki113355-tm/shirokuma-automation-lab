@@ -80,6 +80,7 @@ src/math_utils.o: src/math_utils.cpp include/math_utils.hpp
 
 ```cmake
 # 【現代】CMakeLists.txt：人間は「やりたい目的」だけをシンプルに書く
+# ※「sonar_core」は本チュートリアルの題材（ソナー信号処理）に応じた「自作ライブラリ名」です（一般的な予約語ではありません）
 add_library(sonar_core
     src/sonar_filter.cpp
     src/math_utils.cpp
@@ -127,6 +128,10 @@ target_include_directories(sonar_core PUBLIC include)
 * **本番アプリ**: コアライブラリをリンクして `main()` から呼び出す。
 * **テストアプリ**: 同じコアライブラリをリンクして、テストフレームワーク（GoogleTest）から関数を直接テストする。
 
+> 💡 **コラム：「`sonar_core`」って何？ 一般的な用語？**  
+> コード例に出てくる `sonar_core` は、CMake の標準機能や予約語ではなく、**本チュートリアルの題材（ソナー信号処理システム）に合わせて私たちが自由に命名した「自作ライブラリ名」**です。  
+> CMakeの構文は `add_library(<ライブラリ名> <ソースファイル...>)` となっており、ご自身のプロジェクトでは `game_engine` や `network_core`、`sensor_driver` など、好きな名前に置き換えて使用します。
+
 ---
 
 ## 4. 実務で使える CMakeLists.txt のテンプレート
@@ -143,6 +148,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # ---------------------------------------------------
 # 1. プロダクトコード（コアロジック）をライブラリ化
+# ※「sonar_core」は当プロジェクト固有の自作ライブラリ名（任意命名）です
 # ---------------------------------------------------
 add_library(sonar_core
     src/sonar_filter.cpp
