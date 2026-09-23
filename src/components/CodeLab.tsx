@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Terminal as TerminalIcon, Folder, FileCode, FileText, HardDrive, Map, CheckCircle2, X } from 'lucide-react';
 import { useLab } from '../contexts/LabContext';
+import { useLocation } from 'react-router-dom';
 
 type LogEntry = {
   id: number;
@@ -96,7 +97,25 @@ const FILE_TREE = [
 
 export default function CodeLab() {
   const { isLabOpen, closeLab } = useLab();
+  const location = useLocation();
   const [activeScenarioId, setActiveScenarioId] = useState(1);
+
+  // Sync active scenario based on current chapter when lab is opened
+  useEffect(() => {
+    if (isLabOpen) {
+      const chapterMatch = location.pathname.match(/\/chapter\/(\d+)/);
+      const currentChapter = chapterMatch ? parseInt(chapterMatch[1]) : 1;
+      
+      if (currentChapter === 2) {
+        setActiveScenarioId(3); // Docker (「私のPCでは動いた」の撲滅)
+      } else if (currentChapter >= 9) {
+        setActiveScenarioId(2); // Memory leak (見えないメモリリークの特定) - Chapter 9
+      } else {
+        setActiveScenarioId(1); // Default C++ Auto Test
+      }
+    }
+  }, [isLabOpen, location.pathname]);
+
   const [completedScenarios, setCompletedScenarios] = useState<number[]>([]);
   const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0 });
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
