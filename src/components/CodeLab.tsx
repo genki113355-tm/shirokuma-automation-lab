@@ -161,26 +161,31 @@ const FILE_TREE = [
 ];
 
 export default function CodeLab() {
-  const { isLabOpen, closeLab } = useLab();
+  const { isLabOpen, closeLab, targetScenarioId } = useLab();
   const location = useLocation();
   const chapterMatch = location.pathname.match(/\/chapter\/(\d+)/);
   const currentChapter = chapterMatch ? parseInt(chapterMatch[1]) : 1;
-  const [activeScenarioId, setActiveScenarioId] = useState(1);
 
-  // Sync active scenario based on current chapter when lab is opened
+  // Resolve target scenario
+  const getResolvedScenarioId = () => {
+    if (targetScenarioId && [1, 2, 3, 9].includes(targetScenarioId)) {
+      return targetScenarioId;
+    }
+    if ([1, 2, 3, 9].includes(currentChapter)) {
+      return currentChapter;
+    }
+    return 1;
+  };
+
+  const [activeScenarioId, setActiveScenarioId] = useState<number>(getResolvedScenarioId);
+
+  // Sync active scenario based on current chapter / target when lab is opened
   useEffect(() => {
     if (isLabOpen) {
-      if (currentChapter === 2) {
-        setActiveScenarioId(2); // Docker (第2章対応)
-      } else if (currentChapter === 3) {
-        setActiveScenarioId(3); // CMake & CTest (第3章対応)
-      } else if (currentChapter === 9) {
-        setActiveScenarioId(9); // Memory leak (第9章対応)
-      } else {
-        setActiveScenarioId(1); // Default C++ Auto Test (第1章対応)
-      }
+      const target = getResolvedScenarioId();
+      setActiveScenarioId(target);
     }
-  }, [isLabOpen, currentChapter]);
+  }, [isLabOpen, targetScenarioId, currentChapter]);
 
   const [completedScenarios, setCompletedScenarios] = useState<number[]>([]);
   const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 9: 0 });

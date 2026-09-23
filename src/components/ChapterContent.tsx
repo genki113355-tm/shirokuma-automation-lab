@@ -163,7 +163,7 @@ export default function ChapterContent() {
                 </p>
               </div>
               <button
-                onClick={openLab}
+                onClick={() => openLab(currentMission ? meta.chapterId : 1)}
                 className="w-full md:w-auto shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 relative z-10 cursor-pointer"
               >
                 <Play size={20} fill="currentColor" />
