@@ -145,6 +145,7 @@ export default function CodeLab() {
   const [completedScenarios, setCompletedScenarios] = useState<number[]>([]);
   const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0 });
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
+  const [showGlossary, setShowGlossary] = useState(false);
   
   const activeScenario = SCENARIOS.find(s => s.id === activeScenarioId);
   const currentStepIndex = scenarioProgress[activeScenarioId] || 0;
@@ -605,14 +606,24 @@ export default function CodeLab() {
           <X size={20} />
         </button>
         <div className="p-4 lg:p-8 flex flex-col h-full min-h-0">
-          <div className="mb-6">
-            <h1 className="text-2xl md:text-3xl font-black text-white flex items-center gap-3">
-              <TerminalIcon size={32} className="text-cyan-400" />
-              コード実行ラボ
-            </h1>
-            <p className="text-slate-400 mt-2 text-sm md:text-base">
-              手順をトレースしながら、C++の自動化技術の「仕組み」を実際に体験・理解できます。
-            </p>
+          <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-black text-white flex items-center gap-3">
+                <TerminalIcon size={32} className="text-cyan-400" />
+                コード実行ラボ
+              </h1>
+              <p className="text-slate-400 mt-1 text-xs md:text-sm">
+                手順をトレースしながら、C++の自動化技術の「仕組み」を実際に体験・理解できます。
+              </p>
+            </div>
+
+            {/* 前提知識・用語早見事典ボタン */}
+            <button
+              onClick={() => setShowGlossary(true)}
+              className="flex items-center gap-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-[0_0_12px_rgba(6,182,212,0.15)] cursor-pointer"
+            >
+              <BookOpen size={14} /> 💡 前提知識・用語早わかり事典
+            </button>
           </div>
 
           <div className="flex-1 flex flex-col md:flex-row gap-6 min-h-0">
@@ -869,6 +880,95 @@ export default function CodeLab() {
               ラボを終了して元のページに戻る
             </button>
           </div>
+
+          {/* 前提知識・用語早わかり事典モーダル */}
+          {showGlossary && (
+            <div className="fixed inset-0 z-[120] bg-navy-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-navy-900 border border-cyan-500/40 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in">
+                <div className="p-4 sm:p-5 border-b border-slate-700 bg-navy-800/90 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <BookOpen size={20} className="text-cyan-400" />
+                    <h2 className="text-base sm:text-lg font-bold text-white">💡 前提知識・主要ツール早わかり事典</h2>
+                  </div>
+                  <button 
+                    onClick={() => setShowGlossary(false)} 
+                    className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-navy-700 transition-colors cursor-pointer"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed text-slate-300">
+                  {/* Docker */}
+                  <div className="p-4 bg-navy-950/70 border border-slate-700/80 rounded-xl space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 font-bold px-2 py-0.5 rounded text-xs">Docker とは</span>
+                      <span className="font-bold text-white text-sm">環境依存を撲滅するコンテナ技術</span>
+                    </div>
+                    <p className="text-slate-400 text-xs">
+                      OS（Ubuntuなど）やコンパイラ、ツールのインストール手順を <strong>Dockerfile（設計図）</strong> に書き、全員で寸分違わず同じLinux環境を0.1秒で立ち上げる技術。従来の重い仮想マシン(VM)と違い、ホストOSのカーネルを共有するため極めて軽量です。
+                    </p>
+                    <div className="text-[11px] font-mono bg-navy-900 p-2 rounded text-cyan-300 border border-slate-800">
+                      フロー: Dockerfile(設計図) ➔ docker build(金型作成) ➔ docker run(隔離空間でテスト実行)
+                    </div>
+                  </div>
+
+                  {/* CMake */}
+                  <div className="p-4 bg-navy-950/70 border border-slate-700/80 rounded-xl space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-2 py-0.5 rounded text-xs">CMake とは</span>
+                      <span className="font-bold text-white text-sm">OSに依存しないビルドスクリプト自動生成ツール</span>
+                    </div>
+                    <p className="text-slate-400 text-xs">
+                      コンパイラ(g++)そのものではなく、コンパイルの現場監督（MakefileやVisual Studioプロジェクト）をOSに合わせて自動生成する「メタ設計士」。<code>CMakeLists.txt</code> を1つ書くだけで、LinuxでもWindowsでもMacでも最適なビルド手順を作り出してくれます。
+                    </p>
+                  </div>
+
+                  {/* CTest */}
+                  <div className="p-4 bg-navy-950/70 border border-slate-700/80 rounded-xl space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-teal-500/20 text-teal-400 border border-teal-500/30 font-bold px-2 py-0.5 rounded text-xs">CTest とは</span>
+                      <span className="font-bold text-white text-sm">CMake付属のテスト一括自動実行マネージャー</span>
+                    </div>
+                    <p className="text-slate-400 text-xs">
+                      何十個も作られたテストバイナリ（<code>test_math</code>、<code>test_filter</code> など）を、手動で1つずつ叩く代わりに <code>ctest</code> コマンド1発で並列実行し、合否サマリーを自動集計してくれるテストランナーです。CI/CD自動化の要となります。
+                    </p>
+                  </div>
+
+                  {/* GoogleTest vs pytest */}
+                  <div className="p-4 bg-navy-950/70 border border-slate-700/80 rounded-xl space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-purple-500/20 text-purple-400 border border-purple-500/30 font-bold px-2 py-0.5 rounded text-xs">GoogleTest vs pytest</span>
+                      <span className="font-bold text-white text-sm">2層の防壁（単体テスト vs シナリオテスト）</span>
+                    </div>
+                    <p className="text-slate-400 text-xs">
+                      <strong>GoogleTest (gtest)</strong> はC++ネイティブで内部関数やクラスの境界値・例外を高速検証するツール。<strong>pytest</strong> はC++を共有ライブラリ(.so)としてPythonから呼び出し、NumPy等で生成した大量の波形・パラメータを一括流し込み検証するツールです。
+                    </p>
+                  </div>
+
+                  {/* Valgrind / ASan */}
+                  <div className="p-4 bg-navy-950/70 border border-slate-700/80 rounded-xl space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold px-2 py-0.5 rounded text-xs">Valgrind / ASan とは</span>
+                      <span className="font-bold text-white text-sm">目に見えないメモリバグをあぶり出す動的解析</span>
+                    </div>
+                    <p className="text-slate-400 text-xs">
+                      C++で <code>new</code> して <code>delete</code> し忘れたメモリ（メモリリーク）や、配列の境界外アクセスを実行中に1バイト単位で監視・検知するツール。手元で詳しく調査するなら <strong>Valgrind</strong>、高速にCIで回すなら <strong>AddressSanitizer (ASan)</strong> を使います。
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 border-t border-slate-700 bg-navy-800/60 flex justify-end">
+                  <button
+                    onClick={() => setShowGlossary(false)}
+                    className="bg-cyan-500 hover:bg-cyan-400 text-navy-950 font-bold px-5 py-2 rounded-xl text-xs transition-colors cursor-pointer"
+                  >
+                    閉じる
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
