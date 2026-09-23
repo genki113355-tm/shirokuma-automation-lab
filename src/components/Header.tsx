@@ -32,25 +32,14 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
           <span>TOP</span>
         </Link>
         
-        <div className="flex items-center gap-1.5 ml-1 text-xs font-medium text-slate-400 shrink-0">
-          <span className="flex items-center gap-1 text-slate-500"><ChevronRight size={14} /> 章一覧</span>
-          {['1', '2', '3', '4'].map(chap => {
-            const isActive = currentChapter === chap;
-            return (
-              <Link 
-                key={chap} 
-                to={`/chapter/${chap}`} 
-                className={`px-2.5 py-0.5 rounded-full transition-colors ${
-                  isActive 
-                    ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
-                    : 'border border-transparent hover:border-slate-600 hover:text-slate-200'
-                }`}
-              >
-                C{chap}
-              </Link>
-            );
-          })}
-        </div>
+        {currentChapter && (
+          <div className="flex items-center gap-1.5 ml-1 text-xs font-medium text-slate-400 shrink-0">
+            <span className="flex items-center text-slate-500"><ChevronRight size={16} /></span>
+            <span className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 whitespace-nowrap font-bold">
+              第{currentChapter}章
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Right Actions */}
