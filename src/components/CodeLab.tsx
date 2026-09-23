@@ -18,7 +18,7 @@ const SCENARIOS = [
         command: 'cat tests/test_processor.py',
         matchKeywords: ['cat', 'test_processor.py'],
         instruction: 'まずはテストコードの中身を確認します。\n➔ `cat tests/test_processor.py` と入力',
-        explanation: 'コードをよく見てみて。2行目で `from shirokuma_cpp import DataProcessor` と書いてあるよね。\nなんと、C++で作ったシステムをPythonのモジュールとして読み込んでいるんだ！\nこれなら、テストを書くのが簡単なPythonでC++のテストができちゃうね。'
+        explanation: 'コードをよく見てみて。\nまず2行目の `from shirokuma_cpp import DataProcessor` で、C++で作ったシステムをPythonのモジュールとして読み込んでいるね。\nそして後半の `def test_...` が実際の自動テストケースさ！\n`assert processor.process([1, 2, 3]) == 6` の部分は、「データ処理結果が絶対に 6 になるはずだ！」と検証（アサーション）しているんだ。\nもしC++側の計算結果が違えば、Pythonがエラーを出してバグを教えてくれる仕組みだよ。'
       },
       {
         command: './build.sh',
