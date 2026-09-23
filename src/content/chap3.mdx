@@ -36,10 +36,57 @@ C++の勉強を始めた人が最も混乱するのが、**「コンパイラ」
 CMakeLists.txt ──(cmake)──> Makefile / Ninjaファイル ──(make)──> 実行バイナリ (.exe / .so)
 ```
 
-### なぜ手書きの Makefile ではダメなのか？
-1. **OS互換性の壁**: Windows、Linux、Macでパスの区切り文字（`\` と `/`）やコンパイラフラグが異なり、手書きMakefileは他OSで確実に壊れます。
-2. **依存関係の地獄**: ヘッダーファイル（`.h`）が増えるたびに手動で依存関係を更新しなければならず、ヒューマンエラーの温床になります。
-3. **CMakeなら1つの設計図で解決**: `CMakeLists.txt` を1つ書くだけで、Linuxなら `Makefile`、Windowsなら `Visual Studio (.sln)` を自動生成してくれます。
+### 徹底比較：なぜ手書きの Makefile ではなく CMake を使うのか？
+
+「昔からある `Makefile` を直接書けばいいのでは？」と思うかもしれません。しかし、現場ではすでに**手書きMakefileはほぼ絶滅**し、CMakeへの移行が完了しています。その理由を実際のコードで比較してみましょう。
+
+#### ① コードの比較（手書きMakefile vs CMakeLists.txt）
+
+```makefile
+# 【昔】手書き Makefile の例
+# ---------------------------------------------------------------
+CXX = g++
+CXXFLAGS = -Wall -std=c++17 -Iinclude
+
+# ファイルが増えるたびにオブジェクトファイルを手動で列挙
+OBJS = src/sonar_filter.o src/math_utils.o
+
+# ★インデントは絶対に「タブ文字」でなければ文法エラーになる！
+sonar_core.a: $(OBJS)
+	ar rcs $@ $^
+
+src/sonar_filter.o: src/sonar_filter.cpp include/sonar_filter.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+src/math_utils.o: src/math_utils.cpp include/math_utils.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+```
+
+```cmake
+# 【現代】CMakeLists.txt の例
+# ---------------------------------------------------------------
+# 人間が「やりたい目的」だけをシンプルに宣言する
+add_library(sonar_core
+    src/sonar_filter.cpp
+    src/math_utils.cpp
+)
+target_include_directories(sonar_core PUBLIC include)
+```
+
+#### ② 決定的な4つの違い
+
+| 比較項目 | 手書き Makefile | 現代の CMake |
+| :--- | :--- | :--- |
+| **記述レベル** | **低レベル（手続き型）**<br/>「このコマンドをこの順番で叩け」と1行ずつ命令する | **高レベル（宣言型）**<br/>「このソース群からライブラリを作って」と目的だけを伝える |
+| **インデントの罠** | **タブ文字必須**（スペースでインデントすると `missing separator` エラーでビルド不能） | **自由形式**（スペースでもタブでもエラーにならない） |
+| **依存関係の追跡** | ヘッダーファイル（`.h`）の更新を手動で書かないと、**コードを直しても再コンパイルされない** | `#include` を**CMakeが自動解析**し、ヘッダー更新時も確実に再コンパイルされる |
+| **OS・IDEの移植性** | Linux（gcc）専用になりがち。WindowsのVisual StudioやMacのXcodeでは使えない | 1つの `CMakeLists.txt` から、Linux用MakefileもWindows用VSソリューションも**自動生成**できる |
+
+> [!NOTE]
+> **CMakeとMakeは「ライバル」ではなく「協力関係」！**<br/>
+> 「CMakeを使ったらMakeは不要になるの？」と勘違いされがちですが、そうではありません。<br/>
+> **CMakeはMakeのための指示書（Makefile）を自動生成するツール**です。<br/>
+> 開発者は `cmake -B build` でMakefileを作らせ、その裏で `make`（またはNinja）が実際のコンパイル作業を担っています。
 
 ---
 

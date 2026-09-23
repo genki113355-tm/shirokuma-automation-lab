@@ -922,6 +922,14 @@ export default function CodeLab() {
                     <p className="text-slate-400 text-xs">
                       コンパイラ(g++)そのものではなく、コンパイルの現場監督（MakefileやVisual Studioプロジェクト）をOSに合わせて自動生成する「メタ設計士」。<code>CMakeLists.txt</code> を1つ書くだけで、LinuxでもWindowsでもMacでも最適なビルド手順を作り出してくれます。
                     </p>
+                    <div className="text-[11px] font-mono bg-navy-900 p-2 rounded text-emerald-300 border border-slate-800 space-y-0.5">
+                      <span className="font-bold block text-[10px] text-emerald-400">【Makefileとの決定的な違い】</span>
+                      <span className="text-slate-300">
+                        ・Makefile: Makeコマンドに直接渡す「具体的な手順書（手書きするとタブ文字等のミス多発）」<br/>
+                        ・CMake: 環境に合わせてそのMakefileを「自動作成する上位ツール」<br/>
+                        ※CMakeはMakeのライバルではなく、<strong>「Makefileを自動生成してくれるパートナー」</strong>です。
+                      </span>
+                    </div>
                   </div>
 
                   {/* CTest */}
