@@ -259,6 +259,47 @@ export default function CodeLab() {
               {'}'}
             </div>
           ));
+        } else if (file.includes('data_processor.h')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-purple-400">#ifndef</span> DATA_PROCESSOR_H<br/>
+              <span className="text-purple-400">#define</span> DATA_PROCESSOR_H<br/>
+              <br/>
+              <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;vector&gt;</span><br/>
+              <br/>
+              <span className="text-blue-400">class</span> <span className="text-yellow-200">DataProcessor</span> {'{'}<br/>
+              <span className="text-blue-400">public:</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;DataProcessor() = <span className="text-blue-400">default</span>;<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">int</span> <span className="text-yellow-200">process</span>(<span className="text-blue-400">const</span> std::vector&lt;<span className="text-blue-400">int</span>&gt;&amp; data);<br/>
+              {'}'};<br/>
+              <br/>
+              <span className="text-purple-400">#endif</span> <span className="text-slate-500">// DATA_PROCESSOR_H</span>
+            </div>
+          ));
+        } else if (file.includes('CMakeLists.txt')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-blue-400">cmake_minimum_required</span>(<span className="text-green-300">VERSION 3.10</span>)<br/>
+              <span className="text-blue-400">project</span>(shirokuma_cpp)<br/>
+              <br/>
+              <span className="text-blue-400">set</span>(CMAKE_CXX_STANDARD <span className="text-green-300">17</span>)<br/>
+              <br/>
+              <span className="text-slate-500"># Pythonから読み込める共有ライブラリとしてビルド</span><br/>
+              <span className="text-blue-400">add_library</span>(shirokuma_cpp <span className="text-purple-400">SHARED</span> src/data_processor.cpp)<br/>
+            </div>
+          ));
+        } else if (file.includes('build.sh')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-slate-500">#!/bin/bash</span><br/>
+              <span className="text-blue-400">echo</span> <span className="text-green-300">"Building C++ extensions..."</span><br/>
+              mkdir -p build && <span className="text-blue-400">cd</span> build<br/>
+              cmake ..<br/>
+              make<br/>
+              cp *.so ..<br/>
+              <span className="text-blue-400">echo</span> <span className="text-green-300">"Build complete."</span>
+            </div>
+          ));
         } else if (file.includes('main.cpp')) {
           addLog('output', (
             <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm">
