@@ -70,12 +70,6 @@ export default function TopPage() {
               <div className="text-emerald-400 font-bold mt-2 pt-2 border-t border-slate-800">✓ All checks have passed. Ready for deployment.</div>
             </div>
           </div>
-
-          <div className="flex justify-center sm:justify-start">
-            <Link to="/chapter/1" className="inline-flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-8 py-4 rounded-xl text-base transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.4)] w-full sm:w-auto">
-              自動化チュートリアルを始める<ArrowRight size={20} />
-            </Link>
-          </div>
         </div>
       </div>
 
@@ -123,6 +117,12 @@ export default function TopPage() {
             tech="UDP / HILシミュレーション"
             description="ハードウェアが手元になくても大丈夫。ネットワーク通信を模倣し、PC上だけで組み込み処理やソナーロジックを検証します。"
           />
+        </div>
+
+        <div className="flex justify-center mt-12 sm:mt-16 pb-8">
+          <Link to="/chapter/1" className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-navy-900 font-black px-10 sm:px-14 py-5 sm:py-6 rounded-2xl text-lg sm:text-xl transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(6,182,212,0.5)] w-full sm:w-auto">
+            自動化チュートリアルを始める <ArrowRight size={24} />
+          </Link>
         </div>
       </div>
 
