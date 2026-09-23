@@ -139,12 +139,13 @@ export default function CodeLab() {
       { id: Date.now()+1, type: 'system', content: 'Initializing interactive guided tracing...' }
     ]);
     
-    if (activeScenario) {
+    let timeoutId: any;
+      if (activeScenario) {
       const stepIndex = scenarioProgress[activeScenario.id] || 0;
       const step = activeScenario.steps[stepIndex];
       
       if (step) {
-        setTimeout(() => {
+          timeoutId = setTimeout(() => {
           setHistory(prev => [
             ...prev,
             { 
@@ -162,7 +163,7 @@ export default function CodeLab() {
           ]);
         }, 300);
       } else if (completedScenarios.includes(activeScenario.id)) {
-        setTimeout(() => {
+          timeoutId = setTimeout(() => {
           setHistory(prev => [
             ...prev,
             { 
@@ -181,7 +182,10 @@ export default function CodeLab() {
         }, 300);
       }
     }
-  }, [activeScenarioId, isLabOpen]);
+  return () => {
+        if (timeoutId) clearTimeout(timeoutId);
+      };
+    }, [activeScenarioId, isLabOpen]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
