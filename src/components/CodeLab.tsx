@@ -151,6 +151,38 @@ const SCENARIOS = [
     ]
   },
   {
+    id: 5,
+    chapterRef: '第5章',
+    title: 'PythonからC++を直接叩く（pybind11連携）',
+    description: 'pybind11を使い、C++のSonarFilterクラスをPythonモジュール化して直接呼び出す流れをトレースします。',
+    mentalModel: 'C++ロジック(SonarFilter) ➔ pybind11定義(PYBIND11_MODULE) ➔ Pythonから直接import実行 ➔ pytest一括検証',
+    prerequisites: [
+      'SWIGやJNIなど過去の複雑なラッパーと違い、pybind11はモダンC++の型推論を活用した直感的な記述が可能です。',
+      'PYBIND11_MODULEマクロでクラスやメソッドを数行登録するだけで、Pythonから直接import可能な共有ライブラリ(.so)が完成します。',
+      '数万件のテスト波形生成や評価グラフ描画をPythonに任せ、重いフィルタ計算だけをC++に任せるハイブリッド開発の基盤です。'
+    ],
+    steps: [
+      {
+        command: 'cat src/bindings.cpp',
+        matchKeywords: ['cat', 'bindings.cpp'],
+        instruction: '【第5章 STEP 1/3：pybind11バインディング定義の確認】\nC++のSonarFilterクラスをPythonモジュール「sonar_dsp」として公開するラッパーコードを確認します。\n➔ `cat src/bindings.cpp` と入力',
+        explanation: '`PYBIND11_MODULE(sonar_dsp, m)` の定義を確認できたね！\nたった数行の `py::class_<SonarFilter>` と `.def("process", &SonarFilter::Process)` を書くだけで、C++のクラスがPythonネイティブのオブジェクトとして扱えるようになるんだ！'
+      },
+      {
+        command: 'python3 -c "import sonar_dsp; f = sonar_dsp.SonarFilter(60.0); print(f\'Output: {f.process(100.0):.2f}\')"',
+        matchKeywords: ['python3'],
+        instruction: '【第5章 STEP 2/3：Pythonワンライナーでの直接呼び出し】\nビルドされた `sonar_dsp.so` をPythonから直接importし、SonarFilterをインスタンス化して計算させます。\n➔ `python3 -c "import sonar_dsp; f = sonar_dsp.SonarFilter(60.0); print(f\'Output: {f.process(100.0):.2f}\')"` と入力（※Tabキーで一発補完できます）',
+        explanation: 'すばらしい！C++でコンパイルされた共有ライブラリが、Pythonの内部で通常のオブジェクトとしてインスタンス化され、45.23という計算結果を返したね！\nPythonの扱いやすさとC++の圧倒的計算スピードが、ここで融合したんだ！'
+      },
+      {
+        command: 'pytest tests/test_bindings.py',
+        matchKeywords: ['pytest'],
+        instruction: '【第5章 STEP 3/3：pytestによるバインディング総合検証】\npybind11で公開されたPythonモジュールが、pytestの自動テスト環境で正常に合格するか検証します。\n➔ `pytest tests/test_bindings.py` と入力',
+        explanation: 'パーフェクト！C++のクラスをPython側からpytestで網羅テストできたね！\nこれで「C++のコアロジックを、Pythonのリッチなテスト資産（pytest・NumPy・matplotlib）で徹底的に自動検証する」という理想の開発サイクルが完成したよ！'
+      }
+    ]
+  },
+  {
     id: 9,
     chapterRef: '第9章',
     title: 'Valgrindで見えないメモリリークを特定',
@@ -181,6 +213,7 @@ const SCENARIOS = [
 const FILE_TREE = [
   { name: 'src', type: 'folder', children: [
     { name: 'main.cpp', type: 'cpp' },
+    { name: 'bindings.cpp', type: 'cpp' },
     { name: 'data_processor.h', type: 'header' },
     { name: 'data_processor.cpp', type: 'cpp' },
     { name: 'sonar_filter.h', type: 'header' },
@@ -188,7 +221,8 @@ const FILE_TREE = [
   ]},
   { name: 'tests', type: 'folder', children: [
     { name: 'test_processor.py', type: 'python' },
-    { name: 'test_sonar_filter.cpp', type: 'cpp' }
+    { name: 'test_sonar_filter.cpp', type: 'cpp' },
+    { name: 'test_bindings.py', type: 'python' }
   ]},
   { name: 'CMakeLists.txt', type: 'txt' },
   { name: 'Dockerfile', type: 'docker' },
@@ -203,10 +237,10 @@ export default function CodeLab() {
 
   // Resolve target scenario
   const getResolvedScenarioId = () => {
-    if (targetScenarioId && [1, 2, 3, 4, 9].includes(targetScenarioId)) {
+    if (targetScenarioId && [1, 2, 3, 4, 5, 9].includes(targetScenarioId)) {
       return targetScenarioId;
     }
-    if ([1, 2, 3, 4, 9].includes(currentChapter)) {
+    if ([1, 2, 3, 4, 5, 9].includes(currentChapter)) {
       return currentChapter;
     }
     return 1;
@@ -223,7 +257,7 @@ export default function CodeLab() {
   }, [isLabOpen, targetScenarioId, currentChapter]);
 
   const [completedScenarios, setCompletedScenarios] = useState<number[]>([]);
-  const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 4: 0, 9: 0 });
+  const [scenarioProgress, setScenarioProgress] = useState<Record<number, number>>({ 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 9: 0 });
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
   const [showGlossary, setShowGlossary] = useState(false);
   
@@ -477,6 +511,42 @@ export default function CodeLab() {
               {'}'}
             </div>
           ));
+        } else if (file.includes('bindings.cpp')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;pybind11/pybind11.h&gt;</span><br/>
+              <span className="text-purple-400">#include</span> <span className="text-green-300">"sonar_filter.h"</span><br/>
+              <br/>
+              <span className="text-blue-400">namespace</span> py = pybind11;<br/>
+              <br/>
+              <span className="text-slate-500">// Pythonモジュール「sonar_dsp」を定義</span><br/>
+              <span className="text-yellow-400">PYBIND11_MODULE</span>(sonar_dsp, m) {'{'}<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;m.doc() = <span className="text-green-300">"Sonar Digital Signal Processing plugin (C++ Backend)"</span>;<br/>
+              <br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500">// SonarFilterクラスのバインド定義</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;py::class_&lt;SonarFilter&gt;(m, <span className="text-green-300">"SonarFilter"</span>)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.def(py::init&lt;<span className="text-blue-400">double</span>&gt;())<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.def(<span className="text-green-300">"process"</span>, &amp;SonarFilter::Process, <span className="text-green-300">"入力信号に対してフィルタ処理を実行する"</span>);<br/>
+              {'}'}
+            </div>
+          ));
+        } else if (file.includes('test_bindings.py')) {
+          addLog('output', (
+            <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-purple-400">import</span> pytest<br/>
+              <span className="text-purple-400">import</span> sonar_dsp<br/>
+              <br/>
+              <span className="text-blue-400">def</span> <span className="text-yellow-200">test_filter_process_basic</span>():<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># C++クラスのインスタンス化</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;f = sonar_dsp.SonarFilter(<span className="text-green-300">60.0</span>)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;output = f.process(<span className="text-green-300">100.0</span>)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">assert</span> pytest.approx(output, rel=<span className="text-green-300">1e-2</span>) == <span className="text-green-300">45.23</span><br/>
+              <br/>
+              <span className="text-blue-400">def</span> <span className="text-yellow-200">test_filter_zero_input</span>():<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;f = sonar_dsp.SonarFilter(<span className="text-green-300">60.0</span>)<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">assert</span> f.process(<span className="text-green-300">0.0</span>) == <span className="text-green-300">0.0</span><br/>
+            </div>
+          ));
         } else if (file.includes('CMakeLists.txt')) {
           addLog('output', (
             <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
@@ -561,22 +631,54 @@ export default function CodeLab() {
         ));
         break;
 
+      case 'python3':
+      case 'python':
+        isStandardCommand = true;
+        if (trimmed.includes('sonar_dsp') || trimmed.includes('test_bindings')) {
+          addLog('system', 'Executing Python script with C++ pybind11 module (sonar_dsp.so)...');
+          await new Promise(resolve => setTimeout(resolve, 400));
+          addLog('output', (
+            <div className="text-slate-200 font-mono text-xs">
+              <span className="text-slate-400">[pybind11] Loaded C++ dynamic extension: sonar_dsp.cpython-310-x86_64-linux-gnu.so</span><br/>
+              <span className="text-green-400 font-bold text-sm">Output: 45.23</span><br/>
+              <span className="text-slate-500 italic mt-1">✓ C++ SonarFilter::Process(100.0) executed via Python bridge in 0.002s</span>
+            </div>
+          ));
+        } else {
+          addLog('output', 'Python 3.10.12 (main, Jun 11 2023, 05:43:56) [GCC 11.4.0] on linux');
+        }
+        break;
+
       case 'pytest':
         isStandardCommand = true;
         addLog('system', '========================= test session starts ==========================');
         await new Promise(resolve => setTimeout(resolve, 600));
-        addLog('output', (
-          <div>
-            platform linux -- Python 3.10.12, pytest-7.4.0<br/>
-            collected 4 items<br/><br/>
-            tests/test_processor.py <span className="text-green-400">.</span>
-            <span className="text-green-400">.</span>
-            <span className="text-green-400">.</span>
-            <span className="text-green-400">.</span>
-            <span className="text-green-400 ml-4">[100%]</span><br/><br/>
-            <span className="text-green-400 font-bold">========================== 4 passed in 0.28s ===========================</span>
-          </div>
-        ));
+        if (trimmed.includes('test_bindings') || activeScenarioId === 5) {
+          addLog('output', (
+            <div>
+              platform linux -- Python 3.10.12, pytest-7.4.0<br/>
+              rootdir: /app<br/>
+              collected 2 items<br/><br/>
+              tests/test_bindings.py <span className="text-green-400">.</span>
+              <span className="text-green-400">.</span>
+              <span className="text-green-400 ml-4">[100%]</span><br/><br/>
+              <span className="text-green-400 font-bold">========================== 2 passed in 0.18s ===========================</span>
+            </div>
+          ));
+        } else {
+          addLog('output', (
+            <div>
+              platform linux -- Python 3.10.12, pytest-7.4.0<br/>
+              collected 4 items<br/><br/>
+              tests/test_processor.py <span className="text-green-400">.</span>
+              <span className="text-green-400">.</span>
+              <span className="text-green-400">.</span>
+              <span className="text-green-400">.</span>
+              <span className="text-green-400 ml-4">[100%]</span><br/><br/>
+              <span className="text-green-400 font-bold">========================== 4 passed in 0.28s ===========================</span>
+            </div>
+          ));
+        }
         break;
 
       case 'valgrind':
@@ -793,7 +895,7 @@ export default function CodeLab() {
       const lastWord = words[words.length - 1];
 
       if (words.length === 1) {
-        const cmds = ['cat ', 'ls', 'clear', 'pytest', './build.sh', 'valgrind ', 'docker ', 'cmake ', 'ctest ', './build/tests/sonar_test'];
+        const cmds = ['cat ', 'ls', 'clear', 'pytest', 'python3 ', './build.sh', 'valgrind ', 'docker ', 'cmake ', 'ctest ', './build/tests/sonar_test'];
         const match = cmds.find(c => c.startsWith(input));
         if (match) setInput(match);
       } else {
@@ -801,7 +903,9 @@ export default function CodeLab() {
         const paths = [
           'tests/test_processor.py',
           'tests/test_sonar_filter.cpp',
+          'tests/test_bindings.py',
           'src/main.cpp',
+          'src/bindings.cpp',
           'src/data_processor.h',
           'src/data_processor.cpp',
           'src/sonar_filter.h',
@@ -1036,11 +1140,11 @@ export default function CodeLab() {
               </div>
 
               {/* Chapter Guard Notice Banner */}
-              {currentChapter && ![1, 2, 3, 4, 9].includes(currentChapter) && (
+              {currentChapter && ![1, 2, 3, 4, 5, 9].includes(currentChapter) && (
                 <div className="bg-amber-950/60 border-b border-amber-500/40 px-4 py-2 text-xs text-amber-200/90 flex items-center justify-between select-none shrink-0">
                   <div className="flex items-center gap-2">
                     <span className="text-base">💡</span>
-                    <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。上記タブから<strong>【第1・2・3・4・9章】</strong>の実践ミッションをお試しいただけます。</span>
+                    <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。上記タブから<strong>【第1・2・3・4・5・9章】</strong>の実践ミッションをお試しいただけます。</span>
                   </div>
                 </div>
               )}
@@ -1199,6 +1303,17 @@ export default function CodeLab() {
                     </div>
                     <p className="text-slate-400 text-xs">
                       <strong>GoogleTest (gtest)</strong> はC++ネイティブで内部関数やクラスの境界値・例外を高速検証するツール。<strong>pytest</strong> はC++を共有ライブラリ(.so)としてPythonから呼び出し、NumPy等で生成した大量の波形・パラメータを一括流し込み検証するツールです。
+                    </p>
+                  </div>
+
+                  {/* pybind11 */}
+                  <div className="p-4 bg-navy-950/70 border border-slate-700/80 rounded-xl space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 font-bold px-2 py-0.5 rounded text-xs">pybind11 とは</span>
+                      <span className="font-bold text-white text-sm">PythonからC++を直接呼び出す架け橋</span>
+                    </div>
+                    <p className="text-slate-400 text-xs">
+                      C++11のテンプレート機能を駆使し、わずか数行のバインド定義コードでC++クラスや関数をPythonモジュール（.so / .pyd）化するモダンライブラリ。SWIG等の古いラッパーと違って直感的に書け、PyTorchやNumPyなどAI・数理エコシステムの基盤として広く採用されています。
                     </p>
                   </div>
 
