@@ -22,11 +22,11 @@ export default function TopPage() {
             </h1>
           </div>
 
-          <h2 className="text-base sm:text-xl md:text-2xl font-bold text-slate-200 tracking-tight pb-4 sm:pb-6 border-b border-white/10 leading-relaxed">
+          <h2 className="text-base sm:text-xl md:text-2xl font-bold text-slate-800 tracking-tight pb-4 sm:pb-6 border-b border-white/10 leading-relaxed">
             Python, Docker, CI/CDを活用して、<span className="text-yellow-400">現場のC++開発をモダンにアップデート。</span>
           </h2>
 
-          <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-4xl">
+          <p className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-4xl">
             「ビルド環境を作るだけで一苦労」「テストを手動で実行するのが面倒」「バグの検知が遅れる」……<br />
             C++開発者が実際に直面する課題を解決するために、開発プロセスを進化させましょう。<br />
             <strong>手動ビルド ➔ CMake ➔ 自動テスト ➔ ASan ➔ Docker ➔ GitHub Actions</strong> という完全自動CI/CDのワークフローを実践します。
@@ -35,23 +35,23 @@ export default function TopPage() {
 
         {/* 右：ターミナル風のMISSION */}
         <div className="w-full max-w-5xl relative z-10 flex flex-col gap-6">
-          <div className="bg-slate-900/90 border border-slate-700/60 p-5 rounded-2xl shadow-xl relative backdrop-blur-sm">
+          <div className="bg-white/95 border border-sky-200 border border-sky-200/80 p-5 rounded-2xl shadow-xl relative backdrop-blur-sm">
             <div className="absolute -top-3 left-6 bg-amber-500 text-slate-950 text-[11px] font-black px-3 py-0.5 rounded-sm shadow-sm tracking-widest">MISSION</div>
-            <p className="text-sm sm:text-base text-slate-100 font-bold mb-2">Q. このプロジェクトのテストを毎回「手動」で実行するのをやめたい。</p>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-900 font-bold mb-2">Q. このプロジェクトのテストを毎回「手動」で実行するのをやめたい。</p>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
               コードをプッシュした瞬間に、クリーンな環境(Docker)でビルドされ、自動テストとメモリ漏れ検査(ASan)が走り、安全が証明される完全なCI/CDパイプラインを構築せよ。
             </p>
           </div>
 
           {/* ターミナルモックアップ */}
-          <div className="w-full rounded-xl bg-[#0d1117] border border-slate-700/50 shadow-2xl overflow-hidden font-mono text-xs sm:text-sm">
-            <div className="flex items-center px-4 py-2 bg-[#161b22] border-b border-slate-700/50 gap-2">
+          <div className="w-full rounded-xl bg-[#0d1117] border border-slate-300/50 shadow-2xl overflow-hidden font-mono text-xs sm:text-sm">
+            <div className="flex items-center px-4 py-2 bg-[#161b22] border-b border-slate-300/50 gap-2">
               <div className="w-3 h-3 rounded-full bg-rose-500"></div>
               <div className="w-3 h-3 rounded-full bg-amber-500"></div>
               <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-              <span className="ml-2 text-slate-400 font-bold text-[10px]">CI/CD Pipeline Execution</span>
+              <span className="ml-2 text-slate-600 font-bold text-[10px]">CI/CD Pipeline Execution</span>
             </div>
-            <div className="p-4 space-y-2 text-slate-300">
+            <div className="p-4 space-y-2 text-slate-700">
               <div className="flex gap-2">
                 <span className="text-emerald-400">➜</span>
                 <span className="text-cyan-400">~/project</span>
@@ -61,13 +61,13 @@ export default function TopPage() {
               <div className="text-slate-500">Writing objects: 100% (3/3), 312 bytes, done.</div>
               <div className="text-blue-400 animate-pulse mt-2">● Triggering GitHub Actions Workflow...</div>
               
-              <div className="pt-2 border-l-2 border-slate-700 pl-3 ml-1 space-y-1">
-                <div className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={14} className="text-emerald-500" /> [BUILD] Compiling with CMake (Docker)</div>
-                <div className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={14} className="text-emerald-500" /> [TEST] 23 tests passed successfully</div>
-                <div className="flex items-center gap-2 text-slate-300"><CheckCircle2 size={14} className="text-emerald-500" /> [ASAN] No memory errors detected</div>
+              <div className="pt-2 border-l-2 border-slate-300 pl-3 ml-1 space-y-1">
+                <div className="flex items-center gap-2 text-slate-700"><CheckCircle2 size={14} className="text-emerald-500" /> [BUILD] Compiling with CMake (Docker)</div>
+                <div className="flex items-center gap-2 text-slate-700"><CheckCircle2 size={14} className="text-emerald-500" /> [TEST] 23 tests passed successfully</div>
+                <div className="flex items-center gap-2 text-slate-700"><CheckCircle2 size={14} className="text-emerald-500" /> [ASAN] No memory errors detected</div>
               </div>
               
-              <div className="text-emerald-400 font-bold mt-2 pt-2 border-t border-slate-800">✓ All checks have passed. Ready for deployment.</div>
+              <div className="text-emerald-400 font-bold mt-2 pt-2 border-t border-sky-200">✓ All checks have passed. Ready for deployment.</div>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function TopPage() {
       <div className="space-y-6 sm:space-y-10 relative z-10">
         <div className="text-center space-y-3 sm:space-y-4">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">このサイトで実現できる「自動化」</h2>
-          <p className="text-slate-400 text-sm sm:text-base md:text-lg">C++の面倒な作業を、様々なツールを組み合わせて効率化します。</p>
+          <p className="text-slate-600 text-sm sm:text-base md:text-lg">C++の面倒な作業を、様々なツールを組み合わせて効率化します。</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -129,7 +129,7 @@ export default function TopPage() {
               <BookOpen className="text-cyan-400" size={24} />
               【付録】GoogleTest 逆引き実践リファレンス
             </h3>
-            <p className="text-slate-300 text-sm max-w-2xl leading-relaxed">
+            <p className="text-slate-700 text-sm max-w-2xl leading-relaxed">
               EXPECT vs ASSERT の使い分け、フィクスチャ（TEST_F）、パラメータ化テスト（TEST_P）、例外テスト、コマンドライン引数（--gtest_filter）など、実務で必須のGoogleTest全構文を網羅整理！
             </p>
           </div>
@@ -149,7 +149,7 @@ export default function TopPage() {
       </div>
 
       {/* Sister Sites Navigation */}
-      <div className="bg-navy-800/50 rounded-2xl p-5 sm:p-8 md:p-12 border border-slate-700/50 relative overflow-hidden">
+      <div className="bg-navy-800/50 rounded-2xl p-5 sm:p-8 md:p-12 border border-slate-300/50 relative overflow-hidden">
         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
           <BookOpen size={200} />
         </div>
@@ -159,7 +159,7 @@ export default function TopPage() {
               姉妹サイト（シロクマ技術学習エコシステム）
             </span>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">目的に合わせた外部学習ルート</h2>
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
               当サイト（自動化ラボ）は、全4サイトからなるエコシステムの「STEP 2」にあたります。<br className="hidden sm:block"/>
               C++の設計基礎、GUI開発、ドメイン応用などを学びたい場合は、以下の姉妹サイト（別サイト）をご活用ください。
             </p>
@@ -167,11 +167,11 @@ export default function TopPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <a href="https://www.shirokuma-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
-              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-700 transition-all group-hover:border-cyan-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-300 transition-all group-hover:border-cyan-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
                 <div>
                   <div className="text-cyan-400 text-xs sm:text-sm font-bold mb-2">STEP 1: 設計のコア技術を学ぶ</div>
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">シロクマC++ラボ</h3>
-                  <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     インベーダーゲーム開発を通じて、オブジェクト指向やモダンC++の設計力とアルゴリズム実装基盤を体系的に習得。
                   </p>
                 </div>
@@ -196,11 +196,11 @@ export default function TopPage() {
             </div>
 
             <a href="https://shirokuma-qt-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
-              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-700 transition-all group-hover:border-emerald-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-300 transition-all group-hover:border-emerald-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
                 <div>
                   <div className="text-emerald-400 text-xs sm:text-sm font-bold mb-2">STEP 3: Linux GUI・リアルタイム計器</div>
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">シロクマQt×C++ラボ</h3>
-                  <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     Qtフレームワークを活用し、Linux環境で動くプロ仕様のHMIやリアルタイム計器GUIダッシュボードを創り出します。
                   </p>
                 </div>
@@ -211,11 +211,11 @@ export default function TopPage() {
             </a>
 
             <a href="https://sonar-guide.jp" target="_blank" rel="noopener noreferrer" className="block group">
-              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-700 transition-all group-hover:border-blue-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-300 transition-all group-hover:border-blue-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
                 <div>
                   <div className="text-blue-400 text-xs sm:text-sm font-bold mb-2">STEP 4: ドメイン応用・音響信号処理</div>
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">水中音響・ソナー技術入門</h3>
-                  <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     波の物理、FFT、LOFAR・DEMON信号処理など、C++の高速計算力を活かす水中音響工学の世界を探求。
                   </p>
                 </div>
@@ -244,7 +244,7 @@ function AutomationCard({ icon, title, tech, description }: { icon: React.ReactN
           <span className="text-[10px] sm:text-xs font-bold text-cyan-500/80 bg-cyan-500/10 px-2 py-0.5 sm:py-1 rounded inline-block mt-0.5">{tech}</span>
         </div>
       </div>
-      <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
         {description}
       </p>
     </div>

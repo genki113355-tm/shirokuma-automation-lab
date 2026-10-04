@@ -2,7 +2,7 @@ import { ExternalLink } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-navy-900 border-t border-slate-800 text-slate-400 py-12 px-6">
+    <footer className="bg-navy-900 border-t border-sky-200 text-slate-600 py-12 px-6">
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
         
         {/* Brand & Ecosystem */}
@@ -37,8 +37,8 @@ export default function Footer() {
         <div className="space-y-4">
           <h3 className="text-white font-bold mb-2">運営者情報・監修</h3>
           <div className="text-sm space-y-2">
-            <p><strong className="text-slate-300">運営チーム:</strong> シロクマ技術開発室</p>
-            <p><strong className="text-slate-300">専門領域:</strong> 組込みLinux / C++ / Qt / 音響信号処理 (Sonar)</p>
+            <p><strong className="text-slate-700">運営チーム:</strong> シロクマ技術開発室</p>
+            <p><strong className="text-slate-700">専門領域:</strong> 組込みLinux / C++ / Qt / 音響信号処理 (Sonar)</p>
             <p className="leading-relaxed mt-2 text-xs">
               実務経験に基づいた「現場で使える自動化・品質保証」のノウハウを提供しています。
             </p>

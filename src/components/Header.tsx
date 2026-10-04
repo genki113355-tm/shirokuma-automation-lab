@@ -15,7 +15,7 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
       {/* Left Nav Pills (Breadcrumbs) */}
       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar min-w-0 flex-1 py-1">
         <button 
-          className="lg:hidden p-1.5 mr-1 text-slate-300 hover:text-white hover:bg-navy-700 rounded-md transition-colors shrink-0"
+          className="lg:hidden p-1.5 mr-1 text-slate-700 hover:text-white hover:bg-navy-700 rounded-md transition-colors shrink-0"
           onClick={toggleMobileMenu}
           aria-label="メニューを開く"
         >
@@ -25,7 +25,7 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
         <Link 
           to="/" 
           className={`font-bold text-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap transition-colors shrink-0 ${
-            isTop ? 'bg-cyan-500 text-navy-900 shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 'bg-navy-700 text-slate-300 hover:text-white hover:bg-navy-600'
+            isTop ? 'bg-cyan-500 text-navy-900 shadow-[0_0_10px_rgba(6,182,212,0.4)]' : 'bg-navy-700 text-slate-700 hover:text-white hover:bg-navy-600'
           }`}
         >
           <Home size={14} />
@@ -33,7 +33,7 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
         </Link>
         
         {currentChapter && (
-          <div className="flex items-center gap-1.5 ml-1 text-xs font-medium text-slate-400 shrink-0">
+          <div className="flex items-center gap-1.5 ml-1 text-xs font-medium text-slate-600 shrink-0">
             <span className="flex items-center text-slate-500"><ChevronRight size={16} /></span>
             <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 whitespace-nowrap">
               <span className="text-cyan-400 font-bold">第{currentChapter}章</span>
@@ -55,7 +55,7 @@ export default function Header({ toggleMobileMenu }: { toggleMobileMenu?: () => 
         </button>
         <button 
           aria-label="環境構築スクリプトをダウンロード"
-          className="bg-navy-700 hover:bg-navy-600 border border-slate-600 text-slate-200 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors hidden sm:flex"
+          className="bg-navy-700 hover:bg-navy-600 border border-slate-300 text-slate-800 text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-2 transition-colors hidden sm:flex"
         >
           <Download size={14} />
           <span>環境構築スクリプト</span>

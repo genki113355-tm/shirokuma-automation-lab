@@ -12,7 +12,7 @@ export default function Dialogue({ character, title, children }: DialogueProps) 
   
   // キャラクターごとのテーマカラー
   const borderColor = isPenguin ? "border-slate-500/60" : "border-cyan-500/60";
-  const titleColor = isPenguin ? "text-slate-300" : "text-cyan-400";
+  const titleColor = isPenguin ? "text-slate-700" : "text-cyan-400";
   
   return (
     <div className={`flex items-start gap-5 my-10 not-prose ${isPenguin ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -39,7 +39,7 @@ export default function Dialogue({ character, title, children }: DialogueProps) 
         {/* テキストコンテンツ */}
         <div className="relative z-10">
           <h4 className={`text-xs font-bold mb-2 ${titleColor}`}>{title}</h4>
-          <div className="text-sm text-slate-100 leading-relaxed font-medium">
+          <div className="text-sm text-slate-900 leading-relaxed font-medium">
             {children}
           </div>
         </div>

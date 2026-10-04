@@ -153,24 +153,24 @@ export default function ChapterContent() {
     Term: (props: any) => <TermTooltip {...props} />,
     RelatedLab: (props: any) => <RelatedLab {...props} />,
     table: (props: any) => (
-      <div className="not-prose overflow-x-auto my-6 border border-slate-700/80 rounded-xl shadow-lg bg-navy-900/80">
+      <div className="not-prose overflow-x-auto my-6 border border-slate-300/80 rounded-xl shadow-lg bg-navy-900/80">
         <table className="w-full border-collapse text-left text-xs sm:text-sm m-0" {...props} />
       </div>
     ),
     thead: (props: any) => (
-      <thead className="bg-navy-950/90 border-b border-slate-700 text-cyan-300 font-semibold" {...props} />
+      <thead className="bg-navy-950/90 border-b border-slate-300 text-cyan-300 font-semibold" {...props} />
     ),
     th: (props: any) => (
-      <th className="p-3.5 text-cyan-300 font-bold border-b border-slate-700 whitespace-nowrap" {...props} />
+      <th className="p-3.5 text-cyan-300 font-bold border-b border-slate-300 whitespace-nowrap" {...props} />
     ),
     td: (props: any) => (
-      <td className="p-3.5 border-b border-slate-800/80 text-slate-300 align-top leading-relaxed" {...props} />
+      <td className="p-3.5 border-b border-sky-200/80 text-slate-700 align-top leading-relaxed" {...props} />
     ),
     tr: (props: any) => (
-      <tr className="hover:bg-cyan-500/5 transition-colors border-b border-slate-800/60 last:border-b-0" {...props} />
+      <tr className="hover:bg-cyan-500/5 transition-colors border-b border-sky-200/60 last:border-b-0" {...props} />
     ),
     blockquote: (props: any) => (
-      <blockquote className="not-prose block border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-950/40 to-navy-900/60 px-5 py-4 rounded-r-xl my-6 text-slate-200 text-sm sm:text-base leading-relaxed shadow-md [&>p]:m-0 [&>p+p]:mt-2" {...props} />
+      <blockquote className="not-prose block border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-950/40 to-navy-900/60 px-5 py-4 rounded-r-xl my-6 text-slate-800 text-sm sm:text-base leading-relaxed shadow-md [&>p]:m-0 [&>p+p]:mt-2" {...props} />
     ),
   };
 
@@ -191,7 +191,7 @@ export default function ChapterContent() {
           <span className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 px-2.5 sm:px-3 py-1 rounded text-xs font-bold flex items-center gap-1.5">
             <Shield size={14} /> Chap {meta.chapterId}
           </span>
-          <span className="bg-navy-700 text-slate-300 border border-slate-600 px-2.5 sm:px-3 py-1 rounded text-xs font-medium">
+          <span className="bg-navy-700 text-slate-700 border border-slate-300 px-2.5 sm:px-3 py-1 rounded text-xs font-medium">
             {meta.category}
           </span>
         </div>
@@ -199,23 +199,23 @@ export default function ChapterContent() {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-3 leading-tight tracking-tight">
           第{meta.chapterId}章：{meta.title}
         </h1>
-        <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+        <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
           {meta.description}
         </p>
 
         {meta.responsibility && (
           <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
             <span className="text-cyan-500 font-bold">担当領域:</span>
-            <span className="text-slate-300">{meta.responsibility}</span>
+            <span className="text-slate-700">{meta.responsibility}</span>
           </div>
         )}
       </div>
 
       {/* 【HIGH-1】GitHub Code Snapshot Card */}
-      <div className="bg-gradient-to-r from-navy-800 to-slate-900 border border-slate-700/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
+      <div className="bg-gradient-to-r from-navy-800 to-slate-900 border border-slate-300/80 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
         <div className="space-y-1.5 flex-1">
           <div className="flex items-center gap-2">
-            <span className="bg-slate-700 text-slate-200 border border-slate-600 text-[11px] font-mono px-2 py-0.5 rounded font-bold flex items-center gap-1.5">
+            <span className="bg-slate-700 text-slate-800 border border-slate-300 text-[11px] font-mono px-2 py-0.5 rounded font-bold flex items-center gap-1.5">
               <GitBranch size={12} className="text-cyan-400" />
               chapter-{snapshotChapterStr}
             </span>
@@ -225,14 +225,14 @@ export default function ChapterContent() {
             <FolderGit2 size={16} className="text-cyan-400 shrink-0" />
             第{meta.chapterId}章の開始コード・完成状態はこちら（GitHub）
           </h3>
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-slate-700 leading-relaxed">
             CMakeLists.txt や Dockerfile のタイポで動かなくなった場合も安心。この章の完成状態コードをGitHubで閲覧、またはクローンしてそのまま再開できます。
           </p>
           <div className="pt-1 flex flex-wrap items-center gap-2">
-            <code className="text-[11px] bg-navy-950 px-2 py-1 rounded border border-slate-700 font-mono text-cyan-300 select-all">
+            <code className="text-[11px] bg-navy-950 px-2 py-1 rounded border border-slate-300 font-mono text-cyan-300 select-all">
               git checkout chapter-{snapshotChapterStr}
             </code>
-            <span className="text-[11px] text-slate-400">または snapshots/chapter-{snapshotChapterStr}/ を参照</span>
+            <span className="text-[11px] text-slate-600">または snapshots/chapter-{snapshotChapterStr}/ を参照</span>
           </div>
         </div>
         <a
@@ -257,7 +257,7 @@ export default function ChapterContent() {
                 📋 {currentPrerequisites.title}（チェックリスト）
               </h3>
             </div>
-            <span className="text-[11px] text-slate-400 hidden sm:inline">
+            <span className="text-[11px] text-slate-600 hidden sm:inline">
               ※クリックでチェック可能。専門用語はホバーで解説表示
             </span>
           </div>
@@ -270,20 +270,20 @@ export default function ChapterContent() {
                   className={`flex items-start gap-2.5 p-2.5 rounded-lg border text-xs cursor-pointer transition-all ${
                     isChecked
                       ? 'bg-cyan-950/40 border-cyan-500/40 text-cyan-200'
-                      : 'bg-navy-900/60 border-slate-700/80 text-slate-300 hover:border-cyan-500/30'
+                      : 'bg-navy-900/60 border-slate-300/80 text-slate-700 hover:border-cyan-500/30'
                   }`}
                 >
                   <input
                     type="checkbox"
                     checked={isChecked}
                     onChange={() => toggleCheck(idx)}
-                    className="mt-0.5 rounded border-slate-600 text-cyan-500 focus:ring-0 bg-navy-950 cursor-pointer"
+                    className="mt-0.5 rounded border-slate-300 text-cyan-500 focus:ring-0 bg-navy-950 cursor-pointer"
                   />
                   <span className="leading-snug">
                     {item.term ? (
                       <>
                         <TermTooltip name={item.term} />
-                        <span className="ml-1 text-slate-300">
+                        <span className="ml-1 text-slate-700">
                           {item.label.replace(item.term, '')}
                         </span>
                       </>
@@ -312,22 +312,22 @@ export default function ChapterContent() {
       {meta.tags && (
         <div className="flex flex-wrap gap-2">
           {meta.tags.map((tag: string) => (
-            <span key={tag} className="bg-navy-700 border border-slate-600 text-slate-300 text-xs px-2.5 sm:px-3 py-1 rounded-md hover:border-cyan-500/50 hover:text-cyan-400 transition-colors cursor-pointer">
+            <span key={tag} className="bg-navy-700 border border-slate-300 text-slate-700 text-xs px-2.5 sm:px-3 py-1 rounded-md hover:border-cyan-500/50 hover:text-cyan-400 transition-colors cursor-pointer">
               {tag}
             </span>
           ))}
         </div>
       )}
 
-      <hr className="border-slate-700/50 my-6 sm:my-10" />
+      <hr className="border-slate-300/50 my-6 sm:my-10" />
 
       {/* MDX Content Rendered via @tailwindcss/typography */}
       <div className="prose prose-invert prose-cyan max-w-none overflow-x-hidden break-words
-                      prose-headings:text-slate-100 prose-headings:border-b prose-headings:border-cyan-500/20 prose-headings:pb-2 prose-headings:mt-8 sm:prose-headings:mt-10
-                      prose-p:text-slate-300 prose-p:leading-relaxed 
+                      prose-headings:text-slate-900 prose-headings:border-b prose-headings:border-cyan-500/20 prose-headings:pb-2 prose-headings:mt-8 sm:prose-headings:mt-10
+                      prose-p:text-slate-700 prose-p:leading-relaxed 
                       prose-pre:overflow-x-auto prose-pre:max-w-full
                       prose-blockquote:not-italic prose-blockquote:quotes-none
-                      prose-li:text-slate-300 prose-strong:text-cyan-300">
+                      prose-li:text-slate-700 prose-strong:text-cyan-300">
         <Content components={mdxComponents} />
       </div>
 
@@ -384,7 +384,7 @@ export default function ChapterContent() {
                   <Zap className="text-cyan-400" size={24} /> 
                   {currentMission ? currentMission.title : 'コード実行ラボで実際のC++自動化を体験しよう！'}
                 </h4>
-                <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
+                <p className="text-sm text-slate-700 max-w-2xl leading-relaxed">
                   {currentMission ? currentMission.desc : 'ブラウザ上のコード実行ラボで、C++自動テスト連携・Docker・CMake・GoogleTest・pybind11・Valgrindの実践ミッションを体験できます。'}
                 </p>
               </div>
@@ -411,7 +411,7 @@ export default function ChapterContent() {
                 <h4 className="text-xl sm:text-2xl font-black text-white">
                   実務の現場で差がつく！2大付録・逆引き実践リファレンス
                 </h4>
-                <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-700 max-w-2xl leading-relaxed">
                   全12章のカリキュラム完走おめでとうございます！実務の大規模プロジェクトで即戦力として活躍できるよう、現場で直面する高度な構文やオプションを完全網羅した逆引きリファレンスを用意しました。
                 </p>
               </div>
@@ -429,7 +429,7 @@ export default function ChapterContent() {
                       単体テスト網羅
                     </span>
                   </div>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 leading-relaxed">
                     EXPECT vs ASSERTの使い分け、浮動小数点アサーション（EXPECT_NEAR）、フィクスチャ（TEST_F）、パラメータ化テスト（TEST_P）、CLIフィルタ（--gtest_filter）を完全整理。
                   </p>
                 </div>
@@ -454,7 +454,7 @@ export default function ChapterContent() {
                       テストランナー
                     </span>
                   </div>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 leading-relaxed">
                     コマンドライン引数（-R 絞り込み、-j 並列実行、--output-on-failure）、タイムアウト設定、依存関係（DEPENDS）、CI向けJUnit XML出力までを完全網羅。
                   </p>
                 </div>
@@ -482,7 +482,7 @@ export default function ChapterContent() {
               <h4 className="text-lg sm:text-xl font-black text-white">
                 CI/CD環境を整えたら、次は【Qt×C++ラボ】で産業GUIを作る！
               </h4>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-700 max-w-2xl leading-relaxed">
                 車載・産業機器のLinux環境で絶対にフリーズしないマルチスレッド設計と、リアルタイム波形描画・60fps計器ダッシュボード構築を完全習得。
               </p>
             </div>
@@ -499,12 +499,12 @@ export default function ChapterContent() {
           </div>
         )}
 
-        <div className="flex justify-between items-center flex-wrap gap-4 mt-8 pt-4 border-t border-slate-700/50">
+        <div className="flex justify-between items-center flex-wrap gap-4 mt-8 pt-4 border-t border-slate-300/50">
           <div className="flex items-center gap-3">
             <Link 
               to="/" 
               aria-label="全章カリキュラム目次へ戻る" 
-              className="text-slate-400 hover:text-cyan-400 text-xs sm:text-sm font-mono flex items-center gap-1 transition-colors"
+              className="text-slate-600 hover:text-cyan-400 text-xs sm:text-sm font-mono flex items-center gap-1 transition-colors"
             >
               ⬅ 全章カリキュラム目次へ
             </Link>
@@ -512,7 +512,7 @@ export default function ChapterContent() {
               <Link
                 to={`/chapter/${chapterIdNum - 1}`}
                 aria-label={`第${chapterIdNum - 1}章へ戻る`}
-                className="text-slate-400 hover:text-cyan-400 text-xs sm:text-sm font-mono flex items-center gap-1 transition-colors border-l border-slate-700 pl-3"
+                className="text-slate-600 hover:text-cyan-400 text-xs sm:text-sm font-mono flex items-center gap-1 transition-colors border-l border-slate-300 pl-3"
               >
                 ⬅ 第{chapterIdNum - 1}章
               </Link>

@@ -50,7 +50,7 @@ export default function RelatedLab({ target, title, description, url, badge }: R
             <BookOpen size={18} className={themeClasses.icon} />
             {title}
           </h4>
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed m-0 max-w-2xl">
+          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed m-0 max-w-2xl">
             {description}
           </p>
         </div>

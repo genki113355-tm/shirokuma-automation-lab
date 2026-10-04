@@ -197,13 +197,13 @@ export default function TermTooltip({ name, children }: TermTooltipProps) {
           className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 sm:w-80 p-3.5 bg-[#0b1322] border border-cyan-500/50 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] z-50 text-left animate-fade-in pointer-events-auto"
         >
           {/* Header */}
-          <div className="flex items-center justify-between gap-2 mb-1.5 pb-1.5 border-b border-slate-700/80">
+          <div className="flex items-center justify-between gap-2 mb-1.5 pb-1.5 border-b border-slate-300/80">
             <div className="flex items-center gap-1.5">
               <span className="text-sm font-bold text-white tracking-wide">
                 {def.term}
               </span>
               {def.reading && (
-                <span className="text-[10px] text-slate-400 font-mono">
+                <span className="text-[10px] text-slate-600 font-mono">
                   ({def.reading})
                 </span>
               )}
@@ -219,7 +219,7 @@ export default function TermTooltip({ name, children }: TermTooltipProps) {
           </div>
 
           {/* Detailed explanation */}
-          <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed m-0">
+          <p className="text-[11px] sm:text-xs text-slate-700 leading-relaxed m-0">
             {def.detail}
           </p>
 

@@ -23,7 +23,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
         
         {/* Mobile Close Button */}
         <button 
-          className="lg:hidden absolute top-3 right-3 p-2 text-slate-400 hover:text-white bg-navy-900/50 rounded-full"
+          className="lg:hidden absolute top-3 right-3 p-2 text-slate-600 hover:text-white bg-navy-900/50 rounded-full"
           onClick={closeDrawer}
           aria-label="メニューを閉じる"
         >
@@ -53,7 +53,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             className={`flex items-center justify-between p-2 rounded-lg border text-xs font-bold transition-all ${
               isActive('/appendix/googletest')
                 ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
-                : 'bg-navy-700/60 border-cyan-500/30 text-slate-200 hover:border-cyan-400 hover:text-white hover:bg-navy-700'
+                : 'bg-navy-700/60 border-cyan-500/30 text-slate-800 hover:border-cyan-400 hover:text-white hover:bg-navy-700'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -70,7 +70,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             className={`flex items-center justify-between p-2 rounded-lg border text-xs font-bold transition-all ${
               isActive('/appendix/ctest')
                 ? 'bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
-                : 'bg-navy-700/60 border-cyan-500/30 text-slate-200 hover:border-cyan-400 hover:text-white hover:bg-navy-700'
+                : 'bg-navy-700/60 border-cyan-500/30 text-slate-800 hover:border-cyan-400 hover:text-white hover:bg-navy-700'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -84,7 +84,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
         </div>
 
         <div>
-          <div className="flex items-center gap-2 text-slate-300 text-xs font-bold mb-3">
+          <div className="flex items-center gap-2 text-slate-700 text-xs font-bold mb-3">
             <Beaker size={14} className="text-cyan-400" />
             <span>環境構築編</span>
           </div>
@@ -92,27 +92,27 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             <Link to="/chapter/1" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/1') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/1') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 1】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">理論</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/1') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 1】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">理論</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/1') ? 'text-white' : 'text-slate-300'}`}>手動評価の限界と自動化エコシステム</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/1') ? 'text-white' : 'text-slate-700'}`}>手動評価の限界と自動化エコシステム</p>
               </li>
             </Link>
             
             <Link to="/chapter/2" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/2') ? 'bg-cyan-500/10 border-cyan-500/50' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/2') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 2】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">実践</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/2') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 2】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">実践</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/2') ? 'text-white' : 'text-slate-300'}`}>Dockerによる再現性のあるビルド</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/2') ? 'text-white' : 'text-slate-700'}`}>Dockerによる再現性のあるビルド</p>
               </li>
             </Link>
           </ul>
         </div>
 
         <div>
-          <div className="flex items-center justify-between text-slate-300 text-xs font-bold mb-3">
+          <div className="flex items-center justify-between text-slate-700 text-xs font-bold mb-3">
             <div className="flex items-center gap-2">
               <Play size={14} className="text-cyan-400" />
               <span>自動評価編 (10章)</span>
@@ -123,46 +123,46 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             <Link to="/chapter/3" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/3') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/3') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 3】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">実践</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/3') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 3】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">実践</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/3') ? 'text-white' : 'text-slate-300'}`}>CMakeによるビルドとテスト統合</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/3') ? 'text-white' : 'text-slate-700'}`}>CMakeによるビルドとテスト統合</p>
               </li>
             </Link>
             <Link to="/chapter/4" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/4') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/4') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 4】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">実践</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/4') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 4】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">実践</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/4') ? 'text-white' : 'text-slate-300'}`}>GoogleTestによるC++網羅テスト</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/4') ? 'text-white' : 'text-slate-700'}`}>GoogleTestによるC++網羅テスト</p>
               </li>
             </Link>
             <Link to="/chapter/5" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/5') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/5') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 5】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">実践</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/5') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 5】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">実践</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/5') ? 'text-white' : 'text-slate-300'}`}>PythonからC++を直接叩く</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/5') ? 'text-white' : 'text-slate-700'}`}>PythonからC++を直接叩く</p>
               </li>
             </Link>
             <Link to="/chapter/6" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/6') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/6') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 6】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">実践</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/6') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 6】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">実践</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/6') ? 'text-white' : 'text-slate-300'}`}>NumPyによるテストデータ生成</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/6') ? 'text-white' : 'text-slate-700'}`}>NumPyによるテストデータ生成</p>
               </li>
             </Link>
             <Link to="/chapter/7" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/7') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/7') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 7】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">実践</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/7') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 7】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">実践</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/7') ? 'text-white' : 'text-slate-300'}`}>Pythonによる誤差評価・グラフ化</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/7') ? 'text-white' : 'text-slate-700'}`}>Pythonによる誤差評価・グラフ化</p>
               </li>
             </Link>
           </ul>
@@ -170,7 +170,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
 
         {/* --- CI/CD・インフラ編 --- */}
         <div>
-          <div className="flex items-center justify-between text-slate-300 text-xs font-bold mb-3 mt-6">
+          <div className="flex items-center justify-between text-slate-700 text-xs font-bold mb-3 mt-6">
             <div className="flex items-center gap-2">
               <Play size={14} className="text-cyan-400" />
               <span>CI/CD・インフラ編</span>
@@ -181,28 +181,28 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             <Link to="/chapter/8" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/8') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/8') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 8】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">インフラ</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/8') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 8】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">インフラ</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/8') ? 'text-white' : 'text-slate-300'}`}>シェルスクリプトでの一括実行</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/8') ? 'text-white' : 'text-slate-700'}`}>シェルスクリプトでの一括実行</p>
               </li>
             </Link>
             <Link to="/chapter/9" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/9') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/9') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 9】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">デバッグ</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/9') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 9】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">デバッグ</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/9') ? 'text-white' : 'text-slate-300'}`}>Sanitizerによるメモリ解析</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/9') ? 'text-white' : 'text-slate-700'}`}>Sanitizerによるメモリ解析</p>
               </li>
             </Link>
             <Link to="/chapter/10" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/10') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/10') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 10】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">CI/CD</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/10') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 10】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">CI/CD</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/10') ? 'text-white' : 'text-slate-300'}`}>GitHub Actionsによる自動化</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/10') ? 'text-white' : 'text-slate-700'}`}>GitHub Actionsによる自動化</p>
               </li>
             </Link>
           </ul>
@@ -210,7 +210,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
 
         {/* --- アドバンスド編 --- */}
         <div>
-          <div className="flex items-center justify-between text-slate-300 text-xs font-bold mb-3 mt-6">
+          <div className="flex items-center justify-between text-slate-700 text-xs font-bold mb-3 mt-6">
             <div className="flex items-center gap-2">
               <Play size={14} className="text-cyan-400" />
               <span>アドバンスド編</span>
@@ -221,19 +221,19 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             <Link to="/chapter/11" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/11') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/11') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 11】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">HIL</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/11') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 11】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">HIL</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/11') ? 'text-white' : 'text-slate-300'}`}>HILシミュレーションへの応用</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/11') ? 'text-white' : 'text-slate-700'}`}>HILシミュレーションへの応用</p>
               </li>
             </Link>
             <Link to="/chapter/12" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/chapter/12') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/chapter/12') ? 'text-cyan-400' : 'text-slate-400'}`}>【Chap 12】</span>
-                  <span className="text-slate-400 text-[10px] border border-slate-600 px-1.5 rounded">総括</span>
+                  <span className={`text-xs font-bold ${isActive('/chapter/12') ? 'text-cyan-400' : 'text-slate-600'}`}>【Chap 12】</span>
+                  <span className="text-slate-600 text-[10px] border border-slate-300 px-1.5 rounded">総括</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/chapter/12') ? 'text-white' : 'text-slate-300'}`}>自動テストシステム構築の実践</p>
+                <p className={`text-sm font-medium ${isActive('/chapter/12') ? 'text-white' : 'text-slate-700'}`}>自動テストシステム構築の実践</p>
               </li>
             </Link>
           </ul>
@@ -241,7 +241,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
 
         {/* --- 付録・逆引きリファレンス --- */}
         <div>
-          <div className="flex items-center justify-between text-slate-300 text-xs font-bold mb-3 mt-6">
+          <div className="flex items-center justify-between text-slate-700 text-xs font-bold mb-3 mt-6">
             <div className="flex items-center gap-2">
               <BookOpen size={14} className="text-cyan-400" />
               <span>付録・実践リファレンス</span>
@@ -252,19 +252,19 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             <Link to="/appendix/googletest" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/appendix/googletest') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/appendix/googletest') ? 'text-cyan-400' : 'text-slate-400'}`}>【付録 1】</span>
+                  <span className={`text-xs font-bold ${isActive('/appendix/googletest') ? 'text-cyan-400' : 'text-slate-600'}`}>【付録 1】</span>
                   <span className="text-cyan-300 text-[10px] border border-cyan-500/40 px-1.5 rounded bg-cyan-950/40">単体テスト</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/appendix/googletest') ? 'text-white' : 'text-slate-300'}`}>GoogleTest 逆引き実践リファレンス</p>
+                <p className={`text-sm font-medium ${isActive('/appendix/googletest') ? 'text-white' : 'text-slate-700'}`}>GoogleTest 逆引き実践リファレンス</p>
               </li>
             </Link>
             <Link to="/appendix/ctest" onClick={closeDrawer} className="block">
               <li className={`border rounded-md p-3 cursor-pointer transition-colors ${isActive('/appendix/ctest') ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'bg-navy-700/50 border-cyan-500/10 hover:border-cyan-500/40'}`}>
                 <div className="flex justify-between items-start mb-1">
-                  <span className={`text-xs font-bold ${isActive('/appendix/ctest') ? 'text-teal-400' : 'text-slate-400'}`}>【付録 2】</span>
+                  <span className={`text-xs font-bold ${isActive('/appendix/ctest') ? 'text-teal-400' : 'text-slate-600'}`}>【付録 2】</span>
                   <span className="text-teal-300 text-[10px] border border-teal-500/40 px-1.5 rounded bg-teal-950/40">テストランナー</span>
                 </div>
-                <p className={`text-sm font-medium ${isActive('/appendix/ctest') ? 'text-white' : 'text-slate-300'}`}>CTest 逆引き実践リファレンス</p>
+                <p className={`text-sm font-medium ${isActive('/appendix/ctest') ? 'text-white' : 'text-slate-700'}`}>CTest 逆引き実践リファレンス</p>
               </li>
             </Link>
           </ul>
@@ -277,7 +277,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
               <span>🔗</span>
               <span>技術学習エコシステム</span>
             </span>
-            <span className="text-[9px] text-slate-400 font-mono px-1.5 py-0.5 rounded bg-navy-800 border border-slate-700/60">
+            <span className="text-[9px] text-slate-600 font-mono px-1.5 py-0.5 rounded bg-navy-800 border border-sky-200/80">
               相互リンク
             </span>
           </div>
@@ -295,7 +295,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
                     総合ポータル
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                <div className="text-[10px] text-slate-600 mt-0.5 truncate">
                   全4ラボの学習記録・修了証を集約
                 </div>
               </div>
@@ -307,16 +307,16 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             {/* 1. シロクマC++ラボ */}
             <a
               href="/cpp/"
-              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-700 hover:border-cyan-500/40 transition shadow-sm"
+              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-300 hover:border-cyan-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs">👾</span>
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-cyan-300 truncate">
+                  <div className="text-xs font-bold text-slate-800 group-hover:text-cyan-300 truncate">
                     シロクマC++ラボ
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                <div className="text-[10px] text-slate-600 mt-0.5 truncate">
                   ゲーム開発で学ぶC++設計
                 </div>
               </div>
@@ -328,16 +328,16 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             {/* 2. シロクマQt×C++ラボ */}
             <a
               href="/qt/"
-              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-700 hover:border-cyan-500/40 transition shadow-sm"
+              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-300 hover:border-cyan-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs">🖥️</span>
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-cyan-300 truncate">
+                  <div className="text-xs font-bold text-slate-800 group-hover:text-cyan-300 truncate">
                     シロクマQt×C++ラボ
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                <div className="text-[10px] text-slate-600 mt-0.5 truncate">
                   QML / 60fps波形描画 / 実務GUI
                 </div>
               </div>
@@ -349,16 +349,16 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             {/* 3. 水中音響・ソナー技術入門 */}
             <a
               href="/sonar/"
-              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-700 hover:border-blue-500/40 transition shadow-sm"
+              className="group flex items-center justify-between p-2 rounded-lg bg-navy-800/80 hover:bg-navy-700 border border-slate-300 hover:border-blue-500/40 transition shadow-sm"
             >
               <div className="min-w-0 pr-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs">🌊</span>
-                  <div className="text-xs font-bold text-slate-200 group-hover:text-blue-300 truncate">
+                  <div className="text-xs font-bold text-slate-800 group-hover:text-blue-300 truncate">
                     水中音響・ソナー入門
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-400 mt-0.5 truncate">
+                <div className="text-[10px] text-slate-600 mt-0.5 truncate">
                   波の物理 / FFT / 音響解析
                 </div>
               </div>
@@ -375,14 +375,14 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
             <img src="/images/characters/shirokuma_sensei.png" alt="シロクマ先生" className="w-10 h-10 rounded-full border-2 border-cyan-500 object-cover bg-navy-800 shadow-[0_0_10px_rgba(6,182,212,0.3)]" />
             <div>
               <p className="text-sm font-bold text-white leading-none mb-1">シロクマ先生 (Sensei)</p>
-              <p className="text-[10px] text-slate-400">低レイヤ・数理アルゴリズム専門家</p>
+              <p className="text-[10px] text-slate-600">低レイヤ・数理アルゴリズム専門家</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <img src="/images/characters/penguin_student.jpg" alt="ペンギン生徒" className="w-10 h-10 rounded-full border-2 border-slate-500 object-cover bg-navy-800 shadow" />
             <div>
               <p className="text-sm font-bold text-white leading-none mb-1">ペンギン生徒 (Student)</p>
-              <p className="text-[10px] text-slate-400">手動評価に苦しむ若手エンジニア</p>
+              <p className="text-[10px] text-slate-600">手動評価に苦しむ若手エンジニア</p>
             </div>
           </div>
         </div>
