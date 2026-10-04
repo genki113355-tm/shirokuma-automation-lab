@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { ArcticBackground } from './components/ArcticBackground';
 import { LabProvider } from './contexts/LabContext';
 
 // Code Splitting: 遅延読み込みで初期バンドルサイズを削減
@@ -29,9 +30,10 @@ function App() {
   return (
     <LabProvider>
       <Router basename={basename}>
-        <div className="flex h-screen overflow-hidden bg-navy-900 text-slate-100 font-sans">
+        <div className="flex h-screen overflow-hidden bg-[#f8fafc] text-slate-800 font-sans relative">
+          <ArcticBackground />
           <Sidebar isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />
-          <div className="flex-1 flex flex-col h-screen overflow-hidden relative min-w-0">
+          <div className="flex-1 flex flex-col h-screen overflow-hidden relative min-w-0 z-10">
             {/* subtle background glow */}
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/20 blur-[120px] pointer-events-none"></div>
             

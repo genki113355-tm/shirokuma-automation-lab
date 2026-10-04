@@ -8,9 +8,9 @@ export default {
     extend: {
       colors: {
         navy: {
-          900: '#050a11', // Main background
-          800: '#090d16', // Sidebar / Component background
-          700: '#0f1626', // Card backgrounds
+          900: '#f8fafc', // Main background (Arctic White)
+          800: '#ffffff', // Sidebar / Header (Pure White)
+          700: '#f0f9ff', // Card backgrounds (Ice Blue)
         },
         cyan: {
           400: '#22d3ee',
