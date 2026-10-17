@@ -6,24 +6,24 @@ export default function TopPage() {
     <div className="p-4 md:p-8 lg:p-12 max-w-[1600px] mx-auto space-y-12 md:space-y-20 pb-32">
       
       {/* Hero Section */}
-      <div className="flex flex-col justify-center bg-gradient-to-br from-cyan-900/40 to-navy-800/80 p-5 sm:p-8 md:p-10 lg:p-16 rounded-2xl md:rounded-3xl border border-cyan-500/20 shadow-2xl gap-8 md:gap-12 relative overflow-hidden">
+      <div className="flex flex-col justify-center bg-gradient-to-br from-sky-100/90 via-cyan-50/70 to-white p-5 sm:p-8 md:p-10 lg:p-16 rounded-2xl md:rounded-3xl border border-sky-200/80 shadow-xl gap-8 md:gap-12 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-cyan-500/10 blur-[80px] md:blur-[100px] rounded-full pointer-events-none"></div>
         
         {/* 左：タイトルとストーリー */}
         <div className="w-full max-w-5xl space-y-6 md:space-y-8 relative z-10">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-cyan-400 text-xs md:text-sm font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)] max-w-full">
-              <Rocket size={16} className="shrink-0" />
+            <div className="inline-flex items-center gap-2 bg-cyan-100 border border-cyan-300 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-cyan-900 text-xs md:text-sm font-bold shadow-sm max-w-full">
+              <Rocket size={16} className="shrink-0 text-cyan-700" />
               <span className="truncate">C++開発者のための実務効率化・自動化ガイド</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[4.5rem] font-black text-white leading-[1.2] md:leading-[1.1] tracking-tighter drop-shadow-2xl">
-              <span className="block text-cyan-400 text-base sm:text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-4 tracking-widest font-bold">シロクマC++開発自動化ラボ</span>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[4.2rem] font-black text-slate-900 leading-[1.2] md:leading-[1.1] tracking-tight">
+              <span className="block text-cyan-700 text-base sm:text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-4 tracking-widest font-bold">シロクマC++開発自動化ラボ</span>
               C++開発の泥臭い作業、全部「全自動化」しませんか？
             </h1>
           </div>
 
-          <h2 className="text-base sm:text-xl md:text-2xl font-bold text-slate-800 tracking-tight pb-4 sm:pb-6 border-b border-white/10 leading-relaxed">
-            Python, Docker, CI/CDを活用して、<span className="text-yellow-400">現場のC++開発をモダンにアップデート。</span>
+          <h2 className="text-base sm:text-xl md:text-2xl font-bold text-slate-800 tracking-tight pb-4 sm:pb-6 border-b border-slate-200/80 leading-relaxed">
+            Python, Docker, CI/CDを活用して、<span className="text-cyan-900 bg-cyan-100/70 px-1.5 py-0.5 rounded border border-cyan-200 font-bold">現場のC++開発をモダンにアップデート。</span>
           </h2>
 
           <p className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-4xl">
@@ -35,7 +35,7 @@ export default function TopPage() {
 
         {/* 右：ターミナル風のMISSION */}
         <div className="w-full max-w-5xl relative z-10 flex flex-col gap-6">
-          <div className="bg-white/95 border border-sky-200 border border-sky-200/80 p-5 rounded-2xl shadow-xl relative backdrop-blur-sm">
+          <div className="bg-white/95 border border-sky-200/80 p-5 rounded-2xl shadow-md relative backdrop-blur-sm">
             <div className="absolute -top-3 left-6 bg-amber-500 text-slate-950 text-[11px] font-black px-3 py-0.5 rounded-sm shadow-sm tracking-widest">MISSION</div>
             <p className="text-sm sm:text-base text-slate-900 font-bold mb-2">Q. このプロジェクトのテストを毎回「手動」で実行するのをやめたい。</p>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -44,30 +44,30 @@ export default function TopPage() {
           </div>
 
           {/* ターミナルモックアップ */}
-          <div className="w-full rounded-xl bg-[#0d1117] border border-slate-300/50 shadow-2xl overflow-hidden font-mono text-xs sm:text-sm">
-            <div className="flex items-center px-4 py-2 bg-[#161b22] border-b border-slate-300/50 gap-2">
+          <div className="w-full rounded-xl bg-[#0d1117] border border-slate-700 shadow-2xl overflow-hidden font-mono text-xs sm:text-sm">
+            <div className="flex items-center px-4 py-2 bg-[#161b22] border-b border-slate-700 gap-2">
               <div className="w-3 h-3 rounded-full bg-rose-500"></div>
               <div className="w-3 h-3 rounded-full bg-amber-500"></div>
               <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-              <span className="ml-2 text-slate-600 font-bold text-[10px]">CI/CD Pipeline Execution</span>
+              <span className="ml-2 text-slate-300 font-bold text-[10px]">CI/CD Pipeline Execution</span>
             </div>
-            <div className="p-4 space-y-2 text-slate-700">
+            <div className="p-4 space-y-2 text-slate-100">
               <div className="flex gap-2">
                 <span className="text-emerald-400">➜</span>
-                <span className="text-cyan-400">~/project</span>
-                <span>git push origin main</span>
+                <span className="text-cyan-300">~/project</span>
+                <span className="text-white">git push origin main</span>
               </div>
-              <div className="text-slate-500">Enumerating objects: 5, done.</div>
-              <div className="text-slate-500">Writing objects: 100% (3/3), 312 bytes, done.</div>
-              <div className="text-blue-400 animate-pulse mt-2">● Triggering GitHub Actions Workflow...</div>
+              <div className="text-slate-400">Enumerating objects: 5, done.</div>
+              <div className="text-slate-400">Writing objects: 100% (3/3), 312 bytes, done.</div>
+              <div className="text-sky-400 animate-pulse mt-2 font-semibold">● Triggering GitHub Actions Workflow...</div>
               
-              <div className="pt-2 border-l-2 border-slate-300 pl-3 ml-1 space-y-1">
-                <div className="flex items-center gap-2 text-slate-700"><CheckCircle2 size={14} className="text-emerald-500" /> [BUILD] Compiling with CMake (Docker)</div>
-                <div className="flex items-center gap-2 text-slate-700"><CheckCircle2 size={14} className="text-emerald-500" /> [TEST] 23 tests passed successfully</div>
-                <div className="flex items-center gap-2 text-slate-700"><CheckCircle2 size={14} className="text-emerald-500" /> [ASAN] No memory errors detected</div>
+              <div className="pt-2 border-l-2 border-slate-700 pl-3 ml-1 space-y-1">
+                <div className="flex items-center gap-2 text-slate-200"><CheckCircle2 size={14} className="text-emerald-400" /> [BUILD] Compiling with CMake (Docker)</div>
+                <div className="flex items-center gap-2 text-slate-200"><CheckCircle2 size={14} className="text-emerald-400" /> [TEST] 23 tests passed successfully</div>
+                <div className="flex items-center gap-2 text-slate-200"><CheckCircle2 size={14} className="text-emerald-400" /> [ASAN] No memory errors detected</div>
               </div>
               
-              <div className="text-emerald-400 font-bold mt-2 pt-2 border-t border-sky-200">✓ All checks have passed. Ready for deployment.</div>
+              <div className="text-emerald-400 font-bold mt-2 pt-2 border-t border-slate-800">✓ All checks have passed. Ready for deployment.</div>
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@ export default function TopPage() {
       {/* What we automate Section */}
       <div className="space-y-6 sm:space-y-10 relative z-10">
         <div className="text-center space-y-3 sm:space-y-4">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">このサイトで実現できる「自動化」</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight">このサイトで実現できる「自動化」</h2>
           <p className="text-slate-600 text-sm sm:text-base md:text-lg">C++の面倒な作業を、様々なツールを組み合わせて効率化します。</p>
         </div>
 
@@ -120,13 +120,13 @@ export default function TopPage() {
         </div>
 
         {/* 付録・逆引き実践リファレンス バナー */}
-        <div className="mt-8 bg-gradient-to-r from-navy-800 to-cyan-950/40 border border-cyan-500/30 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="mt-8 bg-gradient-to-r from-sky-50 via-cyan-50 to-white border border-sky-300 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md">
           <div className="space-y-2 text-center md:text-left">
-            <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs px-2.5 py-0.5 rounded-full font-bold">
+            <span className="bg-cyan-100 text-cyan-900 border border-cyan-300 text-xs px-2.5 py-0.5 rounded-full font-bold">
               📚 開発者向け逆引き実践ガイド
             </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
-              <BookOpen className="text-cyan-400" size={24} />
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center justify-center md:justify-start gap-2">
+              <BookOpen className="text-cyan-600" size={24} />
               【付録】GoogleTest 逆引き実践リファレンス
             </h3>
             <p className="text-slate-700 text-sm max-w-2xl leading-relaxed">
@@ -135,30 +135,30 @@ export default function TopPage() {
           </div>
           <Link
             to="/appendix/googletest"
-            className="shrink-0 bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-cyan-500/25 transition-all flex items-center justify-center gap-2 text-sm sm:text-base group"
+            className="shrink-0 bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-6 py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm sm:text-base group"
           >
             リファレンスを読む ➔
           </Link>
         </div>
 
         <div className="flex justify-center mt-12 sm:mt-16 pb-8">
-          <Link to="/chapter/1" className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-navy-900 font-black px-10 sm:px-14 py-5 sm:py-6 rounded-2xl text-lg sm:text-xl transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(6,182,212,0.5)] w-full sm:w-auto">
+          <Link to="/chapter/1" className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-black px-10 sm:px-14 py-5 sm:py-6 rounded-2xl text-lg sm:text-xl transition-all hover:-translate-y-1 shadow-lg shadow-cyan-600/25 w-full sm:w-auto">
             自動化チュートリアルを始める <ArrowRight size={24} />
           </Link>
         </div>
       </div>
 
       {/* Sister Sites Navigation */}
-      <div className="bg-navy-800/50 rounded-2xl p-5 sm:p-8 md:p-12 border border-slate-300/50 relative overflow-hidden">
+      <div className="bg-white/95 rounded-2xl p-5 sm:p-8 md:p-12 border border-sky-200/80 shadow-md relative overflow-hidden">
         <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-          <BookOpen size={200} />
+          <BookOpen size={200} className="text-slate-900" />
         </div>
         <div className="relative z-10 space-y-6 sm:space-y-8">
           <div className="space-y-3">
-            <span className="inline-block bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs px-3 py-1 rounded-full font-bold">
+            <span className="inline-block bg-cyan-100 border border-cyan-300 text-cyan-900 text-xs px-3 py-1 rounded-full font-bold">
               姉妹サイト（シロクマ技術学習エコシステム）
             </span>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">目的に合わせた外部学習ルート</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900">目的に合わせた外部学習ルート</h2>
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
               当サイト（自動化ラボ）は、全4サイトからなるエコシステムの「STEP 2」にあたります。<br className="hidden sm:block"/>
               C++の設計基礎、GUI開発、ドメイン応用などを学びたい場合は、以下の姉妹サイト（別サイト）をご活用ください。
@@ -167,59 +167,59 @@ export default function TopPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <a href="https://www.shirokuma-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
-              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-300 transition-all group-hover:border-cyan-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+              <div className="bg-slate-50 hover:bg-white p-5 sm:p-6 rounded-xl border border-slate-200 transition-all group-hover:border-cyan-300 group-hover:shadow-md h-full flex flex-col justify-between">
                 <div>
-                  <div className="text-cyan-400 text-xs sm:text-sm font-bold mb-2">STEP 1: 設計のコア技術を学ぶ</div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">シロクマC++ラボ</h3>
+                  <div className="text-cyan-800 text-xs sm:text-sm font-bold mb-2">STEP 1: 設計のコア技術を学ぶ</div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 group-hover:text-cyan-700 transition-colors">シロクマC++ラボ</h3>
                   <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     インベーダーゲーム開発を通じて、オブジェクト指向やモダンC++の設計力とアルゴリズム実装基盤を体系的に習得。
                   </p>
                 </div>
-                <div className="mt-4 text-xs font-mono text-cyan-400 font-bold flex items-center gap-1">
+                <div className="mt-4 text-xs font-mono text-cyan-700 font-bold flex items-center gap-1">
                   <span>サイトを見る</span> <span>➔</span>
                 </div>
               </div>
             </a>
 
-            <div className="bg-cyan-900/30 p-5 sm:p-6 rounded-xl border border-cyan-500/50 relative h-full flex flex-col justify-between">
-              <div className="absolute -top-3 -right-2 sm:-right-3 bg-cyan-500 text-navy-900 text-[10px] sm:text-xs font-black px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">現在地</div>
+            <div className="bg-cyan-50/80 p-5 sm:p-6 rounded-xl border-2 border-cyan-400 relative h-full flex flex-col justify-between shadow-md">
+              <div className="absolute -top-3 -right-2 sm:-right-3 bg-cyan-600 text-white text-[10px] sm:text-xs font-black px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-md">現在地</div>
               <div>
-                <div className="text-cyan-400 text-xs sm:text-sm font-bold mb-2">STEP 2: 実務・自動化で使いこなす</div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">シロクマC++開発自動化ラボ</h3>
-                <p className="text-cyan-100/70 text-xs sm:text-sm leading-relaxed">
+                <div className="text-cyan-900 text-xs sm:text-sm font-bold mb-2">STEP 2: 実務・自動化で使いこなす</div>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">シロクマC++開発自動化ラボ</h3>
+                <p className="text-slate-700 text-xs sm:text-sm leading-relaxed">
                   Python/Docker/CMake/CIを活用し、泥臭い手動ビルドやテストを完全自動化。開発者のための効率化エコシステムを構築します。
                 </p>
               </div>
-              <div className="mt-4 text-xs font-mono text-cyan-300/60 font-bold">
+              <div className="mt-4 text-xs font-mono text-cyan-800 font-bold">
                 <span>当メディアで学習中</span>
               </div>
             </div>
 
             <a href="https://shirokuma-qt-cpp.jp" target="_blank" rel="noopener noreferrer" className="block group">
-              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-300 transition-all group-hover:border-emerald-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+              <div className="bg-slate-50 hover:bg-white p-5 sm:p-6 rounded-xl border border-slate-200 transition-all group-hover:border-emerald-300 group-hover:shadow-md h-full flex flex-col justify-between">
                 <div>
-                  <div className="text-emerald-400 text-xs sm:text-sm font-bold mb-2">STEP 3: Linux GUI・リアルタイム計器</div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">シロクマQt×C++ラボ</h3>
+                  <div className="text-emerald-800 text-xs sm:text-sm font-bold mb-2">STEP 3: Linux GUI・リアルタイム計器</div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 group-hover:text-emerald-700 transition-colors">シロクマQt×C++ラボ</h3>
                   <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     Qtフレームワークを活用し、Linux環境で動くプロ仕様のHMIやリアルタイム計器GUIダッシュボードを創り出します。
                   </p>
                 </div>
-                <div className="mt-4 text-xs font-mono text-emerald-400 font-bold flex items-center gap-1">
+                <div className="mt-4 text-xs font-mono text-emerald-700 font-bold flex items-center gap-1">
                   <span>サイトを見る</span> <span>➔</span>
                 </div>
               </div>
             </a>
 
             <a href="https://sonar-guide.jp" target="_blank" rel="noopener noreferrer" className="block group">
-              <div className="bg-slate-800/80 p-5 sm:p-6 rounded-xl border border-slate-300 transition-all group-hover:border-blue-500/50 group-hover:bg-slate-800 h-full flex flex-col justify-between">
+              <div className="bg-slate-50 hover:bg-white p-5 sm:p-6 rounded-xl border border-slate-200 transition-all group-hover:border-blue-300 group-hover:shadow-md h-full flex flex-col justify-between">
                 <div>
-                  <div className="text-blue-400 text-xs sm:text-sm font-bold mb-2">STEP 4: ドメイン応用・音響信号処理</div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">水中音響・ソナー技術入門</h3>
+                  <div className="text-blue-800 text-xs sm:text-sm font-bold mb-2">STEP 4: ドメイン応用・音響信号処理</div>
+                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-700 transition-colors">水中音響・ソナー技術入門</h3>
                   <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                     波の物理、FFT、LOFAR・DEMON信号処理など、C++の高速計算力を活かす水中音響工学の世界を探求。
                   </p>
                 </div>
-                <div className="mt-4 text-xs font-mono text-blue-400 font-bold flex items-center gap-1">
+                <div className="mt-4 text-xs font-mono text-blue-700 font-bold flex items-center gap-1">
                   <span>サイトを見る</span> <span>➔</span>
                 </div>
               </div>
@@ -234,14 +234,14 @@ export default function TopPage() {
 
 function AutomationCard({ icon, title, tech, description }: { icon: React.ReactNode, title: string, tech: string, description: string }) {
   return (
-    <div className="bg-navy-800/40 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all hover:bg-navy-800/60 group">
+    <div className="bg-white/95 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-sky-200/80 hover:border-cyan-400 hover:shadow-lg transition-all group shadow-sm">
       <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-        <div className="p-2.5 sm:p-3 bg-slate-800 rounded-lg text-cyan-400 group-hover:text-white group-hover:bg-cyan-500 transition-colors shrink-0">
+        <div className="p-2.5 sm:p-3 bg-cyan-50 border border-cyan-200 rounded-lg text-cyan-700 group-hover:text-white group-hover:bg-cyan-600 transition-colors shrink-0">
           {icon}
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="text-base sm:text-xl font-bold text-white truncate">{title}</h3>
-          <span className="text-[10px] sm:text-xs font-bold text-cyan-500/80 bg-cyan-500/10 px-2 py-0.5 sm:py-1 rounded inline-block mt-0.5">{tech}</span>
+          <h3 className="text-base sm:text-xl font-bold text-slate-900 truncate">{title}</h3>
+          <span className="text-[10px] sm:text-xs font-bold text-cyan-900 bg-cyan-100 border border-cyan-200 px-2 py-0.5 sm:py-1 rounded inline-block mt-0.5">{tech}</span>
         </div>
       </div>
       <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">

@@ -295,11 +295,11 @@ export default function CodeLab() {
               content: (
                 <div>
                   {stepIndex === 0 && (
-                    <div className="text-slate-700 mt-3 p-3.5 bg-sky-50/90 border border-sky-200 border border-cyan-500/30 rounded-xl mb-3 shadow-lg animate-fade-in">
-                      <div className="font-bold text-sm text-cyan-400 flex items-center gap-2 mb-2">
-                        <BookOpen size={16} /> 【{activeScenario.chapterRef}ミッションの全体像と前提知識】
+                    <div className="text-slate-800 mt-3 p-3.5 bg-sky-50/95 border border-sky-200 rounded-xl mb-3 shadow-sm animate-fade-in">
+                      <div className="font-bold text-sm text-cyan-950 flex items-center gap-2 mb-2">
+                        <BookOpen size={16} className="text-cyan-700" /> 【{activeScenario.chapterRef}ミッションの全体像と前提知識】
                       </div>
-                      <div className="text-xs bg-navy-950/80 p-2 rounded border border-slate-300 font-mono text-cyan-200 mb-2">
+                      <div className="text-xs bg-white p-2 rounded border border-sky-200 font-mono text-cyan-950 mb-2">
                         {activeScenario.mentalModel}
                       </div>
                       <ul className="text-xs text-slate-700 space-y-1 list-disc list-inside leading-relaxed">
@@ -309,11 +309,11 @@ export default function CodeLab() {
                       </ul>
                     </div>
                   )}
-                  <div className="text-cyan-400 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
-                    <div className="font-bold text-lg mb-1 flex items-center gap-2">
-                      <Map size={18} /> 【{activeScenario.chapterRef} STEP {stepIndex + 1}/{activeScenario.steps.length}】
+                  <div className="text-cyan-300 p-3 bg-cyan-950/40 border-l-4 border-cyan-400 mb-2 rounded-r-lg shadow-sm animate-fade-in">
+                    <div className="font-bold text-base mb-1 flex items-center gap-2 text-cyan-200">
+                      <Map size={18} className="text-cyan-400" /> 【{activeScenario.chapterRef} STEP {stepIndex + 1}/{activeScenario.steps.length}】
                     </div>
-                    <div className="text-slate-800 whitespace-pre-wrap">{step.instruction}</div>
+                    <div className="text-slate-100 whitespace-pre-wrap">{step.instruction}</div>
                   </div>
                 </div>
               )
@@ -332,7 +332,7 @@ export default function CodeLab() {
                   <div className="font-bold text-lg mb-1 flex items-center gap-2">
                     <CheckCircle2 size={18} /> このシナリオはコンプリート済みです
                   </div>
-                  <div className="text-slate-800">ターミナルを自由に操作できます。最初からやり直す場合はリロードしてください。</div>
+                  <div className="text-slate-200">ターミナルを自由に操作できます。最初からやり直す場合はリロードしてください。</div>
                 </div>
               )
             }
@@ -376,7 +376,7 @@ export default function CodeLab() {
       case 'help':
         isStandardCommand = true;
         addLog('output', (
-          <div className="text-slate-700">
+          <div className="text-slate-200">
             Available commands:<br/>
             <span className="text-cyan-400">ls</span> - List files in current directory<br/>
             <span className="text-cyan-400">cat &lt;file&gt;</span> - View file contents<br/>
@@ -412,7 +412,7 @@ export default function CodeLab() {
         const file = args[1];
         if (file.includes('test_processor.py')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">import</span> pytest<br/>
               <span className="text-purple-400">from</span> shirokuma_cpp <span className="text-purple-400">import</span> DataProcessor<br/>
               <br/>
@@ -430,7 +430,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('data_processor.cpp')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">#include</span> <span className="text-green-300">"data_processor.h"</span><br/>
               <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;numeric&gt;</span><br/>
               <br/>
@@ -442,7 +442,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('data_processor.h')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">#ifndef</span> DATA_PROCESSOR_H<br/>
               <span className="text-purple-400">#define</span> DATA_PROCESSOR_H<br/>
               <br/>
@@ -459,7 +459,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('test_sonar_filter.cpp')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;gtest/gtest.h&gt;</span><br/>
               <span className="text-purple-400">#include</span> <span className="text-green-300">"sonar_filter.h"</span><br/>
               <br/>
@@ -483,7 +483,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('sonar_filter.h')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">#ifndef</span> SONAR_FILTER_H<br/>
               <span className="text-purple-400">#define</span> SONAR_FILTER_H<br/>
               <br/>
@@ -501,7 +501,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('sonar_filter.cpp')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">#include</span> <span className="text-green-300">"sonar_filter.h"</span><br/>
               <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;cmath&gt;</span><br/>
               <br/>
@@ -513,7 +513,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('bindings.cpp')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;pybind11/pybind11.h&gt;</span><br/>
               <span className="text-purple-400">#include</span> <span className="text-green-300">"sonar_filter.h"</span><br/>
               <br/>
@@ -532,7 +532,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('test_bindings.py')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-purple-400">import</span> pytest<br/>
               <span className="text-purple-400">import</span> sonar_dsp<br/>
               <br/>
@@ -549,7 +549,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('CMakeLists.txt')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-blue-400">cmake_minimum_required</span>(<span className="text-green-300">VERSION 3.14</span>)<br/>
               <span className="text-blue-400">project</span>(SonarAutomationLab CXX)<br/>
               <span className="text-blue-400">set</span>(CMAKE_CXX_STANDARD <span className="text-green-300">17</span>)<br/>
@@ -567,7 +567,7 @@ export default function CodeLab() {
           ));
         } else if (file.includes('build.sh')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
               <span className="text-slate-500">#!/bin/bash</span><br/>
               <span className="text-blue-400">echo</span> <span className="text-green-300">"Building C++ extensions..."</span><br/>
               mkdir -p build && <span className="text-blue-400">cd</span> build<br/>
@@ -579,12 +579,12 @@ export default function CodeLab() {
           ));
         } else if (file.includes('main.cpp')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm">
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm">
               <span className="text-purple-400">#include</span> <span className="text-green-300">&lt;iostream&gt;</span><br/>
               <br/>
               <span className="text-blue-400">int</span> <span className="text-yellow-200">main</span>() {'{'}<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;std::cout &lt;&lt; <span className="text-green-300">"Shirokuma Auto C++ Lab"</span> &lt;&lt; std::endl;<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500">// メモリリークを引き起こすバグの例</span><br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-400">// メモリリークを引き起こすバグの例</span><br/>
               &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-400">int</span>* data = <span className="text-purple-400">new</span> <span className="text-blue-400">int</span>[<span className="text-green-300">100</span>];<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-purple-400">return</span> <span className="text-green-300">0</span>;<br/>
               {'}'}
@@ -592,23 +592,23 @@ export default function CodeLab() {
           ));
         } else if (file.includes('Dockerfile')) {
           addLog('output', (
-            <div className="text-slate-700 whitespace-pre-wrap font-mono text-sm leading-relaxed">
-              <span className="text-slate-500"># 1. まっさらなUbuntu 22.04 LTSをベースOSとして指定</span><br/>
+            <div className="text-slate-200 whitespace-pre-wrap font-mono text-sm leading-relaxed">
+              <span className="text-slate-400"># 1. まっさらなUbuntu 22.04 LTSをベースOSとして指定</span><br/>
               <span className="text-purple-400">FROM</span> ubuntu:22.04<br/>
               <br/>
-              <span className="text-slate-500"># 2. C++コンパイラ(g++)、ビルドツール(cmake)、Python環境を一括インストール</span><br/>
+              <span className="text-slate-400"># 2. C++コンパイラ(g++)、ビルドツール(cmake)、Python環境を一括インストール</span><br/>
               <span className="text-purple-400">RUN</span> apt-get update &amp;&amp; apt-get install -y g++ cmake python3 python3-pip<br/>
               <br/>
-              <span className="text-slate-500"># 3. テスト自動化フレームワーク(pytest)をインストール</span><br/>
+              <span className="text-slate-400"># 3. テスト自動化フレームワーク(pytest)をインストール</span><br/>
               <span className="text-purple-400">RUN</span> pip3 install pytest<br/>
               <br/>
-              <span className="text-slate-500"># 4. 手元のC++ソースやテストコード一式をコンテナ内の /app へ転送</span><br/>
+              <span className="text-slate-400"># 4. 手元のC++ソースやテストコード一式をコンテナ内の /app へ転送</span><br/>
               <span className="text-purple-400">COPY</span> . /app<br/>
               <br/>
-              <span className="text-slate-500"># 5. コンテナ内のカレント作業ディレクトリを /app に移動</span><br/>
+              <span className="text-slate-400"># 5. コンテナ内のカレント作業ディレクトリを /app に移動</span><br/>
               <span className="text-purple-400">WORKDIR</span> /app<br/>
               <br/>
-              <span className="text-slate-500"># 6. コンテナ起動時に自動で実行するデフォルト命令（ビルド＆テスト実行）</span><br/>
+              <span className="text-slate-400"># 6. コンテナ起動時に自動で実行するデフォルト命令（ビルド＆テスト実行）</span><br/>
               <span className="text-purple-400">CMD</span> ["./build.sh"]
             </div>
           ));
@@ -622,7 +622,7 @@ export default function CodeLab() {
         addLog('system', 'Building C++ extensions for Python...');
         await new Promise(resolve => setTimeout(resolve, 800));
         addLog('output', (
-          <div className="text-slate-600 font-mono text-xs">
+          <div className="text-slate-200 font-mono text-xs">
             Scanning dependencies of target shirokuma_cpp<br/>
             [ 50%] Building CXX object CMakeFiles/shirokuma_cpp.dir/src/data_processor.cpp.o<br/>
             [100%] Linking CXX shared module shirokuma_cpp.so<br/>
@@ -638,10 +638,10 @@ export default function CodeLab() {
           addLog('system', 'Executing Python script with C++ pybind11 module (sonar_dsp.so)...');
           await new Promise(resolve => setTimeout(resolve, 400));
           addLog('output', (
-            <div className="text-slate-800 font-mono text-xs">
-              <span className="text-slate-600">[pybind11] Loaded C++ dynamic extension: sonar_dsp.cpython-310-x86_64-linux-gnu.so</span><br/>
+            <div className="text-slate-200 font-mono text-xs">
+              <span className="text-slate-300">[pybind11] Loaded C++ dynamic extension: sonar_dsp.cpython-310-x86_64-linux-gnu.so</span><br/>
               <span className="text-green-400 font-bold text-sm">Output: 45.23</span><br/>
-              <span className="text-slate-500 italic mt-1">✓ C++ SonarFilter::Process(100.0) executed via Python bridge in 0.002s</span>
+              <span className="text-slate-300 italic mt-1">✓ C++ SonarFilter::Process(100.0) executed via Python bridge in 0.002s</span>
             </div>
           ));
         } else {
@@ -686,7 +686,7 @@ export default function CodeLab() {
         addLog('system', '==12345== Memcheck, a memory error detector');
         await new Promise(resolve => setTimeout(resolve, 600));
         addLog('output', (
-          <div className="text-slate-700">
+          <div className="text-slate-200">
             ==12345== HEAP SUMMARY:<br/>
             ==12345==     in use at exit: 400 bytes in 1 blocks<br/>
             ==12345==   total heap usage: 45 allocs, 44 frees, 8,192 bytes allocated<br/>
@@ -726,16 +726,16 @@ export default function CodeLab() {
           addLog('system', 'Starting isolated container from image app:latest...');
           await new Promise(resolve => setTimeout(resolve, 400));
           addLog('output', (
-            <div className="font-mono text-xs text-slate-700 space-y-1.5">
+            <div className="font-mono text-xs text-slate-200 space-y-1.5">
               <div className="text-cyan-400 font-bold">[Container: /app] Executing CMD ["./build.sh"]...</div>
-              <div className="text-slate-600">
+              <div className="text-slate-300">
                 Scanning dependencies of target shirokuma_cpp<br/>
                 [100%] Built target shirokuma_cpp (pybind11 module)
               </div>
-              <div className="text-slate-600">========================= test session starts ==========================</div>
+              <div className="text-slate-300">========================= test session starts ==========================</div>
               <div>tests/test_processor.py <span className="text-green-400">.... [100%]</span></div>
               <div className="text-green-400 font-bold">========================== 4 passed in 0.16s ===========================</div>
-              <div className="text-slate-500 italic mt-1">✓ Isolated container run completed with exit code 0. Auto-removed (--rm).</div>
+              <div className="text-slate-400 italic mt-1">✓ Isolated container run completed with exit code 0. Auto-removed (--rm).</div>
             </div>
           ));
         } else {
@@ -749,7 +749,7 @@ export default function CodeLab() {
           addLog('system', '-- The CXX compiler identification is GNU 11.4.0');
           await new Promise(resolve => setTimeout(resolve, 400));
           addLog('output', (
-            <div className="text-slate-700 font-mono text-xs">
+            <div className="text-slate-200 font-mono text-xs">
               -- Detecting CXX compiler ABI info - done<br/>
               -- Check for working CXX compiler: /usr/bin/g++ - skipped<br/>
               -- Detecting CXX compile features - done<br/>
@@ -762,7 +762,7 @@ export default function CodeLab() {
           addLog('system', 'Executing build target in build/ ...');
           await new Promise(resolve => setTimeout(resolve, 600));
           addLog('output', (
-            <div className="text-slate-700 font-mono text-xs">
+            <div className="text-slate-200 font-mono text-xs">
               [ 25%] Building CXX object CMakeFiles/sonar_core.dir/src/sonar_filter.cpp.o<br/>
               [ 50%] Building CXX object CMakeFiles/sonar_core.dir/src/math_utils.cpp.o<br/>
               [ 75%] Linking CXX static library libsonar_core.a<br/>
@@ -782,7 +782,7 @@ export default function CodeLab() {
         addLog('system', 'Test project /app/build');
         await new Promise(resolve => setTimeout(resolve, 500));
         addLog('output', (
-          <div className="text-slate-800 font-mono text-xs">
+          <div className="text-slate-200 font-mono text-xs">
             &nbsp;&nbsp;&nbsp;&nbsp;Start 1: SonarFilterTest.SignalAttenuation<br/>
             1/2 Test #1: SonarFilterTest.SignalAttenuation .... <span className="text-green-400 font-bold">Passed</span>&nbsp;&nbsp;&nbsp;&nbsp;0.02 sec<br/>
             &nbsp;&nbsp;&nbsp;&nbsp;Start 2: MathUtilsTest.VectorSum<br/>
@@ -800,8 +800,8 @@ export default function CodeLab() {
         addLog('system', 'Running GoogleTest binary: ./build/tests/sonar_test ...');
         await new Promise(resolve => setTimeout(resolve, 500));
         addLog('output', (
-          <div className="text-slate-800 font-mono text-xs leading-relaxed">
-            <span className="text-slate-600">Running main() from gmock_main.cc</span><br/>
+          <div className="text-slate-200 font-mono text-xs leading-relaxed">
+            <span className="text-slate-400">Running main() from gmock_main.cc</span><br/>
             <span className="text-cyan-400 font-bold">[==========]</span> Running 2 tests from 1 test suite.<br/>
             <span className="text-cyan-400 font-bold">[----------]</span> Global test environment set-up.<br/>
             <span className="text-cyan-400 font-bold">[----------]</span> 2 tests from SonarFilterTest<br/>
@@ -827,11 +827,11 @@ export default function CodeLab() {
     if (isMatch) {
       setTimeout(() => {
         addLog('system', (
-          <div className="mt-4 p-4 bg-sky-50/90 border border-sky-200 border border-slate-300 rounded-2xl rounded-tl-none relative shadow-xl ml-4 animate-fade-in">
+          <div className="mt-4 p-4 bg-sky-50/95 border-2 border-sky-300 rounded-2xl rounded-tl-none relative shadow-md ml-4 animate-fade-in">
             <div className="absolute -top-5 -left-5 text-4xl drop-shadow-md">
               🐻‍❄️
             </div>
-            <div className="font-bold text-cyan-300 mb-2">
+            <div className="font-bold text-cyan-950 mb-2">
               シロクマ先生の解説
             </div>
             <div className="text-slate-800 leading-relaxed text-sm">
@@ -856,11 +856,11 @@ export default function CodeLab() {
         const nextStep = activeScenario!.steps[nextStepIndex];
         setTimeout(() => {
           addLog('system', (
-            <div className="text-cyan-400 mt-6 p-3 bg-cyan-900/20 border-l-4 border-cyan-500 mb-2 rounded-r-lg shadow-lg animate-fade-in">
-              <div className="font-bold text-lg mb-1 flex items-center gap-2">
-                <Map size={18} /> 【{activeScenario!.chapterRef} STEP {nextStepIndex + 1}/{activeScenario!.steps.length}】
+            <div className="text-cyan-300 mt-6 p-3 bg-cyan-950/40 border-l-4 border-cyan-400 mb-2 rounded-r-lg shadow-sm animate-fade-in">
+              <div className="font-bold text-lg mb-1 flex items-center gap-2 text-cyan-200">
+                <Map size={18} className="text-cyan-400" /> 【{activeScenario!.chapterRef} STEP {nextStepIndex + 1}/{activeScenario!.steps.length}】
               </div>
-              <div className="text-slate-800 whitespace-pre-wrap">{nextStep.instruction}</div>
+              <div className="text-slate-100 whitespace-pre-wrap">{nextStep.instruction}</div>
             </div>
           ));
         }, 2000);
@@ -869,7 +869,7 @@ export default function CodeLab() {
       addLog('error', (
         <div className="text-yellow-400 mt-2">
           ⚠️ 現在のステップの目標と異なります。<br/>
-          <span className="text-yellow-200">指示: <code className="bg-navy-900 px-1 rounded">{currentStep.command}</code> と入力してトレースを進めてください。</span>
+          <span className="text-yellow-200">指示: <code className="bg-black/60 text-yellow-300 px-1.5 py-0.5 rounded border border-yellow-500/40">{currentStep.command}</code> と入力してトレースを進めてください。</span>
         </div>
       ));
     }
@@ -929,20 +929,20 @@ export default function CodeLab() {
   if (!isLabOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-navy-950/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-10">
-      <div className="w-full max-w-[1400px] h-full max-h-[900px] flex flex-col bg-navy-900 border border-cyan-500/30 rounded-2xl shadow-2xl relative overflow-hidden">
+    <div className="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 lg:p-10">
+      <div className="w-full max-w-[1400px] h-full max-h-[900px] flex flex-col bg-[#f8fafc] border border-sky-300 rounded-2xl shadow-2xl relative overflow-hidden">
         <button 
           onClick={closeLab} 
           aria-label="コード実行ラボを閉じる"
-          className="absolute top-4 right-4 z-50 text-slate-600 hover:text-white bg-navy-800 hover:bg-navy-700 p-2 rounded-full transition-colors flex items-center justify-center border border-slate-300/50 shadow-lg cursor-pointer"
+          className="absolute top-4 right-4 z-50 text-slate-500 hover:text-slate-900 bg-white hover:bg-slate-100 p-2 rounded-full transition-colors flex items-center justify-center border border-slate-200 shadow-md cursor-pointer"
         >
           <X size={20} />
         </button>
         <div className="p-4 lg:p-8 flex flex-col h-full min-h-0">
           <div className="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-black text-white flex items-center gap-3">
-                <TerminalIcon size={32} className="text-cyan-400" />
+              <h1 className="text-2xl md:text-3xl font-black text-slate-900 flex items-center gap-3">
+                <TerminalIcon size={32} className="text-cyan-600" />
                 コード実行ラボ
               </h1>
               <p className="text-slate-600 mt-1 text-xs md:text-sm">
@@ -954,7 +954,7 @@ export default function CodeLab() {
             <button
               onClick={() => setShowGlossary(true)}
               aria-label="前提知識・用語早わかり事典を開く"
-              className="flex items-center gap-2 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-[0_0_12px_rgba(6,182,212,0.15)] cursor-pointer"
+              className="flex items-center gap-2 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 border border-cyan-300 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer"
             >
               <BookOpen size={14} /> 💡 前提知識・用語早わかり事典
             </button>
@@ -966,9 +966,9 @@ export default function CodeLab() {
             <div className="hidden md:flex w-80 flex-col gap-4 overflow-hidden shrink-0">
               
               {/* Scenarios Panel */}
-              <div className="bg-navy-800/80 border border-slate-300 rounded-xl flex flex-col flex-1 shadow-xl overflow-hidden min-h-0">
-                <div className="bg-navy-900/80 p-3 border-b border-slate-300 text-xs font-bold text-cyan-400 tracking-wider flex items-center gap-2">
-                  <Map size={14} /> ハンズオン手順
+              <div className="bg-white border border-slate-200 rounded-xl flex flex-col flex-1 shadow-sm overflow-hidden min-h-0">
+                <div className="bg-slate-50 p-3 border-b border-slate-200 text-xs font-bold text-cyan-900 tracking-wider flex items-center gap-2">
+                  <Map size={14} className="text-cyan-600" /> ハンズオン手順
                 </div>
                 <div className="p-4 overflow-y-auto space-y-4">
                   {SCENARIOS.map(scenario => {
@@ -980,35 +980,35 @@ export default function CodeLab() {
                       <div 
                         key={scenario.id}
                         onClick={() => setActiveScenarioId(scenario.id)}
-                        className={`p-4 rounded-lg border cursor-pointer transition-colors ${isActive ? 'bg-cyan-900/30 border-cyan-500/50' : 'bg-navy-900/50 border-slate-300 hover:border-cyan-500/30'} ${isCompleted && !isActive ? 'opacity-70' : ''}`}
+                        className={`p-4 rounded-lg border cursor-pointer transition-colors ${isActive ? 'bg-cyan-50/80 border-2 border-cyan-400' : 'bg-slate-50/60 border-slate-200 hover:border-cyan-300 hover:bg-sky-50/40'} ${isCompleted && !isActive ? 'opacity-70' : ''}`}
                       >
                         <div className="flex items-start justify-between gap-2 mb-2">
                           <div className="space-y-1">
                             <span className={`inline-block text-[10px] font-bold px-1.5 py-0.5 rounded border ${
-                              isActive ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' : 'bg-slate-800 text-slate-600 border-slate-300'
+                              isActive ? 'bg-cyan-100 text-cyan-950 border-cyan-300' : 'bg-white text-slate-600 border-slate-200'
                             }`}>
                               {scenario.chapterRef}対応
                             </span>
-                            <div className={`text-sm font-bold leading-snug ${isActive ? 'text-cyan-400' : 'text-slate-700'}`}>
+                            <div className={`text-sm font-bold leading-snug ${isActive ? 'text-slate-900' : 'text-slate-700'}`}>
                               {scenario.title}
                             </div>
                           </div>
-                          {isCompleted && <CheckCircle2 size={16} className="text-emerald-400 shrink-0 mt-0.5" />}
+                          {isCompleted && <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />}
                         </div>
                         {isActive && (
                           <div className="mt-3 space-y-3">
                             <p className="text-xs text-slate-600 leading-relaxed">{scenario.description}</p>
                             
                             {/* 前提知識・仕組みブロック */}
-                            <div className="bg-navy-950/80 border border-cyan-500/20 rounded-lg p-2.5 space-y-2">
-                              <div className="flex items-center gap-1.5 text-[11px] font-bold text-cyan-300">
-                                <BookOpen size={13} /> 前提知識と仕組み
+                            <div className="bg-sky-50/80 border border-sky-200 rounded-lg p-2.5 space-y-2">
+                              <div className="flex items-center gap-1.5 text-[11px] font-bold text-cyan-950">
+                                <BookOpen size={13} className="text-cyan-700" /> 前提知識と仕組み
                               </div>
-                              <div className="text-[10px] text-slate-700 bg-navy-900/80 p-1.5 rounded border border-sky-200/80 font-mono">
-                                <span className="text-cyan-400 font-bold block mb-0.5">【全体フロー】</span>
+                              <div className="text-[10px] text-slate-800 bg-white p-1.5 rounded border border-sky-200 font-mono">
+                                <span className="text-cyan-800 font-bold block mb-0.5">【全体フロー】</span>
                                 {scenario.mentalModel}
                               </div>
-                              <ul className="text-[10px] text-slate-600 space-y-1 list-disc list-inside leading-snug">
+                              <ul className="text-[10px] text-slate-700 space-y-1 list-disc list-inside leading-snug">
                                 {scenario.prerequisites.map((p, pIdx) => (
                                   <li key={pIdx}>{p}</li>
                                 ))}
@@ -1023,8 +1023,8 @@ export default function CodeLab() {
                                 const isStepCompleted = idx < stepIdx;
                                 const isStepActive = idx === stepIdx;
                                 return (
-                                  <div key={idx} className={`flex items-start gap-2 text-xs ${isStepActive ? 'text-cyan-300 font-bold' : isStepCompleted ? 'text-slate-500' : 'text-slate-600'}`}>
-                                    <div className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${isStepActive ? 'bg-cyan-500 text-navy-900' : isStepCompleted ? 'bg-slate-700' : 'border border-slate-300'}`}>
+                                  <div key={idx} className={`flex items-start gap-2 text-xs ${isStepActive ? 'text-cyan-900 font-bold' : isStepCompleted ? 'text-slate-500' : 'text-slate-600'}`}>
+                                    <div className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${isStepActive ? 'bg-cyan-600 text-white font-bold' : isStepCompleted ? 'bg-slate-600 text-white' : 'border border-slate-300'}`}>
                                       {isStepCompleted ? <CheckCircle2 size={10} /> : idx + 1}
                                     </div>
                                     <code className="font-mono">{step.command}</code>
@@ -1041,13 +1041,13 @@ export default function CodeLab() {
               </div>
 
               {/* Explorer Sidebar */}
-              <div className="bg-navy-800/80 border border-slate-300 rounded-xl flex flex-col h-1/3 shadow-xl overflow-hidden shrink-0">
-                <div className="bg-navy-900/80 p-3 border-b border-slate-300 text-xs font-bold text-slate-600 tracking-wider">
+              <div className="bg-white border border-slate-200 rounded-xl flex flex-col h-1/3 shadow-sm overflow-hidden shrink-0">
+                <div className="bg-slate-50 p-3 border-b border-slate-200 text-xs font-bold text-slate-700 tracking-wider">
                   EXPLORER
                 </div>
                 <div className="p-4 overflow-y-auto font-mono text-xs select-none">
-                  <div className="text-white font-bold mb-2 flex items-center gap-2">
-                    <Folder size={14} className="text-cyan-400" />
+                  <div className="text-slate-900 font-bold mb-2 flex items-center gap-2">
+                    <Folder size={14} className="text-cyan-600" />
                     shirokuma-lab/
                   </div>
                   <div className="pl-4 space-y-0.5">
@@ -1055,20 +1055,20 @@ export default function CodeLab() {
                       <div key={idx}>
                         {item.type === 'folder' ? (
                           <div>
-                            <div className="flex items-center gap-2 text-slate-700 py-1">
-                              <Folder size={12} className="text-blue-400" /> {item.name}
+                            <div className="flex items-center gap-2 text-slate-800 py-1 font-semibold">
+                              <Folder size={12} className="text-blue-500" /> {item.name}
                             </div>
                             <div className="pl-4 space-y-0.5">
                               {item.children?.map((child, cIdx) => (
                                 <div 
                                   key={cIdx} 
                                   onDoubleClick={() => processCommand(`cat ${item.name}/${child.name}`)}
-                                  className="flex items-center gap-2 text-slate-600 hover:text-cyan-300 hover:bg-slate-700/50 cursor-pointer transition-colors px-2 py-1 -mx-2 rounded group"
+                                  className="flex items-center gap-2 text-slate-700 hover:text-cyan-800 hover:bg-cyan-50/60 cursor-pointer transition-colors px-2 py-1 -mx-2 rounded group"
                                   title="ダブルクリックで内容を表示"
                                 >
-                                  {child.type === 'cpp' && <FileCode size={12} className="text-indigo-400 group-hover:text-indigo-300" />}
-                                  {child.type === 'header' && <FileCode size={12} className="text-purple-400 group-hover:text-purple-300" />}
-                                  {child.type === 'python' && <FileCode size={12} className="text-yellow-400 group-hover:text-yellow-300" />}
+                                  {child.type === 'cpp' && <FileCode size={12} className="text-indigo-600 group-hover:text-indigo-800" />}
+                                  {child.type === 'header' && <FileCode size={12} className="text-purple-600 group-hover:text-purple-800" />}
+                                  {child.type === 'python' && <FileCode size={12} className="text-amber-600 group-hover:text-amber-800" />}
                                   {child.name}
                                 </div>
                               ))}
@@ -1077,12 +1077,12 @@ export default function CodeLab() {
                         ) : (
                           <div 
                             onDoubleClick={() => processCommand(`cat ${item.name}`)}
-                            className="flex items-center gap-2 text-slate-600 hover:text-cyan-300 hover:bg-slate-700/50 cursor-pointer transition-colors px-2 py-1 -mx-2 rounded group"
+                            className="flex items-center gap-2 text-slate-700 hover:text-cyan-800 hover:bg-cyan-50/60 cursor-pointer transition-colors px-2 py-1 -mx-2 rounded group"
                             title="ダブルクリックで内容を表示"
                           >
-                            {item.type === 'docker' && <HardDrive size={12} className="text-blue-500 group-hover:text-blue-400" />}
-                            {item.type === 'txt' && <FileText size={12} className="text-slate-700 group-hover:text-slate-800" />}
-                            {item.type === 'sh' && <TerminalIcon size={12} className="text-green-500 group-hover:text-green-400" />}
+                            {item.type === 'docker' && <HardDrive size={12} className="text-blue-600 group-hover:text-blue-800" />}
+                            {item.type === 'txt' && <FileText size={12} className="text-slate-600 group-hover:text-slate-800" />}
+                            {item.type === 'sh' && <TerminalIcon size={12} className="text-emerald-600 group-hover:text-emerald-800" />}
                             {item.name}
                           </div>
                         )}
@@ -1099,18 +1099,18 @@ export default function CodeLab() {
               onClick={focusInput}
             >
               {/* Terminal Header */}
-              <div className="bg-[#2d2d2d] border-b border-slate-300 p-3 flex flex-wrap items-center justify-between gap-2 select-none">
+              <div className="bg-[#2d2d2d] border-b border-slate-700 p-3 flex flex-wrap items-center justify-between gap-2 select-none">
                 <div className="flex items-center gap-3">
                   <div className="flex gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
                     <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                     <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
-                  <div className="text-xs text-slate-700 font-mono flex items-center gap-2">
-                    <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2.5 py-0.5 rounded text-[11px] font-bold">
+                  <div className="text-xs text-slate-200 font-mono flex items-center gap-2">
+                    <span className="bg-cyan-900/60 text-cyan-300 border border-cyan-500/60 px-2.5 py-0.5 rounded text-[11px] font-bold">
                       🎯 {activeScenario?.chapterRef}実践ミッション
                     </span>
-                    <span className="text-white font-bold hidden sm:inline">{activeScenario?.title}</span>
+                    <span className="text-slate-100 font-bold hidden sm:inline">{activeScenario?.title}</span>
                   </div>
                 </div>
                 <button 
@@ -1120,7 +1120,7 @@ export default function CodeLab() {
                     navigator.clipboard.writeText(textToCopy);
                   }}
                   aria-label="ターミナルログをクリップボードにコピー"
-                  className="text-slate-600 hover:text-white flex items-center gap-1 text-xs px-2 py-1 bg-navy-800 rounded border border-slate-300 transition-colors cursor-pointer"
+                  className="text-slate-300 hover:text-white flex items-center gap-1 text-xs px-2.5 py-1 bg-[#3a3a3a] hover:bg-[#4a4a4a] rounded border border-slate-600 transition-colors cursor-pointer"
                   title="ログをコピー"
                 >
                   <FileText size={12} /> Copy
@@ -1128,8 +1128,8 @@ export default function CodeLab() {
               </div>
 
               {/* Mobile Scenario Selector Tabs */}
-              <div className="md:hidden flex items-center gap-2 px-3 py-2 bg-navy-950 border-b border-slate-300 overflow-x-auto select-none shrink-0">
-                <span className="text-[11px] text-slate-600 shrink-0 font-bold">ミッション切替:</span>
+              <div className="md:hidden flex items-center gap-2 px-3 py-2 bg-[#181818] border-b border-slate-700 overflow-x-auto select-none shrink-0">
+                <span className="text-[11px] text-slate-400 shrink-0 font-bold">ミッション切替:</span>
                 {SCENARIOS.map(s => (
                   <button
                     key={s.id}
@@ -1137,8 +1137,8 @@ export default function CodeLab() {
                     aria-label={`${s.chapterRef}のミッションに切り替える`}
                     className={`shrink-0 px-2.5 py-1 rounded text-xs font-bold transition-all ${
                       activeScenarioId === s.id
-                        ? 'bg-cyan-500 text-navy-950 font-black shadow-md'
-                        : 'bg-navy-800 text-slate-700 border border-slate-300'
+                        ? 'bg-cyan-500 text-slate-950 font-black shadow-md'
+                        : 'bg-[#2d2d2d] text-slate-200 border border-slate-600'
                     }`}
                   >
                     {s.chapterRef}
@@ -1148,7 +1148,7 @@ export default function CodeLab() {
 
               {/* Chapter Guard Notice Banner */}
               {currentChapter && ![1, 2, 3, 4, 5, 9].includes(currentChapter) && (
-                <div className="bg-amber-950/60 border-b border-amber-500/40 px-4 py-2 text-xs text-amber-200/90 flex items-center justify-between select-none shrink-0">
+                <div className="bg-amber-950/80 border-b border-amber-500/50 px-4 py-2 text-xs text-amber-200 flex items-center justify-between select-none shrink-0">
                   <div className="flex items-center gap-2">
                     <span className="text-base">💡</span>
                     <span>現在閲覧中の<strong>【第{currentChapter}章】</strong>の専用ハンズオンは追加準備中です。上記タブから<strong>【第1・2・3・4・5・9章】</strong>の実践ミッションをお試しいただけます。</span>
@@ -1168,9 +1168,9 @@ export default function CodeLab() {
                         <span className="text-white">$ {log.content}</span>
                       </div>
                     )}
-                    {log.type === 'output' && <div className="text-slate-700 whitespace-pre-wrap">{log.content}</div>}
+                    {log.type === 'output' && <div className="text-slate-100 whitespace-pre-wrap">{log.content}</div>}
                     {log.type === 'error' && <div className="text-red-400 whitespace-pre-wrap">{log.content}</div>}
-                    {log.type === 'system' && <div className="text-slate-500 italic whitespace-pre-wrap">{log.content}</div>}
+                    {log.type === 'system' && <div className="text-cyan-300 italic whitespace-pre-wrap">{log.content}</div>}
                   </div>
                 ))}
 
@@ -1204,27 +1204,27 @@ export default function CodeLab() {
                 </div>
               )}
               {showSuccessOverlay && (
-                <div className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 z-10 animate-fade-in">
-                  <div className="bg-navy-900 border border-emerald-500/50 p-8 rounded-2xl max-w-md text-center shadow-[0_0_40px_rgba(16,185,129,0.2)]">
-                    <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle2 size={32} className="text-emerald-400" />
+                <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center p-6 z-10 animate-fade-in">
+                  <div className="bg-white border-2 border-emerald-400 p-8 rounded-2xl max-w-md text-center shadow-2xl">
+                    <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle2 size={32} className="text-emerald-600" />
                     </div>
-                    <h3 className="text-2xl font-black text-white mb-2">【{activeScenario?.chapterRef}ミッション】コンプリート！</h3>
-                    <p className="text-slate-700 text-sm mb-6">
+                    <h3 className="text-2xl font-black text-slate-900 mb-2">【{activeScenario?.chapterRef}ミッション】コンプリート！</h3>
+                    <p className="text-slate-600 text-sm mb-6">
                       素晴らしい！{activeScenario?.title} の仕組みを完全にトレースしました。
                     </p>
                     <div className="space-y-3">
                       <button 
-                        onClick={closeLab}
+                        onClick={closeLab} 
                         aria-label="ラボを終了して元のページに戻る"
-                        className="bg-emerald-500 hover:bg-emerald-400 text-navy-900 font-bold px-8 py-3 rounded-xl transition-transform hover:scale-105 w-full cursor-pointer"
+                        className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-3 rounded-xl transition-transform hover:scale-105 w-full cursor-pointer shadow-md"
                       >
                         元のページに戻って学習を続ける
                       </button>
                       <button 
                         onClick={() => setShowSuccessOverlay(false)}
                         aria-label="ターミナルに戻る"
-                        className="text-slate-600 hover:text-white text-sm font-bold px-8 py-2 rounded-xl transition-colors w-full cursor-pointer"
+                        className="text-slate-500 hover:text-slate-900 text-sm font-bold px-8 py-2 rounded-xl transition-colors w-full cursor-pointer"
                       >
                         ターミナルに戻る
                       </button>
@@ -1236,11 +1236,11 @@ export default function CodeLab() {
           </div>
 
           {/* Navigation Links */}
-          <div className="flex justify-center mt-6 pt-6 border-t border-slate-300/50 shrink-0">
+          <div className="flex justify-center mt-6 pt-6 border-t border-slate-200 shrink-0">
             <button 
               onClick={closeLab} 
               aria-label="ラボを終了して元のページに戻る"
-              className="bg-cyan-500 hover:bg-cyan-400 text-navy-900 font-bold px-8 py-3 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-[0_0_20px_rgba(6,182,212,0.3)] w-full sm:w-auto cursor-pointer"
+              className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-8 py-3 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-md w-full sm:w-auto cursor-pointer"
             >
               ラボを終了して元のページに戻る
             </button>
@@ -1248,17 +1248,17 @@ export default function CodeLab() {
 
           {/* 前提知識・用語早わかり事典モーダル */}
           {showGlossary && (
-            <div className="fixed inset-0 z-[120] bg-navy-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-navy-900 border border-cyan-500/40 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in">
-                <div className="p-4 sm:p-5 border-b border-slate-300 bg-navy-800/90 flex items-center justify-between">
+            <div className="fixed inset-0 z-[120] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white border-2 border-sky-300 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in">
+                <div className="p-4 sm:p-5 border-b border-slate-200 bg-sky-50/80 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <BookOpen size={20} className="text-cyan-400" />
-                    <h2 className="text-base sm:text-lg font-bold text-white">💡 前提知識・主要ツール早わかり事典</h2>
+                    <BookOpen size={20} className="text-cyan-700" />
+                    <h2 className="text-base sm:text-lg font-bold text-slate-900">💡 前提知識・主要ツール早わかり事典</h2>
                   </div>
                   <button 
                     onClick={() => setShowGlossary(false)} 
                     aria-label="事典モーダルを閉じる"
-                    className="text-slate-600 hover:text-white p-1.5 rounded-lg hover:bg-navy-700 transition-colors cursor-pointer"
+                    className="text-slate-500 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
                   >
                     <X size={18} />
                   </button>
@@ -1266,30 +1266,30 @@ export default function CodeLab() {
 
                 <div className="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm leading-relaxed text-slate-700">
                   {/* Docker */}
-                  <div className="p-4 bg-navy-950/70 border border-slate-300/80 rounded-xl space-y-2">
+                  <div className="p-4 bg-slate-50/90 border border-slate-200 rounded-xl space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 font-bold px-2 py-0.5 rounded text-xs">Docker とは</span>
-                      <span className="font-bold text-white text-sm">環境依存を撲滅するコンテナ技術</span>
+                      <span className="bg-blue-100 text-blue-900 border border-blue-300 font-bold px-2 py-0.5 rounded text-xs">Docker とは</span>
+                      <span className="font-bold text-slate-900 text-sm">環境依存を撲滅するコンテナ技術</span>
                     </div>
-                    <p className="text-slate-600 text-xs">
+                    <p className="text-slate-700 text-xs">
                       OS（Ubuntuなど）やコンパイラ、ツールのインストール手順を <strong>Dockerfile（設計図）</strong> に書き、全員で寸分違わず同じLinux環境を0.1秒で立ち上げる技術。従来の重い仮想マシン(VM)と違い、ホストOSのカーネルを共有するため極めて軽量です。
                     </p>
-                    <div className="text-[11px] font-mono bg-navy-900 p-2 rounded text-cyan-300 border border-sky-200">
+                    <div className="text-[11px] font-mono bg-white p-2 rounded text-cyan-950 border border-sky-200">
                       フロー: Dockerfile(設計図) ➔ docker build(金型作成) ➔ docker run(隔離空間でテスト実行)
                     </div>
                   </div>
 
                   {/* CMake */}
-                  <div className="p-4 bg-navy-950/70 border border-slate-300/80 rounded-xl space-y-2">
+                  <div className="p-4 bg-slate-50/90 border border-slate-200 rounded-xl space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold px-2 py-0.5 rounded text-xs">CMake とは</span>
-                      <span className="font-bold text-white text-sm">OSに依存しないビルドスクリプト自動生成ツール</span>
+                      <span className="bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold px-2 py-0.5 rounded text-xs">CMake とは</span>
+                      <span className="font-bold text-slate-900 text-sm">OSに依存しないビルドスクリプト自動生成ツール</span>
                     </div>
-                    <p className="text-slate-600 text-xs">
+                    <p className="text-slate-700 text-xs">
                       コンパイラ(g++)そのものではなく、コンパイルの現場監督（MakefileやVisual Studioプロジェクト）をOSに合わせて自動生成する「メタ設計士」。<code>CMakeLists.txt</code> を1つ書くだけで、LinuxでもWindowsでもMacでも最適なビルド手順を作り出してくれます。
                     </p>
-                    <div className="text-[11px] font-mono bg-navy-900 p-2 rounded text-emerald-300 border border-sky-200 space-y-0.5">
-                      <span className="font-bold block text-[10px] text-emerald-400">【Makefileとの決定的な違い】</span>
+                    <div className="text-[11px] font-mono bg-white p-2 rounded text-emerald-950 border border-emerald-200 space-y-0.5">
+                      <span className="font-bold block text-[10px] text-emerald-800">【Makefileとの決定的な違い】</span>
                       <span className="text-slate-700">
                         ・Makefile: Makeコマンドに直接渡す「具体的な手順書（手書きするとタブ文字等のミス多発）」<br/>
                         ・CMake: 環境に合わせてそのMakefileを「自動作成する上位ツール」<br/>
@@ -1299,55 +1299,55 @@ export default function CodeLab() {
                   </div>
 
                   {/* CTest */}
-                  <div className="p-4 bg-navy-950/70 border border-slate-300/80 rounded-xl space-y-2">
+                  <div className="p-4 bg-slate-50/90 border border-slate-200 rounded-xl space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-teal-500/20 text-teal-400 border border-teal-500/30 font-bold px-2 py-0.5 rounded text-xs">CTest とは</span>
-                      <span className="font-bold text-white text-sm">CMake付属のテスト一括自動実行マネージャー</span>
+                      <span className="bg-teal-100 text-teal-900 border border-teal-300 font-bold px-2 py-0.5 rounded text-xs">CTest とは</span>
+                      <span className="font-bold text-slate-900 text-sm">CMake付属のテスト一括自動実行マネージャー</span>
                     </div>
-                    <p className="text-slate-600 text-xs">
+                    <p className="text-slate-700 text-xs">
                       何十個も作られたテストバイナリ（<code>test_math</code>、<code>test_filter</code> など）を、手動で1つずつ叩く代わりに <code>ctest</code> コマンド1発で並列実行し、合否サマリーを自動集計してくれるテストランナーです。CI/CD自動化の要となります。
                     </p>
                   </div>
 
                   {/* GoogleTest vs pytest */}
-                  <div className="p-4 bg-navy-950/70 border border-slate-300/80 rounded-xl space-y-2">
+                  <div className="p-4 bg-slate-50/90 border border-slate-200 rounded-xl space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-purple-500/20 text-purple-400 border border-purple-500/30 font-bold px-2 py-0.5 rounded text-xs">GoogleTest vs pytest</span>
-                      <span className="font-bold text-white text-sm">2層の防壁（単体テスト vs シナリオテスト）</span>
+                      <span className="bg-purple-100 text-purple-900 border border-purple-300 font-bold px-2 py-0.5 rounded text-xs">GoogleTest vs pytest</span>
+                      <span className="font-bold text-slate-900 text-sm">2層の防壁（単体テスト vs シナリオテスト）</span>
                     </div>
-                    <p className="text-slate-600 text-xs">
+                    <p className="text-slate-700 text-xs">
                       <strong>GoogleTest (gtest)</strong> はC++ネイティブで内部関数やクラスの境界値・例外を高速検証するツール。<strong>pytest</strong> はC++を共有ライブラリ(.so)としてPythonから呼び出し、NumPy等で生成した大量の波形・パラメータを一括流し込み検証するツールです。
                     </p>
                   </div>
 
                   {/* pybind11 */}
-                  <div className="p-4 bg-navy-950/70 border border-slate-300/80 rounded-xl space-y-2">
+                  <div className="p-4 bg-slate-50/90 border border-slate-200 rounded-xl space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 font-bold px-2 py-0.5 rounded text-xs">pybind11 とは</span>
-                      <span className="font-bold text-white text-sm">PythonからC++を直接呼び出す架け橋</span>
+                      <span className="bg-indigo-100 text-indigo-900 border border-indigo-300 font-bold px-2 py-0.5 rounded text-xs">pybind11 とは</span>
+                      <span className="font-bold text-slate-900 text-sm">PythonからC++を直接呼び出す架け橋</span>
                     </div>
-                    <p className="text-slate-600 text-xs">
+                    <p className="text-slate-700 text-xs">
                       C++11のテンプレート機能を駆使し、わずか数行のバインド定義コードでC++クラスや関数をPythonモジュール（.so / .pyd）化するモダンライブラリ。SWIG等の古いラッパーと違って直感的に書け、PyTorchやNumPyなどAI・数理エコシステムの基盤として広く採用されています。
                     </p>
                   </div>
 
                   {/* Valgrind / ASan */}
-                  <div className="p-4 bg-navy-950/70 border border-slate-300/80 rounded-xl space-y-2">
+                  <div className="p-4 bg-slate-50/90 border border-slate-200 rounded-xl space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold px-2 py-0.5 rounded text-xs">Valgrind / ASan とは</span>
-                      <span className="font-bold text-white text-sm">目に見えないメモリバグをあぶり出す動的解析</span>
+                      <span className="bg-rose-100 text-rose-900 border border-rose-300 font-bold px-2 py-0.5 rounded text-xs">Valgrind / ASan とは</span>
+                      <span className="font-bold text-slate-900 text-sm">目に見えないメモリバグをあぶり出す動的解析</span>
                     </div>
-                    <p className="text-slate-600 text-xs">
+                    <p className="text-slate-700 text-xs">
                       C++で <code>new</code> して <code>delete</code> し忘れたメモリ（メモリリーク）や、配列の境界外アクセスを実行中に1バイト単位で監視・検知するツール。手元で詳しく調査するなら <strong>Valgrind</strong>、高速にCIで回すなら <strong>AddressSanitizer (ASan)</strong> を使います。
                     </p>
                   </div>
                 </div>
 
-                <div className="p-4 border-t border-slate-300 bg-navy-800/60 flex justify-end">
+                <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
                   <button
                     onClick={() => setShowGlossary(false)}
                     aria-label="事典モーダルを閉じる"
-                    className="bg-cyan-500 hover:bg-cyan-400 text-navy-950 font-bold px-5 py-2 rounded-xl text-xs transition-colors cursor-pointer"
+                    className="bg-cyan-600 hover:bg-cyan-500 text-white font-bold px-5 py-2 rounded-xl text-xs transition-colors shadow-xs cursor-pointer"
                   >
                     閉じる
                   </button>

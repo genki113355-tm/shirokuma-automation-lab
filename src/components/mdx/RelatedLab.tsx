@@ -20,24 +20,24 @@ export default function RelatedLab({ target, title, description, url, badge }: R
 
   const themeClasses = isQt
     ? {
-        border: 'border-emerald-500/40 hover:border-emerald-400',
-        bg: 'from-navy-900/90 via-emerald-950/30 to-navy-900/90',
-        badgeBg: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40',
-        btnBg: 'bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 hover:from-emerald-400 hover:to-teal-300',
-        icon: 'text-emerald-400',
-        shadow: 'hover:shadow-[0_0_25px_rgba(16,185,129,0.25)]',
+        border: 'border-emerald-300 hover:border-emerald-400',
+        bg: 'from-emerald-50/90 via-teal-50/60 to-white',
+        badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-300',
+        btnBg: 'bg-gradient-to-r from-emerald-600 to-teal-500 text-white hover:from-emerald-500 hover:to-teal-400 shadow-emerald-500/20',
+        icon: 'text-emerald-600',
+        shadow: 'hover:shadow-lg',
       }
     : {
-        border: 'border-cyan-500/40 hover:border-cyan-400',
-        bg: 'from-navy-900/90 via-cyan-950/30 to-navy-900/90',
-        badgeBg: 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40',
-        btnBg: 'bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 hover:from-cyan-400 hover:to-blue-400',
-        icon: 'text-cyan-400',
-        shadow: 'hover:shadow-[0_0_25px_rgba(6,182,212,0.25)]',
+        border: 'border-sky-300 hover:border-cyan-400',
+        bg: 'from-sky-50/90 via-cyan-50/60 to-white',
+        badgeBg: 'bg-cyan-100 text-cyan-900 border-cyan-300',
+        btnBg: 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-500 hover:to-blue-500 shadow-cyan-500/20',
+        icon: 'text-cyan-600',
+        shadow: 'hover:shadow-lg',
       };
 
   return (
-    <div className={`not-prose my-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r ${themeClasses.bg} border ${themeClasses.border} shadow-xl ${themeClasses.shadow} transition-all relative overflow-hidden group`}>
+    <div className={`not-prose my-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-r ${themeClasses.bg} border ${themeClasses.border} shadow-md ${themeClasses.shadow} transition-all relative overflow-hidden group`}>
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
         <div className="space-y-2 flex-1">
           <div className="flex items-center gap-2">
@@ -46,7 +46,7 @@ export default function RelatedLab({ target, title, description, url, badge }: R
               {badge || defaultBadge}
             </span>
           </div>
-          <h4 className="text-base sm:text-lg font-bold text-white flex items-center gap-2 m-0">
+          <h4 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2 m-0">
             <BookOpen size={18} className={themeClasses.icon} />
             {title}
           </h4>

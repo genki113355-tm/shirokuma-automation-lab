@@ -16,8 +16,8 @@ const CodeLab = lazy(() => import('./components/CodeLab'));
 const PageLoader = () => (
   <div className="flex-1 flex items-center justify-center h-full">
     <div className="flex flex-col items-center gap-4">
-      <div className="w-8 h-8 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
-      <div className="text-cyan-400 font-mono text-sm animate-pulse">LOADING MODULE...</div>
+      <div className="w-8 h-8 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin"></div>
+      <div className="text-cyan-800 font-bold font-mono text-sm animate-pulse">LOADING MODULE...</div>
     </div>
   </div>
 );

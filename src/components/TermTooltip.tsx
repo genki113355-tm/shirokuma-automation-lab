@@ -159,11 +159,11 @@ export default function TermTooltip({ name, children }: TermTooltipProps) {
   }, [isOpen]);
 
   const categoryColors: Record<string, string> = {
-    'インフラ': 'bg-blue-500/20 text-blue-300 border-blue-500/40',
-    'ビルド': 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-    'テスト': 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-    'C++言語': 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
-    'アーキテクチャ': 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+    'インフラ': 'bg-blue-100 text-blue-900 border-blue-300',
+    'ビルド': 'bg-emerald-100 text-emerald-900 border-emerald-300',
+    'テスト': 'bg-amber-100 text-amber-900 border-amber-300',
+    'C++言語': 'bg-cyan-100 text-cyan-900 border-cyan-300',
+    'アーキテクチャ': 'bg-purple-100 text-purple-900 border-purple-300',
   };
 
   return (
@@ -172,7 +172,7 @@ export default function TermTooltip({ name, children }: TermTooltipProps) {
         onClick={() => setIsOpen(prev => !prev)}
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
-        className="cursor-help inline-flex items-center gap-0.5 text-cyan-300 font-semibold underline decoration-dotted decoration-cyan-400/80 hover:text-cyan-200 hover:decoration-cyan-300 transition-colors"
+        className="cursor-help inline-flex items-center gap-0.5 text-cyan-800 font-bold underline decoration-dotted decoration-cyan-500 hover:text-cyan-900 hover:decoration-cyan-700 transition-colors"
         title={def.summary}
         role="button"
         tabIndex={0}
@@ -186,7 +186,7 @@ export default function TermTooltip({ name, children }: TermTooltipProps) {
         aria-expanded={isOpen}
       >
         {children || name}
-        <HelpCircle size={12} className="text-cyan-400/80 inline shrink-0 ml-0.5" />
+        <HelpCircle size={12} className="text-cyan-700 inline shrink-0 ml-0.5" />
       </span>
 
       {/* Floating Tooltip Bubble */}
@@ -194,16 +194,16 @@ export default function TermTooltip({ name, children }: TermTooltipProps) {
         <div
           ref={popupRef}
           role="tooltip"
-          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 sm:w-80 p-3.5 bg-[#0b1322] border border-cyan-500/50 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] z-50 text-left animate-fade-in pointer-events-auto"
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 sm:w-80 p-3.5 bg-white border-2 border-sky-300 rounded-xl shadow-xl z-50 text-left animate-fade-in pointer-events-auto"
         >
           {/* Header */}
-          <div className="flex items-center justify-between gap-2 mb-1.5 pb-1.5 border-b border-slate-300/80">
+          <div className="flex items-center justify-between gap-2 mb-1.5 pb-1.5 border-b border-slate-200">
             <div className="flex items-center gap-1.5">
-              <span className="text-sm font-bold text-white tracking-wide">
+              <span className="text-sm font-black text-slate-900 tracking-wide">
                 {def.term}
               </span>
               {def.reading && (
-                <span className="text-[10px] text-slate-600 font-mono">
+                <span className="text-[10px] text-slate-500 font-mono">
                   ({def.reading})
                 </span>
               )}
@@ -214,17 +214,17 @@ export default function TermTooltip({ name, children }: TermTooltipProps) {
           </div>
 
           {/* Summary */}
-          <div className="text-xs font-bold text-cyan-300 mb-1 leading-snug">
+          <div className="text-xs font-bold text-cyan-800 mb-1 leading-snug">
             {def.summary}
           </div>
 
           {/* Detailed explanation */}
-          <p className="text-[11px] sm:text-xs text-slate-700 leading-relaxed m-0">
+          <p className="text-[11px] sm:text-xs text-slate-700 leading-relaxed m-0 font-normal">
             {def.detail}
           </p>
 
           {/* Arrow */}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-4 border-transparent border-t-[#0b1322]" />
+          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-4 border-transparent border-t-white" />
         </div>
       )}
     </span>
