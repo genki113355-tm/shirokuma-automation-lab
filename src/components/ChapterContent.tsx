@@ -133,6 +133,21 @@ export default function ChapterContent() {
           const twDesc = document.querySelector('meta[name="twitter:description"]');
           if (twDesc) twDesc.setAttribute('content', m.meta.description);
         }
+        // ポータル連動用学習進捗キーの保存 (auto_completed_chapters)
+        try {
+          const num = Number(id);
+          if (!isNaN(num) && num >= 1 && num <= 12) {
+            const raw = localStorage.getItem('auto_completed_chapters');
+            const list: number[] = raw ? JSON.parse(raw) : [];
+            if (!list.includes(num)) {
+              list.push(num);
+              list.sort((a, b) => a - b);
+              localStorage.setItem('auto_completed_chapters', JSON.stringify(list));
+            }
+          }
+        } catch (e) {
+          console.error(e);
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -489,7 +504,7 @@ export default function ChapterContent() {
               </p>
             </div>
             <a
-              href="https://shirokuma-qt-cpp.jp/"
+              href="https://shirokuma-tech.jp/qt/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Qt×C++ラボ（外部サイト）を開く"

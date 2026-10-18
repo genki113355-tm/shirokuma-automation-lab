@@ -14,7 +14,12 @@ export default function Footer() {
           <p className="text-sm leading-relaxed text-slate-600">
             C++開発者のための、基礎から応用・自動化までを網羅する実践的な学習プラットフォーム群です。
           </p>
-          <ul className="space-y-2 mt-4 text-sm font-medium">
+          <ul className="space-y-2.5 mt-4 text-sm font-medium">
+            <li>
+              <a href="https://shirokuma-tech.jp/" className="text-slate-900 font-bold hover:text-cyan-700 transition-colors flex items-center gap-2">
+                <ExternalLink size={14} className="text-cyan-600" /> シロクマ技術総合ポータル (全ラボ統括)
+              </a>
+            </li>
             <li>
               <a href="https://shirokuma-tech.jp/cpp/" className="text-slate-700 hover:text-cyan-700 transition-colors flex items-center gap-2">
                 <ExternalLink size={14} className="text-cyan-600" /> シロクマC++ラボ (コア設計)
@@ -28,6 +33,16 @@ export default function Footer() {
             <li>
               <a href="https://shirokuma-tech.jp/sonar/" className="text-slate-700 hover:text-blue-700 transition-colors flex items-center gap-2">
                 <ExternalLink size={14} className="text-blue-600" /> 水中音響・ソナー技術入門 (ドメイン応用)
+              </a>
+            </li>
+            <li>
+              <a href="https://shirokuma-tech.jp/nw/" className="text-slate-700 hover:text-sky-700 transition-colors flex items-center gap-2">
+                <ExternalLink size={14} className="text-sky-600" /> ネスペ直前対策ナビ (NW高度資格)
+              </a>
+            </li>
+            <li>
+              <a href="https://shirokuma-tech.jp/ai-passport/" className="text-slate-700 hover:text-purple-700 transition-colors flex items-center gap-2">
+                <ExternalLink size={14} className="text-purple-600" /> AIパスポートラボ (生成AI対策)
               </a>
             </li>
           </ul>

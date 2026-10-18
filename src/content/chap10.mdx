@@ -57,7 +57,7 @@ jobs:
 
       - name: 失敗時のグラフ画像を保存 (Artifact)
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: error-plots
           path: error_report.png

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ChevronDown, Beaker, Play, X, BookOpen } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -7,6 +8,17 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
   const closeDrawer = () => {
     if (setIsOpen) setIsOpen(false);
   };
+
+  // モバイルメニュー展開時の背景スクロールロック
+  useEffect(() => {
+    if (isOpen) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -23,7 +35,7 @@ export default function Sidebar({ isOpen, setIsOpen }: { isOpen?: boolean, setIs
         
         {/* Mobile Close Button */}
         <button 
-          className="lg:hidden absolute top-3 right-3 p-2 text-slate-500 hover:text-slate-800 bg-slate-100 rounded-full"
+          className="lg:hidden absolute top-2 right-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-500 hover:text-slate-800 bg-slate-100 rounded-full cursor-pointer"
           onClick={closeDrawer}
           aria-label="メニューを閉じる"
         >
